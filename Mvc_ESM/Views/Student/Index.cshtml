@@ -1,0 +1,158 @@
+﻿@model IEnumerable<Model.sinhvien>
+@{
+    ViewBag.Title = "Sinh viên";
+}
+
+<h2>Danh sách @ViewBag.Title</h2>
+
+@Html.Partial("_DataTable.Lib")
+
+@using (Html.BeginForm("Index", "Student", FormMethod.Post, new { @id = "FilterForm" }))
+{
+    <p>
+
+        <p>
+            Khoa: @Html.DropDownList("Khoa", ViewBag.Khoa as SelectList, new { id = "KhoaList" })
+            Lớp: @Html.DropDownList("Lop", ViewBag.Lop as SelectList, Mvc_ESM.Settings.Page.Settings.SelectAllString, new { id = "LopList" })
+            Tên: @Html.TextBox("SearchString", ViewBag.SearchString as string, new { id = "SearchString" })
+            <input type="submit" value="Thực hiện" />
+        </p>
+
+    </p>
+}
+
+<table id="table">
+    <thead>
+        <tr>
+            <th>Mã sinh viên</th>
+            <th>Họ</th>
+            <th>Tên</th>
+            <th>Phái</th>
+            <th>NgàySinh</th>
+            <th>Lớp</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.MaSinhVien
+                </td>
+                <td>
+                    @item.Ho
+                </td>
+                <td>
+                    @item.Ten
+                </td>
+                <td>
+                    @item.Phai
+                </td>
+                <td>
+                    @item.NgaySinh
+                </td>
+                <td>
+                    @item.Lop
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@Html.Partial("_DataTable.Lib")
+
+<script type="text/javascript" charset="utf-8">
+
+    function fnFormatDetails(oTable, nTr) {
+        var aData = oTable.fnGetData(nTr);
+        var sOut = '<table id="itemDetail">';
+        $.ajax({
+            url: "/Services/LoadStudentTimetable",
+            dataType: 'json',
+            data: "StudentID=" + aData[1],
+            async: false,
+            success: function (Data) {
+                if (Data.Ok == "false") {
+                    //alert("Không tìm thấy!");
+                    return "";
+                }
+                sOut += '<tr><td>STT</td><td>Mã MH</td><td>Tên MH</td><td>Nhóm</td><td>Số TC</td><td>Giáo Viên</td><td>Thứ</td><td>Tiết BĐ</td><td>Số tiết</td><td>Phòng</td><td>Tuần BĐ</td><td>Số tuần</td></tr>';
+                for (var i = 0; i < Data.Data.length; i++) {
+                    var MaMonHoc = Data.Data[i].MaMonHoc;
+                    var TenMonHoc = Data.Data[i].TenMonHoc;
+                    var Nhom = Data.Data[i].Nhom;
+                    var SoTC = Data.Data[i].SoTC;
+                    var TenGiaoVien = Data.Data[i].TenGiaoVien;
+                    var Thu = Data.Data[i].Thu;
+                    var TietBD = Data.Data[i].TietBD;
+                    var SoTiet = Data.Data[i].SoTiet;
+                    var MaPhong = Data.Data[i].MaPhong;
+                    var TuanBD = Data.Data[i].TuanBD;
+                    var SoTuan = Data.Data[i].SoTuan;
+                    sOut += '<tr><td>' + (i + 1) + '</td><td>' + MaMonHoc + '</td><td>' + TenMonHoc + '</td><td>' + Nhom + '</td><td>' + SoTC + '</td><td>' + TenGiaoVien + '</td><td>' + Thu + '</td><td>' + TietBD + '</td><td>' + SoTiet + '</td><td>' + MaPhong + '</td><td>' + TuanBD + '</td><td>' + SoTuan + '</td></tr>';
+                }
+                sOut += '</table>';
+            }
+        });
+        return sOut;
+    }
+
+
+    $('#KhoaList').change(function () {
+        var id = $(this).val();
+        $.getJSON("/Services/LoadClassByFacultyID", { FacultyID: id },
+        function (Data) {
+            var select = $("#LopList");
+            select.empty();
+            select.append($('<option/>', {
+                value: "",
+                text: "@Mvc_ESM.Settings.Page.Settings.SelectAllString"
+            }));
+
+            $.each(Data, function (index, itemData) {
+                select.append($('<option/>', {
+                    value: itemData.Value,
+                    text: itemData.Text
+                }));
+            });
+            $("#SearchString").empty();
+        });
+    });
+
+
+    //thêm nút detail ở cột đầu tiên
+    var nCloneTh = document.createElement('th');
+    var nCloneTd = document.createElement('td');
+    nCloneTd.innerHTML = '<img id="details" src="@Url.Content("~/Content/TableThemes/details_open.png")">';
+    nCloneTd.setAttribute("style", "text-align:center;");
+    $('#table thead tr').each(function () {
+        this.insertBefore(nCloneTh, this.childNodes[0]);
+    });
+
+    $('#table tbody tr').each(function () {
+        this.insertBefore(nCloneTd.cloneNode(true), this.childNodes[0]);
+    });
+    // cài đặt sự kiện nút detail được click
+    $('#table tbody td img#details').live('click', function () {
+        var nTr = $(this).parents('tr')[0];
+        if (oTable.fnIsOpen(nTr)) {
+            this.src = "@Url.Content("~/Content/TableThemes/details_open.png")";
+            oTable.fnClose(nTr);
+        }
+        else {
+            this.src = "@Url.Content("~/Content/TableThemes/details_close.png")";
+            oTable.fnOpen(nTr, fnFormatDetails(oTable, nTr), 'details');
+        }
+    });
+    //cài đặt bảng
+    var oTable = $('#table').dataTable({
+        "aoColumnDefs": [
+            { "bSortable": false, "aTargets": [0] },
+        ], // không hiện nút sắp xếp!
+        "aaSorting": [[3, 'asc']], //Xếp cột thứ 4
+        "bStateSave": true,
+        @Html.Partial("_DataTable")
+    });
+    new FixedHeader(oTable);
+
+</script>

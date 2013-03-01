@@ -1,0 +1,87 @@
+﻿@{
+    ViewBag.Title = "Chọn phòng không sử dụng!";
+}
+
+<h2>@ViewBag.Title</h2>
+<p>
+    Ngày tổ chức thi: 
+    <input type="text" id="txtDate" />
+    Ca Thi: 
+    <input type="text" id="txtShift" size="2" />
+    <button id="btnUpdate">Chọn</button>
+</p>
+
+<table id="table">
+    <thead>
+        <tr>
+            <th>Mã phòng</th>
+            <th>Sức chứa</th>
+            <th></th>
+        </tr>
+    </thead>
+</table>
+
+<p>
+    <button id="btnSave">Lưu</button>
+</p>
+
+@Html.Partial("_DataTable.Lib")
+@Html.Partial("_Jquery-UI.regional.lib")
+<script src="@Url.Content("~/Scripts/UI/jquery.mousewheel.js")" type="text/javascript" lang="javascript" ></script>
+<script type="text/javascript" charset="utf-8">
+    @Html.Partial("_Jquery-UI.regional")
+    @Html.Partial("_Jquery-UI.Widget.datespinner")
+    $.datepicker.setDefaults($.datepicker.regional["vi"]);
+
+    $("#txtDate").datepicker({
+        changeMonth: true,
+        changeYear: true
+    }).datespinner();
+
+    oTable = $('#table').dataTable({
+        @Html.Partial("_DataTable")
+    });
+    $("#txtShift").spinner({
+        step: 1,
+        spin: function (event, ui) {
+            if (ui.value > @Mvc_ESM.Static_Helper.InputHelper.Options.Times.Count) {
+                $(this).spinner("value", 1);
+                return false;
+            } else if (ui.value < 1) {
+                $(this).spinner("value", @Mvc_ESM.Static_Helper.InputHelper.Options.Times.Count);
+                return false;
+            }
+        }
+    });
+
+    $("#btnUpdate").button().click(function () {
+        oTable.fnClearTable(true);
+        var date = $('#txtDate').datespinner("value") + 25200000; // bù 7h
+        var shift = $('#txtShift').spinner("value") - 1;
+        $.getJSON("/Services/LoadRoomsByDateAndShift", { DateMilisecond: date, Shift : shift },
+            function (Data) {
+                if (Data.Ok == "false") {
+                    alert("Không tìm thấy phòng nào!");
+                    return false;
+                }
+                oTable.fnClearTable(true);
+                $.each(Data.Rooms, function (index, itemData) {
+                    var CheckBox = '<input type="checkbox" id="Check" value="' + itemData.RoomID + '" ' + (itemData.IsBusy ? "checked" : "") + ' Container="' + itemData.Container + '" />';
+                    oTable.fnAddData([itemData.RoomID , itemData.Container, CheckBox]);
+                });
+            });
+        return false;
+    });
+
+    $("#btnSave").button().click(function () {
+        var date = $('#txtDate').datespinner("value") + 25200000;
+        var shift = $('#txtShift').spinner("value") - 1;
+        var sData = 'DateMilisecond=' + date + '&Shift=' + shift;
+        oTable.$("#Check").each(function (index, item) {
+            sData += '&RoomID=' + $(this).attr('value') + '&Check=' +  $(this).attr('checked') + '&Container=' + $(this).attr('Container');
+        });
+        $.post("/SelectRoom/SelectSuccess", sData);
+        alert("Đã lưu xong");
+        return false; 
+    });
+</script>

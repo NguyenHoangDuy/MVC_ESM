@@ -1,0 +1,202 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+
+<h2>@ViewBag.Title</h2>
+<style>
+    label {
+        width: 120px;
+        float: left;
+        text-align: right;
+        margin-right: 15px;
+    }
+</style>
+<form id="InputFrom">
+    <p>
+        <label for="DateStart">Ngày bắt đầu:</label>
+        <input type="text" id="DateStart" value="@(Mvc_ESM.Static_Helper.InputHelper.Options.StartDate.AddYears(-1969).AddDays(1).Ticks/10000)" title="Ngày dự kiến bắt đầu kỳ thi" style="position: relative; z-index: 200;"/>
+    </p>
+    <p>
+        <label for="NumDate">Số ngày:</label>
+        <input type="text" id="NumDate" value="@Mvc_ESM.Static_Helper.InputHelper.Options.NumDate" title="Số ngày dự kiến sẽ tổ chức thi"/>
+    </p>
+    <p>
+        <label for="DateMin">Khoảng cách:</label>
+        <input type="text" id="DateMin" value="@Mvc_ESM.Static_Helper.InputHelper.Options.DateMin" readonly="true" title="Khoảng cách giữa 2 môn thi liên tiếp của 1 thí sinh, đơn vị tính là ca"/>
+    </p>
+    <p>Thiết lập ca thi của 1 ngày:</p>
+    <p>
+        <label for="StepTime">Thời gian 1 ca:</label>
+        <input type="text" id="StepTime" value="@Mvc_ESM.Static_Helper.InputHelper.Options.ShiftTime" readonly="true" title="Thời gian tổ chức 1 ca thi, đơn vị tính là phút"/>
+    </p>
+    <p>
+        <label for="tBGTime">Thêm ca thi:</label>
+        <input type="text" id="tBGTime" name="value" title="Thời gian bắt đầu"/>
+        <button id="Addbtn" title="Thêm vào danh sách">Thêm</button>
+    </p>
+    <div style="width:800px; margin:auto;">
+        <table id="table" style="width:800px;">
+            <thead>
+                <tr>
+                    <th>Ca thi</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+    <br />
+    <button id="SaveBtn" title="Lưu các thiết lập">Lưu</button>
+</form>
+    
+
+@Html.Partial("_DataTable.Lib")
+@Html.Partial("_Jquery-UI.regional.lib")
+<script src="@Url.Content("~/Scripts/UI/jquery.mousewheel.js")" type="text/javascript" lang="javascript" ></script>
+<script type="text/javascript" charset="utf-8">
+    @Html.Partial("_Jquery-UI.regional")
+    @Html.Partial("_Jquery-UI.Widget.datespinner")
+    @Html.Partial("_Jquery-UI.Widget.timespinner")
+    //======================================================================//
+    oTable = $('#table').dataTable({
+        "aoColumnDefs": [
+                {
+                    "bSortable": false, "aTargets": [1],
+                    "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+                        var b = $('<button>' + sData + '</button>');
+                        b.button({
+                            icons: {
+                                primary: "ui-icon-trash" // hình cái thùng rác
+                            }
+                        }).click(function (e) {
+                            e.preventDefault();
+                            var row = $(this).parent().parent(); // this là cái nút, cha của nó là td ông của nó là tr ==> cái hàng cần xoá
+                            if (row.length !== 0) {
+                                oTable.fnDeleteRow(row[0]);
+                            }
+                        });
+                        $(nTd).empty();
+                        $(nTd).prepend(b).attr('align', 'center');
+                    }
+                },
+        ], // không hiện nút sắp xếp!
+        "bLengthChange": false,
+        "bFilter": false,
+        @Html.Partial("_DataTable")
+    });
+
+    $("#tBGTime,#tETime").timespinner();
+    $("#Addbtn").button().click(function (e) {
+        e.preventDefault(); // không chạy sự kiện mặc định của đối tượng
+        var Name = $("#tName").val();
+        // Giá trị trả về là số mili giây tính từ lúc 7:00 sáng tới 6:59 sáng hôm sau
+        // 86400000 = 1000 * 60 * 60 * 24
+        // 25200000 la 7h dc cong bu
+        var BGTime = ($("#tBGTime").timespinner("value") + 25200000) % 86400000; // loại bỏ các thông tin về ngày, chỉ lấy thông tin về giờ
+        var ETime = BGTime + $('#StepTime').spinner("value") * 60 * 1000;
+
+        var Checker = true;
+
+        $("#table tbody tr").each(function (i) {
+            var tBG = $("#BGTime", this).attr("postvalue") * 1;
+            var tE = tBG + $('#StepTime').spinner("value") * 60 * 1000;
+
+            if ((tBG >= BGTime && tBG <= ETime) || (tE >= BGTime && tE <= ETime) || (BGTime >= tBG && BGTime <= tE) || (ETime >= tBG && ETime <= tE)) {
+                Checker = false;
+                alert("Giờ thi bị trùng!");
+                return false; // ngắt vòng lặp each
+            }
+        });
+
+        if (Checker == false) { return false; }
+
+        oTable.fnAddData(['<span id="BGTime" postvalue="' + BGTime + '">' + $("#tBGTime").val() + '</span>', "Xoá"]);
+        $('#table tbody td button#Deletebtn[value="' + Name + '"]').button({
+            icons: {
+                primary: "ui-icon-trash" // hình cái thùng rác
+            }
+        }).live('click', function () {
+            var row = $(this).parent().parent(); // this là cái nút, cha của nó là td ông của nó là tr ==> cái hàng cần xoá
+            if (row.length !== 0) {
+                oTable.fnDeleteRow(row[0]);
+            }
+        }).parent().parent().attr('align', 'center');
+    });
+
+    $(document).ready(function () {
+        @for(int i = 0; i < @Mvc_ESM.Static_Helper.InputHelper.Options.Times.Count; i++)
+        {
+            <text>
+                oTable.fnAddData(['<span id="BGTime" postvalue="@(Mvc_ESM.Static_Helper.InputHelper.Options.Times[i].AddYears(-1969).AddDays(1).Ticks/10000)">@Mvc_ESM.Static_Helper.InputHelper.Options.Times[i].ToString("HH:mm")</span>', "Xoá"]);
+            </text>
+        }
+    });
+
+    $("#SaveBtn").button().click(function () {
+        var sData = "DateStart=" + (parseInt($("#DateStart").datespinner("value")) + 25200000) // bù 7h
+                    + "&NumDate=" + $("#NumDate").spinner("value")
+                    + "&DateMin=" + $("#DateMin").spinner("value")
+                    + "&StepTime=" + $("#StepTime").spinner("value");
+                
+        oTable.$("#Name").each(function (index, item) {
+            sData = sData + '&Name=' + $(this).attr("postvalue");
+        });
+
+        oTable.$("#BGTime").each(function (index, item) {
+            sData = sData + '&BGTime=' + $(this).attr("postvalue");
+        });
+        
+        $.post("/Options/SelectSuccess", sData);
+        alert("Đã lưu xong");
+        return false;
+    });
+
+    $.datepicker.setDefaults($.datepicker.regional["vi"]);
+
+    $("#DateStart").datepicker({
+        changeMonth: true,
+        changeYear: true
+    }).datespinner();
+
+    $("#NumDate").spinner({
+        step: 1,
+        spin: function (event, ui) {
+            if (ui.value > @Mvc_ESM.Settings.Page.Settings.OptionMaxNumDate) {
+                $(this).spinner("value", @Mvc_ESM.Settings.Page.Settings.OptionMinNumDate);
+                return false;
+            } else if (ui.value < @Mvc_ESM.Settings.Page.Settings.OptionMinNumDate) {
+                $(this).spinner("value", @Mvc_ESM.Settings.Page.Settings.OptionMaxNumDate);
+                return false;
+            }
+        }
+    });
+
+    $("#DateMin").spinner({
+        step: 1,
+        spin: function (event, ui) {
+            if (ui.value > @Mvc_ESM.Settings.Page.Settings.OptionMaxDateMin) {
+                $(this).spinner("value", @Mvc_ESM.Settings.Page.Settings.OptionMinDateMin);
+                return false;
+            } else if (ui.value < @Mvc_ESM.Settings.Page.Settings.OptionMinDateMin) {
+                $(this).spinner("value", @Mvc_ESM.Settings.Page.Settings.OptionMaxDateMin);
+                return false;
+            }
+        }
+    });
+
+    $("#StepTime").spinner({
+        step: @Mvc_ESM.Settings.Page.Settings.OptionStepShiftTime,
+        spin: function (event, ui) {
+            if (ui.value > @Mvc_ESM.Settings.Page.Settings.OptionMaxShiftTime) {
+                $(this).spinner("value", @Mvc_ESM.Settings.Page.Settings.OptionMinShiftTime);
+                return false;
+            } else if (ui.value < @Mvc_ESM.Settings.Page.Settings.OptionMinShiftTime) {
+                $(this).spinner("value", @Mvc_ESM.Settings.Page.Settings.OptionMaxShiftTime);
+                return false;
+            }
+        }
+    });
+    
+
+</script>

@@ -1,0 +1,77 @@
+﻿@model IEnumerable<Model.sinhvien>
+@{
+    ViewBag.Title = "Danh sách sinh viên thi theo môn học";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@Html.Partial("_DataTable.Lib")
+@Html.Partial("_DataTable.Printer.Lib")
+
+@using (Html.BeginForm("StudentsOfSubjects", "CalendarResults", FormMethod.Post, new { @id = "FilterForm" }))
+{
+    <p>
+        <p>
+            Mã môn học: @Html.TextBox("MonHoc", ViewBag.SearchString as string, new { id = "SearchString" })
+            <input type="submit" value="Thực hiện" />
+        </p>
+    </p>
+}
+
+<table id="table">
+    <thead>
+        <tr>
+            <th>Mã sinh viên
+            </th>
+            <th>Họ
+            </th>
+            <th>Tên
+            </th>
+            <th>Ngày Sinh
+            </th>
+            <th>Lớp
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MaSinhVien)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Ho)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Ten)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NgaySinh)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Lop)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script type="text/javascript" charset="utf-8">
+    $(document).ready(function () {
+        var oTable = $('#table').dataTable({
+            "aoColumnDefs": [
+                { "bSortable": false, "aTargets": [0] },
+                { "bSortable": false, "aTargets": [1] },
+                { "bSortable": false, "aTargets": [2] },
+                { "bSortable": false, "aTargets": [3] },
+                { "bSortable": false, "aTargets": [4] }
+            ], // không hiện nút sắp xếp!
+            "aaSorting": [[2, 'asc']], //Xếp cột thứ 3
+            "bStateSave": true,
+            @Html.Partial("_DataTable.Printer")
+            @Html.Partial("_DataTable")
+        });
+        new FixedHeader(oTable);
+    });
+</script>

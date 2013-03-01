@@ -1,0 +1,109 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewBag.Title</title>
+    <link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css" />
+    <script src="@Url.Content("~/Scripts/jquery.js")" type="text/javascript" lang="javascript" ></script>
+    <script src="@Url.Content("~/Scripts/Menu/jquery.color.js")" type="text/javascript" lang="javascript" ></script>
+    <script src="@Url.Content("~/Scripts/Menu/jquery.easing.js")" type="text/javascript" lang="javascript" ></script>
+    <script src="@Url.Content("~/Scripts/Menu/jquery.lavalamp.js")" type="text/javascript" lang="javascript" ></script>
+    <link href="@Url.Content("~/Content/Menu/menu.css")" rel="stylesheet" type="text/css" />
+    <script src="@Url.Content("~/Scripts/Menu/menu.js")" type="text/javascript" lang="javascript" ></script>
+
+</head>
+<body>
+    <div class="page">
+        <header>
+            <div id="title">
+                <h1>Website xếp lịch thi cho ĐH SPKT</h1>
+            </div>
+            <div id="logindisplay">
+                @Html.Partial("_LogOnPartial")
+            </div>
+            <div id="menu">
+                <ul class="menu">
+                    <li><a href ="@Url.Action("Index", "Home")"><span>Giới thiệu</span></a></li>
+@if(Request.IsAuthenticated) {
+    if (Context.User.IsInRole("Admin"))
+    {
+                    <li><a href ="@Url.Action("About", "Home")"><span>Hướng dẫn</span></a></li>
+
+                    <li><a href="#" class="parent"><span>Xem CSDL</span></a>
+                        <ul>
+                            <li><a href="@Url.Action("Index", "Subject")"><span>Môn Học</span></a></li>
+                            @*<li><a href="@Url.Action("Index", "Teacher")"><span>Giáo viên</span></a></li>*@
+                            <li><a href="@Url.Action("Index", "Student")"><span>Sinh viên</span></a></li>
+                            <li><a href="@Url.Action("Index", "Room")"><span>Phòng thi</span></a></li>
+                        </ul>
+                    </li>
+
+                    <li><a href="#" class="parent"><span>Thiết lập đầu vào</span></a>
+                        <ul>
+                            <li><a href="@Url.Action("IgnoreList", "SelectGroup")"><span>1.Chọn nhóm không thi</span></a></li>
+                            <li><a href="@Url.Action("Index", "SelectGroup")"><span>2.Ghép nhóm thi</span></a></li>
+                            <li><a href="@Url.Action("Index", "SelectIgnoreStudents")"><span>3.Danh sách cấm thi</span></a></li>
+                            <li><a href="@Url.Action("Index", "Options")"><span>4.Thiết lập thông số</span></a></li>
+                            <li><a href="@Url.Action("Index", "Shift")"><span>5.Chọn ca không thi</span></a></li>
+                            <li><a href="@Url.Action("Index", "SelectRoom")"><span>6.Chọn phòng không thi</span></a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#" class="parent"><span>Xếp lịch thi</span></a>
+                        <ul>
+                            <li><a href="@Url.Action("Index", "Progress")"><span>1.Xếp tự động</span></a></li>
+                            <li><a href="@Url.Action("Index", "Handmade")"><span>2.Xếp thủ công</span></a></li>
+                        </ul>
+                    </li>
+                    
+                    <li><a href="#" class="parent"><span>Sửa kết quả</span></a>
+                        <ul>
+                            <li><a href="#"><span>Giờ thi</span></a></li>
+                            <li><a href="#"><span>Ca thi</span></a></li>
+                            <li><a href="#"><span>Lịch coi thi</span></a></li>
+                        </ul>
+                    </li>
+    }
+                    <li class="last"><a href="#" class="parent"><span>Xem kết quả</span></a>
+                        <ul>
+                            <li><a href="#" class="parent"><span>Dạng lịch</span></a>
+                                <ul>
+                                @if (Context.User.IsInRole("GiaoVien") || Context.User.IsInRole("Admin"))
+                                {
+                                    <li><a href="@Url.Action("RoomsResult", "CalendarResults")"><span>Phòng Thi</span></a></li>
+                                }
+                                    <li><a href="@Url.Action("StudentsResult", "CalendarResults")"><span>Sinh viên</span></a></li>
+                                @*@if (Context.User.IsInRole("GiaoVien") || Context.User.IsInRole("Admin"))
+                                {
+                                    <li><a href="#"><span>Giáo viên</span></a></li>
+                                }*@
+                                </ul>
+                            </li>
+                            <li><a href="#" class="parent"><span>Dạng Danh sách</span></a>
+                                <ul>
+                                    <li><a href="@Url.Action("StudentSchedule","CalendarResults")"><span>Lịch thi mỗi Sinh viên</span></a></li>
+                                @if (Context.User.IsInRole("GiaoVien") || Context.User.IsInRole("Admin"))
+                                {
+                                    <li><a href="@Url.Action("RoomList","CalendarResults")"><span>Phòng Thi</span></a></li>
+                                    @*<li><a href="#"><span>Giáo viên coi thi</span></a></li>*@
+                                    <li><a href="@Url.Action("StudentsOfRooms", "CalendarResults")"><span>Sinh viên theo phòng</span></a></li>
+                                    <li><a href="@Url.Action("StudentsOfSubjects","CalendarResults")"><span>Sinh viên theo môn</span></a></li>
+                                    <li><a href="@Url.Action("OpenRooms","CalendarResults")"><span>Lịch mở cửa phòng</span></a></li>
+                                }
+                                </ul>
+                            </li>
+                        </ul>                            
+                    </li>
+}
+                </ul>
+            </div>
+
+        </header>
+        <section id="main">
+            @RenderBody()
+        </section>
+        <footer>
+            <p>Tiểu luận chuyên ngành - Lê Hoàn Chân - Nguyễn Hoàng Duy © 2012</p>
+        </footer>
+    </div>
+</body>
+</html>

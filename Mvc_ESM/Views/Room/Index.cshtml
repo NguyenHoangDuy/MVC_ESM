@@ -1,0 +1,55 @@
+﻿@model IEnumerable<Model.phong>
+@{
+    ViewBag.Title = "Phòng Thi";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<table id="table">
+    <thead>
+        <tr>
+            <th>Mã phòng
+            </th>
+            <th>Kích thước
+            </th>
+            <th>Khoa
+            </th>
+            <th>Sức chứa
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MaPhong)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.KichThuoc)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.khoa.TenKhoa)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SucChua)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+@Html.Partial("_DataTable.Lib")
+
+<script type="text/javascript" charset="utf-8">
+
+    var oTable = $('#table').dataTable({
+        @Html.Partial("_DataTable")
+    });
+
+    new FixedHeader(oTable);
+
+</script>
+

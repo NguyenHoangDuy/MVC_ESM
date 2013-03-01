@@ -1,0 +1,73 @@
+﻿@model  IEnumerable<string[]>
+@{
+    ViewBag.Title = "Lịch mở cửa phònggggg";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@Html.Partial("_DataTable.Lib")
+@Html.Partial("_DataTable.Printer.Lib")
+
+<table id="table">
+    <thead>
+        <tr>
+            <th rowspan="2">STT</th>
+            <th rowspan="2">Tuần</th>
+            <th rowspan="2">Mã phòng</th>
+            <th>Thứ 2</th>
+            <th>Thứ 3</th>
+            <th>Thứ 4</th>
+            <th>Thứ 5</th>
+            <th>Thứ 6</th>
+            <th>Thứ 7</th>
+        </tr>
+        <tr>
+            <th>12345678901</th>
+            <th>12345678901</th>
+            <th>12345678901</th>
+            <th>12345678901</th>
+            <th>12345678901</th>
+            <th>12345678901</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var m in Model)
+        {
+            <tr>
+                <td>@m[0]</td>
+                <td>@m[1]</td>
+                <td>@m[2]</td>
+                <td>@m[3]</td>
+                <td>@m[4]</td>
+                <td>@m[5]</td>
+                <td>@m[6]</td>
+                <td>@m[7]</td>
+                <td>@m[8]</td>
+            </tr>
+        }
+
+    </tbody>
+</table>
+
+<script type="text/javascript" charset="utf-8">
+    $(document).ready(function () {
+        var oTable = $('#table').dataTable({
+            @Html.Partial("_DataTable.Printer")
+            "aoColumnDefs": [
+            { "bSortable": false, "aTargets": [0] },
+            { "bSortable": false, "aTargets": [1] },
+            { "bSortable": false, "aTargets": [2] },
+            { "bSortable": false, "aTargets": [3] },
+            { "bSortable": false, "aTargets": [4] },
+            { "bSortable": false, "aTargets": [5] },
+            { "bSortable": false, "aTargets": [6] },
+             { "bSortable": false, "aTargets": [7] },
+            { "bSortable": false, "aTargets": [8] }
+            ],
+            @Html.Partial("_DataTable")
+        });
+        new FixedHeader(oTable);
+    });
+</script>
+
+

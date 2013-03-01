@@ -1,0 +1,95 @@
+﻿@model IEnumerable<Model.giaovien>
+@{
+    ViewBag.Title = "Giáo viên";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@using (Html.BeginForm("Index", "Teacher", FormMethod.Post, new { @id = "FilterForm" }))
+{
+    <p>
+        <p>
+            Khoa: @Html.DropDownList("Khoa", ViewBag.Khoa as SelectList, new { id = "KhoaList" })
+            Bộ môn: @Html.DropDownList("BoMon", ViewBag.BoMon as SelectList, Mvc_ESM.Settings.Page.Settings.SelectAllString, new { id = "BoMonList" })
+            Tên: @Html.TextBox("SearchString", ViewBag.SearchString as string, new { id = "SearchString" })
+            <input type="submit" value="Thực hiện" />
+        </p>
+
+    </p>
+}
+
+<table id="table">
+    <thead>
+        <tr>
+            <th>Mã giáo viên
+            </th>
+            <th>Họ lót
+            </th>
+            <th>Tên giáo viên
+            </th>
+            <th>Bộ môn
+            </th>
+            <th>Học hàm
+            </th>
+            <th>Học vị
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MaGiaoVien)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.HoLot)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TenGiaoVien)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.bomon.TenBoMon)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.HocHam)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.HocVi)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@Html.Partial("_DataTable.Lib")
+
+<script type="text/javascript" charset="utf-8">
+    $("#KhoaList").change(function () {
+        var id = $(this).val();
+        $.getJSON("/Services/LoadSubjectsByFacultyID", { FacultyID: id },
+        function (Data) {
+            var select = $("#BoMonList");
+            select.empty();
+            select.append($('<option/>', {
+                value: "",
+                text: "@Mvc_ESM.Settings.Page.Settings.SelectAllString"
+            }));
+            $.each(Data, function (index, itemData) {
+                select.append($('<option/>', {
+                    value: itemData.Value,
+                    text: itemData.Text
+                }));
+            });
+            $("#SearchString").empty();
+        });
+    });
+
+    var oTable = $('#table').dataTable({
+        @Html.Partial("_DataTable")
+    });
+
+    new FixedHeader(oTable);
+
+</script>

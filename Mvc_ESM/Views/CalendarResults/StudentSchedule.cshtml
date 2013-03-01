@@ -1,0 +1,62 @@
+﻿@model  IEnumerable<string[]>
+@{
+    ViewBag.Title = "Lịch thi của sinh viên";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@Html.Partial("_DataTable.Lib")
+@Html.Partial("_DataTable.Printer.Lib")
+
+@using (Html.BeginForm("StudentSchedule", "CalendarResults", FormMethod.Post, new { @id = "FilterForm" }))
+{
+    <p>
+        Tên: @Html.TextBox("SearchString", ViewBag.SearchString as string, new { id = "SearchString" })
+            <input type="submit" value="Thực hiện" />
+    </p>
+}
+
+<table id="table">
+    <thead>
+        <tr>
+            <th>STT</th>
+            <th>Mã môn học</th>
+            <th>Tên môn học</th>
+            <th>Ngày thi</th>
+            <th>Phòng thi</th>
+            <th>Giờ thi</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var m in Model)
+        {
+            <tr>
+                <td>@m[0]</td>
+                <td>@m[1]</td>
+                <td>@m[2]</td>
+                <td>@m[3]</td>
+                <td>@m[4]</td>
+                <td>@m[5]</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script type="text/javascript" charset="utf-8">
+    $(document).ready(function () {
+        var oTable = $('#table').dataTable({
+            @Html.Partial("_DataTable.Printer")
+            "aoColumnDefs": [
+            { "bSortable": false, "aTargets": [0] },
+            { "bSortable": false, "aTargets": [1] },
+            { "bSortable": false, "aTargets": [2] },
+            { "bSortable": false, "aTargets": [3] },
+            { "bSortable": false, "aTargets": [4] },
+            { "bSortable": false, "aTargets": [5] },
+            ],
+            @Html.Partial("_DataTable")
+        });
+        new FixedHeader(oTable);
+    });
+</script>
+
