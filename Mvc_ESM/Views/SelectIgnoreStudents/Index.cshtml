@@ -1,33 +1,32 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "Lập danh sách sinh viên cấm thi";
 }
 <h2>@ViewBag.Title</h2>
 <form id="InputForm">
     <p>
         Mã số môn học:
-        <input type="text" id ="SubjectIDTextBox" /> 
+        <input type="text" id="SubjectIDTextBox" />
         Mã số sinh viên:
-        <input type="text" id ="StudentIDTextBox" /> 
-        <input type="button" id ="AddStudent" value="Thêm"/>
+        <input type="text" id="StudentIDTextBox" />
+        <input type="button" id="AddStudent" value="Thêm" />
     </p>
 </form>
 <form>
-<table id="table">
-    <thead>
-        <tr>
-            <th>MSMH</th>
-            <th>Tên MH</th>
-            <th>Bộ Môn</th>
-            <th>MSSV</th>
-            <th>Họ</th>
-            <th>Tên</th>
-            <th>Lớp</th>
-            <th>Khoa</th>
-            <th></th>
-        </tr>
-    </thead>
-</table>
+    <table id="table">
+        <thead>
+            <tr>
+                <th>MSMH</th>
+                <th>Tên MH</th>
+                <th>Bộ Môn</th>
+                <th>MSSV</th>
+                <th>Họ</th>
+                <th>Tên</th>
+                <th>Lớp</th>
+                <th>Khoa</th>
+                <th></th>
+            </tr>
+        </thead>
+    </table>
     <p></p>
     <br />
     <button id="SummitButton" type="button">Lưu</button>
@@ -45,9 +44,13 @@
 
     var oFH = new FixedHeader(oTable);
 
-	function LoadStudent(stID, suID) {
-	    $.getJSON("/Services/LoadStudentAndSubjectInfo", { StudentID: stID, SubjectID: suID },
-            function (Data) {
+    function LoadStudent(stID, suID) {
+        $.ajax({
+            url: "/Services/LoadStudentAndSubjectInfo",
+            dataType: 'json',
+            data: "StudentID=" + stID + "&SubjectID=" + suID,
+            async: false,
+            success: function (Data) {
                 if (Data[0].MSSV == "false") {
                     alert("Không tìm thấy sinh viên có mã số: " + stID);
                     return false;
@@ -80,40 +83,41 @@
                     }
                 }).parent().attr('align', 'center');
                 oFH.fnUpdate();
-            });
-	}
-
-	@foreach(var Item in Mvc_ESM.Static_Helper.InputHelper.IgnoreStudents)
-    {
-        foreach(var subItem in Item.Value){
+            }
+        });
+    }
+    var stID, suID;
+	@foreach (var Item in Mvc_ESM.Static_Helper.InputHelper.IgnoreStudents)
+ {
+     foreach (var subItem in Item.Value)
+     {
             <text>
-	            LoadStudent("@subItem", "@Item.Key");
+    LoadStudent("@subItem", "@Item.Key");
             </text>
         }
     }
 
+    $('#AddStudent').button().click(function (e) {
+        e.preventDefault(); // không chạy sự kiện mặc định của đối tượng
+        var stID = $('#StudentIDTextBox').val();
+        var suID = $('#SubjectIDTextBox').val();
+        if ($('#table tbody td button#Deletebtn[value="' + stID + suID + '"]').length !== 0) {
+            alert("Dữ liệu sinh viên có mã số " + stID + " và bị cấm thi môn học có mã số " + suID + " đã được thêm rồi!");
+            return false;
+        }
+        LoadStudent(stID, suID);
+    });
 
-	$('#AddStudent').button().click(function (e) {
-	    e.preventDefault(); // không chạy sự kiện mặc định của đối tượng
-	    var stID = $('#StudentIDTextBox').val();
-	    var suID = $('#SubjectIDTextBox').val();
-	    if ($('#table tbody td button#Deletebtn[value="' + stID + suID + '"]').length !== 0) {
-	        alert("Dữ liệu sinh viên có mã số " + stID + " và bị cấm thi môn học có mã số " + suID + " đã được thêm rồi!");
-	        return false;
-	    }
-	    LoadStudent(stID, suID);
-	});
-
-	$('#SummitButton').button().click(function () {
-	    var sData = "";
-	    oTable.$("#StudentID").each(function (index, item) {
-	        sData = sData + (sData == '' ? '' : '&') + 'StudentID=' + $(this).text();
-	    });
-	    oTable.$("#SubjectID").each(function (index, item) {
-	        sData = sData + '&SubjectID=' + $(this).text();
-	    });
-	    $.post("/SelectStudent/SelectSuccess", sData);
-	    alert("Đã lưu xong");
-	    return false; 
-	});
+    $('#SummitButton').button().click(function () {
+        var sData = "";
+        oTable.$("#StudentID").each(function (index, item) {
+            sData = sData + (sData == '' ? '' : '&') + 'StudentID=' + $(this).text();
+        });
+        oTable.$("#SubjectID").each(function (index, item) {
+            sData = sData + '&SubjectID=' + $(this).text();
+        });
+        $.post("/SelectIgnoreStudents/SelectSuccess", sData);
+        alert("Đã lưu xong");
+        return false; 
+    });
 </script>
