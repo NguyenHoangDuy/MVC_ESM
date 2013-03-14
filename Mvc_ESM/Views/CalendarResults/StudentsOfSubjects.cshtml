@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Model.sinhvien>
+﻿@model  IEnumerable<string[]>
 @{
     ViewBag.Title = "Danh sách sinh viên thi theo môn học";
 }
@@ -31,27 +31,19 @@
             </th>
             <th>Lớp
             </th>
+            <th>Ghi chú</th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
+       @foreach (var m in Model)
         {
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.MaSinhVien)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Ho)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Ten)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.NgaySinh)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Lop)
-                </td>
+                <td>@m[0]</td>
+                <td>@m[1]</td>
+                <td>@m[2]</td>
+                <td>@m[3]</td>
+                <td>@m[4]</td>
+                <td>@m[5]</td>
             </tr>
         }
     </tbody>

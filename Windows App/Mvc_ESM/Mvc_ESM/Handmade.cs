@@ -41,12 +41,13 @@ namespace Mvc_ESM.Static_Helper
             {
                 ClassList += (ClassList.Length > 0 ? ", " : "") + "'" + cl + "'";
             }
-            String IgnoreStudents = InputHelper.IgnoreStudents.ContainsKey(Data.SubjectID) ? JsonConvert.SerializeObject(InputHelper.IgnoreStudents[Data.SubjectID]) : "[]";
-            IgnoreStudents = IgnoreStudents.Substring(1, IgnoreStudents.Length - 2).Replace("\"", "'");
+     //       String IgnoreStudents = InputHelper.IgnoreStudents.ContainsKey(Data.SubjectID) ? JsonConvert.SerializeObject(InputHelper.IgnoreStudents[Data.SubjectID]) : "[]";
+     //       IgnoreStudents = IgnoreStudents.Substring(1, IgnoreStudents.Length - 2).Replace("\"", "'");
             var StudentList = db.Database.SqlQuery<StudentInfo>("select pdkmh.MaSinhVien, pdkmh.Nhom from pdkmh, sinhvien " +
-                                                                "where pdkmh.MaSinhVien = sinhvien.MaSinhVien and MaMonHoc = '" + Data.SubjectID + "' and Nhom in (" + ClassList + ") " +
-                                                                (IgnoreStudents.Length > 0 ? "and not(sinhvien.MaSinhVien in (" + IgnoreStudents + ")) " : "") +
-                                                                "order by (sinhvien.Ten + sinhvien.ho)").ToList();
+                                                                "where pdkmh.MaSinhVien = sinhvien.MaSinhVien and MaMonHoc = '" + Data.SubjectID + "' and Nhom in (" + ClassList + ") " 
+                                            //                   + (IgnoreStudents.Length > 0 ? "and not(sinhvien.MaSinhVien in (" + IgnoreStudents + ")) " : "") +
+                                             //                   "order by (sinhvien.Ten + sinhvien.ho)"
+                                                                ).ToList();
 
             DateTime FirstShiftTime = InputHelper.Options.StartDate.AddHours(InputHelper.Options.Times[0].Hour)
                                                                       .AddMinutes(InputHelper.Options.Times[0].Minute);

@@ -68,6 +68,7 @@ namespace Mvc_ESM.Static_Helper
         public String details { get; set; }
         public int Step { get; set; }
         public String MaPhong { get; set; }
+        public String GhiChu { get; set; }
     }
 
     public class jQueryDataTableParamModel

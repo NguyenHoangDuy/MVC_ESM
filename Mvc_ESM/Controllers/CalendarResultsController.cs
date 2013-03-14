@@ -1,5 +1,4 @@
-﻿
-using Model;
+﻿using Model;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -30,15 +29,15 @@ namespace Mvc_ESM.Controllers
         public ActionResult RoomsData(String id)
         {
             List<Event> SubjectTime = (from s in InputHelper.db.This
-                                                     where s.MaPhong == id
-                                                     select new Event()
-                                                     {
-                                                         id = s.MaMonHoc + s.Nhom,
-                                                         text = s.monhoc.TenMonHoc,
-                                                         start_date = s.CaThi.GioThi,
-                                                         end_date = s.CaThi.GioThi,
-                                                         MaPhong = s.Nhom
-                                                     }).Distinct().ToList<Event>();
+                                       where s.MaPhong == id
+                                       select new Event()
+                                       {
+                                           id = s.MaMonHoc + s.Nhom,
+                                           text = s.monhoc.TenMonHoc,
+                                           start_date = s.CaThi.GioThi,
+                                           end_date = s.CaThi.GioThi,
+                                           MaPhong = s.Nhom
+                                       }).Distinct().ToList<Event>();
             for (int i = 0; i < SubjectTime.Count(); i++)
             {
                 SubjectTime[i].start_date = SubjectTime[i].start_date;
@@ -51,15 +50,18 @@ namespace Mvc_ESM.Controllers
         public ActionResult StudentsData(String id)
         {
             List<Event> SubjectTime = (from s in InputHelper.db.This
-                                                     where s.MaSinhVien == id
-                                                     select new Event()
-                                                     {
-                                                         id = s.MaMonHoc + s.Nhom,
-                                                         text = s.monhoc.TenMonHoc,
-                                                         start_date = s.CaThi.GioThi,
-                                                         end_date = s.CaThi.GioThi,
-                                                         MaPhong = s.MaPhong
-                                                     }).ToList<Event>();
+                                       where s.MaSinhVien == id
+                                       select new Event()
+                                       {
+                                           id = s.MaMonHoc + s.Nhom,
+                                           text = s.monhoc.TenMonHoc,
+                                           start_date = s.CaThi.GioThi,
+                                           end_date = s.CaThi.GioThi,
+                                           MaPhong = s.MaPhong,
+                                           //GhiChu = (InputHelper.IgnoreStudents.ContainsKey(s.MaMonHoc) ? (InputHelper.IgnoreStudents[s.MaMonHoc].Contains(s.MaSinhVien) ? "()" : "a") : "a"),
+                                           //GhiChu = " ghi chú",
+                                           GhiChu = (InputHelper.IgnoreStudents.ContainsKey(s.MaMonHoc) ? "@@" : "aa"),
+                                       }).ToList<Event>();
             for (int i = 0; i < SubjectTime.Count(); i++)
             {
                 SubjectTime[i].start_date = SubjectTime[i].start_date;
@@ -73,12 +75,12 @@ namespace Mvc_ESM.Controllers
         [HttpGet]
         public ActionResult StudentsOfSubjects()
         {
-            var sv = (from s in InputHelper.db.sinhviens
-                      join m in InputHelper.db.This on s.MaSinhVien equals m.MaSinhVien
-                      where m.MaMonHoc == ""
-                      select s).Distinct();
+
             InitViewBag(false, 0);
-            return View(sv.ToList());
+
+            List<string[]> Result = new List<string[]>();
+
+            return View(Result);
         }
 
         [HttpPost]
@@ -89,46 +91,21 @@ namespace Mvc_ESM.Controllers
                       where m.MaMonHoc == MonHoc
                       select s).Distinct();
             InitViewBag(false, 0, MonHoc);
-            return View(sv.OrderBy(s => s.Ten + s.Ho).ToList());
-        }
-
-        [HttpGet]
-        public ActionResult StudentsOfRooms()
-        {
-            var sv = (from s in InputHelper.db.sinhviens
-                      join m in InputHelper.db.This on s.MaSinhVien equals m.MaSinhVien
-                      where m.MaMonHoc == ""
-                      select s).Distinct();
-            InitViewBag(false, 1);
-            return View(sv.OrderBy(s => s.Ten + s.Ho).ToList());
-        }
-
-        [HttpPost]
-        public ActionResult StudentsOfRooms(String MonHoc, String Phong)
-        {
-            var sv = (from s in InputHelper.db.sinhviens
-                      join m in InputHelper.db.This on s.MaSinhVien equals m.MaSinhVien
-                      where m.MaMonHoc == MonHoc && (m.MaPhong == Phong || Phong == "")
-                      select s).Distinct();
-            InitViewBag(true, 1, MonHoc);
-            return View(sv.OrderBy(s => s.Ten + s.Ho).ToList());
-        }
-
-        private void InitViewBag(Boolean IsPost, int k, string SubjectID = "")
-        {
-            var MonQry = (from d in InputHelper.db.This
-                          select new { MaMH = d.MaMonHoc, TenMH = (from m in InputHelper.db.monhocs where m.MaMonHoc == d.MaMonHoc select m.TenMonHoc).FirstOrDefault() }).Distinct().OrderBy(d => d.TenMH);
-            ViewBag.MonHoc = new SelectList(MonQry.ToArray(), "MaMH", "TenMH");
-            if (k == 1)
+            //return View(sv.OrderBy(s => s.Ten + s.Ho).ToList());
+            List<string[]> Result = new List<string[]>();
+            foreach (var s in sv)
             {
-                var PhongQry = (from b in InputHelper.db.This
-                                where b.MaMonHoc == (IsPost ? SubjectID : MonQry.FirstOrDefault().MaMH)
-                                select new { MaPhong = b.MaPhong, TenPhong = b.MaPhong }).Distinct();
-                ViewBag.Phong = new SelectList(PhongQry.ToArray(), "MaPhong", "TenPhong");
+                string[] st = new string[6];
+                st[0] = s.MaSinhVien;
+                st[1] = s.Ho;
+                st[2] = s.Ten;
+                st[3] = s.NgaySinh;
+                st[4] = s.Lop;
+                st[5] = (InputHelper.IgnoreStudents.ContainsKey(MonHoc) ? (InputHelper.IgnoreStudents[MonHoc].Contains(s.MaSinhVien) ? "Cấm thi" : "") : "");
+                Result.Add(st);
             }
-            ViewBag.SearchString = SubjectID;
+            return View(Result);
         }
-
 
         public ActionResult RoomList()
         {
@@ -156,11 +133,57 @@ namespace Mvc_ESM.Controllers
                         where t.MaMonHoc == r.MaMonHoc && t.MaPhong == r.MaPhong && t.Nhom == r.Nhom
                         select t.MaSinhVien).Count() + "";
                 s[5] = r.GioThi.Date.ToShortDateString();
-                // s[6] = r.GioThi.TimeOfDay.Hours + "h" + r.GioThi.TimeOfDay.Minutes;
                 s[6] = r.GioThi.ToString("HH:mm");
                 Result.Add(s);
             }
             return View(Result);
+        }
+
+        [HttpGet]
+        public ActionResult StudentsOfRooms()
+        {
+            InitViewBag(false, 1);
+            List<string[]> Result = new List<string[]>();
+            return View(Result);
+        }
+
+        [HttpPost]
+        public ActionResult StudentsOfRooms(String MonHoc, String Phong)
+        {
+            var sv = (from s in InputHelper.db.sinhviens
+                      join m in InputHelper.db.This on s.MaSinhVien equals m.MaSinhVien
+                      where m.MaMonHoc == MonHoc && (m.MaPhong == Phong || Phong == "")
+                      select s).Distinct();
+            InitViewBag(true, 1, MonHoc);
+            //return View(sv.OrderBy(s => s.Ten + s.Ho).ToList());
+            List<string[]> Result = new List<string[]>();
+            foreach (var s in sv)
+            {
+                string[] st = new string[6];
+                st[0] = s.MaSinhVien;
+                st[1] = s.Ho;
+                st[2] = s.Ten;
+                st[3] = s.NgaySinh;
+                st[4] = s.Lop;
+                st[5] = (InputHelper.IgnoreStudents.ContainsKey(MonHoc) ? (InputHelper.IgnoreStudents[MonHoc].Contains(s.MaSinhVien) ? "Cấm thi" : "") : "");
+                Result.Add(st);
+            }
+            return View(Result);
+        }
+
+        private void InitViewBag(Boolean IsPost, int k, string SubjectID = "")
+        {
+            var MonQry = (from d in InputHelper.db.This
+                          select new { MaMH = d.MaMonHoc, TenMH = (from m in InputHelper.db.monhocs where m.MaMonHoc == d.MaMonHoc select m.TenMonHoc).FirstOrDefault() }).Distinct().OrderBy(d => d.TenMH);
+            ViewBag.MonHoc = new SelectList(MonQry.ToArray(), "MaMH", "TenMH");
+            if (k == 1)
+            {
+                var PhongQry = (from b in InputHelper.db.This
+                                where b.MaMonHoc == (IsPost ? SubjectID : MonQry.FirstOrDefault().MaMH)
+                                select new { MaPhong = b.MaPhong, TenPhong = b.MaPhong }).Distinct();
+                ViewBag.Phong = new SelectList(PhongQry.ToArray(), "MaPhong", "TenPhong");
+            }
+            ViewBag.SearchString = SubjectID;
         }
 
         static char[,] Thu;
@@ -296,18 +319,18 @@ namespace Mvc_ESM.Controllers
             int stt = 0;
             foreach (var sv in sinhviens)
             {
-                string[] s = new string[6];
+                string[] s = new string[7];
                 s[0] = ++stt + "";
                 s[1] = sv.MaMonHoc;
                 s[2] = (from mh in InputHelper.db.monhocs
-                          where mh.MaMonHoc == sv.MaMonHoc
-                          select mh.TenMonHoc).FirstOrDefault();
-                 //= s1.ToString();
+                        where mh.MaMonHoc == sv.MaMonHoc
+                        select mh.TenMonHoc).FirstOrDefault();
                 s[3] = sv.GioThi.Date.ToString("dd/MM/yyyy");
                 s[4] = sv.MaPhong;
                 s[5] = sv.GioThi.ToString("HH:mm");
+                s[6] = (InputHelper.IgnoreStudents.ContainsKey(sv.MaMonHoc) ? (InputHelper.IgnoreStudents[sv.MaMonHoc].Contains(SearchString) ? "Cấm thi" : "") : "");
                 Results.Add(s);
-            } 
+            }
             ViewBag.SearchString = SearchString;
             return View(Results);
         }
