@@ -13,7 +13,7 @@
     <p>
         <p>
             Môn học: @Html.DropDownList("MonHoc", ViewBag.MonHoc as SelectList, new { id = "MonHocList" })
-            Phòng: @Html.DropDownList("Phong", ViewBag.Phong as SelectList, new { id = "PhongList" })
+            Phòng:  @Html.DropDownList("Phong", ViewBag.Phong as SelectList, Mvc_ESM.Settings.Page.Settings.SelectAllString, new { id = "PhongList" })
             <input type="submit" value="Thực hiện" />
         </p>
     </p>
@@ -36,7 +36,7 @@
         </tr>
     </thead>
     <tbody>
-         @foreach (var m in Model)
+        @foreach (var m in Model)
         {
             <tr>
                 <td>@m[0]</td>
