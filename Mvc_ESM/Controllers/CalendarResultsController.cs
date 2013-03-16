@@ -60,7 +60,7 @@ namespace Mvc_ESM.Controllers
                                            MaPhong = s.MaPhong,
                                            //GhiChu = (InputHelper.IgnoreStudents.ContainsKey(s.MaMonHoc) ? (InputHelper.IgnoreStudents[s.MaMonHoc].Contains(s.MaSinhVien) ? "()" : "a") : "a"),
                                            //GhiChu = " ghi chú",
-                                           GhiChu = (InputHelper.IgnoreStudents.ContainsKey(s.MaMonHoc) ? "@@" : "aa"),
+                                           //GhiChu = (InputHelper.IgnoreStudents.ContainsKey(s.MaMonHoc.ToString()) ? "@@" : "aa"),
                                        }).ToList<Event>();
             for (int i = 0; i < SubjectTime.Count(); i++)
             {

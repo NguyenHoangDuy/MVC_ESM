@@ -72,7 +72,7 @@ namespace Mvc_ESM.Static_Helper
                 RealPath(Name)
             );
         }
-
+       
         public static String GetSubjectID(String GroupID)
         {
             return GroupID.Substring(0, GroupID.IndexOf('_'));

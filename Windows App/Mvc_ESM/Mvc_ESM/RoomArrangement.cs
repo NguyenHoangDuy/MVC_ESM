@@ -15,6 +15,9 @@ namespace Mvc_ESM.Static_Helper
         //- B1b: Xếp danh sách môn trong 1 ca theo thứ tự sao cho khi xếp phòng số phòng được sử dụng là tối đa
         private static List<Shift> ShiftList;
         private static Dictionary<String, List<String>> StudentByGroup;
+        /// <summary>
+        /// Kiểm tra từng môn xem xử lý chưa
+        /// </summary>
         private static Boolean[] Progressed;
         private static int RoomUsedIndex;
         private static int MaxContaint;
@@ -46,21 +49,29 @@ namespace Mvc_ESM.Static_Helper
             }
 
         }
-
+        /// <summary>
+        /// tạo danh sách sinh viên cho môn học
+        /// </summary>
+        /// <param name="GroupIndex"></param>
         private static void MakeStudentList(int GroupIndex)
         {
+            //tổng số sinh viên
             int StudentsNumber = StudentByGroup[AlgorithmRunner.Groups[GroupIndex]].Count;
+            //số phòng cần sử dụng
             int RoomNumber = AlgorithmRunner.GroupsRoom[GroupIndex].Count;
+            //số sv trung bình cho 1 phòng
             int StudentsPerRoom = StudentsNumber / RoomNumber;
             AlgorithmRunner.GroupsRoomStudents[GroupIndex] = new List<String>[RoomNumber];
             int Used = 0;
+            //số dư
             int OverLoad = StudentsNumber - StudentsPerRoom * RoomNumber;
             for (int RoomIndex = 0; RoomIndex < RoomNumber; RoomIndex++)
             {
                 int Use;
+                //if số sv 1 phòng + số dư > sức chứa
                 if (StudentsPerRoom + OverLoad > AlgorithmRunner.GroupsRoom[GroupIndex][RoomIndex].Container)
                 {
-                    Use = AlgorithmRunner.GroupsRoom[GroupIndex][RoomIndex].Container;
+                    Use = AlgorithmRunner.GroupsRoom[GroupIndex][RoomIndex].Container; //full
                     OverLoad = (StudentsPerRoom + OverLoad) - Use;
                 }
                 else
@@ -97,6 +108,9 @@ namespace Mvc_ESM.Static_Helper
             return ShiftList[CurrentShiftIndex + Shift].Time;
         }
 
+        /// <summary>
+        /// các môn cùng màu sẽ cùng ca, cùng ngày thi
+        /// </summary>
         private static void SetDefaultTime()
         {
             AlgorithmRunner.GroupsTime = new DateTime[AlgorithmRunner.Groups.Count];
@@ -117,20 +131,23 @@ namespace Mvc_ESM.Static_Helper
                 ShiftIndex += InputHelper.Options.DateMin + 1;
             }
         }
-
+        /// <summary>
+        /// Lấy danh sách sinh viên thi của từng môn học
+        /// </summary>
         private static void GetStudentList()
         {
             StudentByGroup = new Dictionary<String, List<String>>();
             for (int GroupIndex = 0; GroupIndex < AlgorithmRunner.Groups.Count; GroupIndex++)
             {
                 String SubjectID = AlgorithmRunner.GetSubjectID(AlgorithmRunner.Groups[GroupIndex]);
+                
                 String ClassList = AlgorithmRunner.GetClassList(AlgorithmRunner.Groups[GroupIndex]);
-                String IgnoreStudents = InputHelper.IgnoreStudents.ContainsKey(SubjectID) ? JsonConvert.SerializeObject(InputHelper.IgnoreStudents[SubjectID]) : "[]";
-                IgnoreStudents = IgnoreStudents.Substring(1, IgnoreStudents.Length - 2).Replace("\"", "'");
+                //String IgnoreStudents = InputHelper.IgnoreStudents.ContainsKey(SubjectID) ? JsonConvert.SerializeObject(InputHelper.IgnoreStudents[SubjectID]) : "[]";
+                //IgnoreStudents = IgnoreStudents.Substring(1, IgnoreStudents.Length - 2).Replace("\"", "'");
                 IEnumerable<String> Result = InputHelper.db.Database.SqlQuery<String>("select sinhvien.MaSinhVien from pdkmh, sinhvien "
                                                                             + "where pdkmh.MaSinhVien = sinhvien.MaSinhVien "
                                                                             + "and MaMonHoc = '" + SubjectID + "' "
-                                                                            + (IgnoreStudents.Length > 0 ? "and not(sinhvien.MaSinhVien in (" + IgnoreStudents + ")) " : "")
+                                                                          //  + (IgnoreStudents.Length > 0 ? "and not(sinhvien.MaSinhVien in (" + IgnoreStudents + ")) " : "")
                                                                             + "and pdkmh.Nhom in(" + ClassList + ") "
                                                                             + "order by (Ten + Ho)");
                 StudentByGroup.Add(AlgorithmRunner.Groups[GroupIndex], Result.ToList<String>());
@@ -138,6 +155,7 @@ namespace Mvc_ESM.Static_Helper
             AlgorithmRunner.GroupsRoom = new List<Room>[AlgorithmRunner.Groups.Count];
             AlgorithmRunner.GroupsRoomStudents = new List<String>[AlgorithmRunner.Groups.Count][];
         }
+        
         
         private static void Init()
         {
@@ -150,10 +168,13 @@ namespace Mvc_ESM.Static_Helper
             //InputHelper.Rooms = InputHelper.Rooms.OrderBy(r => r.Container).ToList<Room>();
         }
 
-        // Chia phòng cho từng môn cùng ca
+        /// <summary>
+        /// Chia phòng cho từng môn cùng ca
+        /// </summary>
         private static void Arrangement()
         {
             List<int> GroupIndexList;
+            //lấy danh sách các nhóm chưa xử lý
             GroupIndexList = GetNextShiftGroups();//.ToList();
             //int x = SubjectsIndexList.Count();
             while (GroupIndexList.Count() > 0)
@@ -167,7 +188,11 @@ namespace Mvc_ESM.Static_Helper
                 GroupIndexList = GetNextShiftGroups();
             }
         }
-        //- B3: Tăng thời gian của tất cả các môn có màu khác và thi sau lên 1 khoảng sao cho > max[màu các môn vừa tăng thời gian]
+        /// <summary>
+        /// B3: Tăng thời gian của tất cả các môn có màu khác và thi sau lên 1 khoảng sao cho > max[màu các môn vừa tăng thời gian]
+        /// </summary>
+        /// <param name="GroupIndex"></param>
+        /// <param name="RoomList"></param>
         private static void RoomArrangementForOneGroup(int GroupIndex, List<Room> RoomList)
         {
             int StudentsNumber = StudentByGroup[AlgorithmRunner.Groups[GroupIndex]].Count;
@@ -212,7 +237,10 @@ namespace Mvc_ESM.Static_Helper
             }
             MakeStudentList(GroupIndex);
         }
-        // chuyển các môn màu khác ở ca phía sau đi ra sau 1 ca, tránh tình trạng khác màu mà cùng ca
+        /// <summary>
+        /// chuyển các môn màu khác ở ca phía sau đi ra sau 1 ca, tránh tình trạng khác màu mà cùng ca
+        /// </summary>
+        /// <param name="CurrentColor"></param>
         private static void IncSubjectAfter(int CurrentColor)
         {
             if (CurrentColor < AlgorithmRunner.ColorNumber)

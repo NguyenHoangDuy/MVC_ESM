@@ -17,13 +17,22 @@ namespace Mvc_ESM.Static_Helper
         public static Dictionary<String, List<String>> IgnoreStudents = InitIgnoreStudents();
 
         public static Options Options = InitOptions();
-
+        /// <summary>
+        /// các nhóm của 1 môn học
+        /// </summary>
         public static Dictionary<String, Group> Groups = InitGroups();
-
+        /// <summary>
+        /// Ca thi
+        /// </summary>
         public static List<Shift> Shifts = InitShift();
-
+        /// <summary>
+        /// Phòng thi
+        /// </summary>
         public static List<RoomList> Rooms = InitRooms();
-
+        /// <summary>
+        /// Lấy danh sách các nhóm của môn học
+        /// </summary>
+        /// <returns></returns>
         public static Dictionary<String, Group> InitGroups()
         {
             String GroupFile = AlgorithmRunner.RealPath("Groups");
@@ -46,7 +55,10 @@ namespace Mvc_ESM.Static_Helper
                                                    .ToDictionary(k => (k.MaMonHoc + "_" + k.Nhom), k => k);
             return aGroups;
         }
-
+        /// <summary>
+        /// tạo danh sách phòng thi, nếu có file rồi thì đọc từ file còn ko thì tạo file
+        /// </summary>
+        /// <returns></returns>
         public static List<RoomList> InitRooms()
         {
             String Path = AlgorithmRunner.RealPath("Rooms");
@@ -74,7 +86,10 @@ namespace Mvc_ESM.Static_Helper
                 return aRoomList;
             }
         }
-
+        /// <summary>
+        /// lấy danh sách các ca thi
+        /// </summary>
+        /// <returns></returns>
         public static List<Shift> InitShift()
         {
             String Path = AlgorithmRunner.RealPath("Shift");
@@ -98,7 +113,10 @@ namespace Mvc_ESM.Static_Helper
                 return aShift;
             }
         }
-
+        /// <summary>
+        /// Lấy danh sách sinh viên bị cấm thi
+        /// </summary>
+        /// <returns></returns>
         public static Dictionary<String, List<String>> InitIgnoreStudents()
         {
             String Path = AlgorithmRunner.RealPath("IgnoreStudents");
@@ -111,7 +129,10 @@ namespace Mvc_ESM.Static_Helper
                 return new Dictionary<String, List<String>>();
             }
         }
-
+        /// <summary>
+        /// lấy thông tin thiết lập thông số
+        /// </summary>
+        /// <returns></returns>
         public static Options InitOptions()
         {
             String OptionsPath = AlgorithmRunner.RealPath("Options");

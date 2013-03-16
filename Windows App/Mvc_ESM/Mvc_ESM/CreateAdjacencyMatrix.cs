@@ -37,7 +37,7 @@ namespace Mvc_ESM.Static_Helper
             }
             String StudentsList1 = "";
             String StudentsList2 = "";
-            try
+           /* try
             {
                 foreach (String st in InputHelper.IgnoreStudents[Subject1ID])
                 {
@@ -53,7 +53,7 @@ namespace Mvc_ESM.Static_Helper
                     StudentsList2 += (StudentsList2.Length > 0 ? ", " : "") + "'" + st + "'";
                 }
             }
-            catch { }
+            catch { }*/
 
             var pa = new SqlParameter[] 
                         { 
@@ -63,10 +63,10 @@ namespace Mvc_ESM.Static_Helper
             int Result = db.Database.SqlQuery<int>("select count(s1.MaSinhVien) from pdkmh as s1 "
                                                                     + "where s1.MaSinhVien in (select s2.MaSinhVien from pdkmh as s2 "
                                                                                              + "where s2.MaMonHoc = @S2ID "
-                                                                                             + (StudentsList2.Length > 0 ? "and not(s2.MaSinhVien in (" + StudentsList2 + "))" : "")
+                                                                                             //+ (StudentsList2.Length > 0 ? "and not(s2.MaSinhVien in (" + StudentsList2 + "))" : "")
                                                                                              + "and s2.Nhom in(" + Group2 +")"
                                                                                              + ") "
-                                                                    + (StudentsList1.Length > 0 ? "and not(s1.MaSinhVien in (" + StudentsList1 + "))" : "")
+                                                                   // + (StudentsList1.Length > 0 ? "and not(s1.MaSinhVien in (" + StudentsList1 + "))" : "")
                                                                     + "and s1.MaMonHoc = @S1ID "
                                                                     + "and s1.Nhom in(" + Group1 + ")", pa).ElementAt(0);
             return Result == 0 ? 0 : 1;
@@ -109,6 +109,7 @@ namespace Mvc_ESM.Static_Helper
             WriteAdjacencyMatrix(AdjacencyMatrix, AlgorithmRunner.RealPath("AdjacencyMatrix"));
             AlgorithmRunner.DeleteOBJ("BeginI");
         }
+
         private static void WriteAdjacencyMatrix(int[,] Matrix, string DataFilePath)
         {
             StreamWriter file = new System.IO.StreamWriter(DataFilePath);
