@@ -227,6 +227,27 @@ namespace Mvc_ESM.Controllers
                         Info
                     }, JsonRequestBehavior.AllowGet);
         }
+        [HttpGet]
+        public JsonResult LoadSubjectInfo(string SubjectID)
+        {
+            var Subject = from m in InputHelper.db.monhocs
+                          where m.MaMonHoc.Equals(SubjectID)
+                          select new
+                          {
+                              MSMH = m.MaMonHoc,
+                              TenMH = m.TenMonHoc,
+                          };
+
+            if (Subject.Count() == 0)
+            {
+                return Json(new List<object>(){ new 
+                        {
+                            MSMH = "false"
+                        }}, JsonRequestBehavior.AllowGet);
+            }
+
+            return Json(Subject, JsonRequestBehavior.AllowGet);
+        }
 
         [HttpGet]
         public JsonResult LoadSubjectByGroupInfo(string SubjectID)

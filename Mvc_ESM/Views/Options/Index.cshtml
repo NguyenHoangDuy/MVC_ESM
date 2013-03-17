@@ -1,8 +1,9 @@
 ﻿@{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Thiết lập đầu vào";
 }
 
 <h2>@ViewBag.Title</h2>
+
 <style>
     label {
         width: 120px;
@@ -11,6 +12,7 @@
         margin-right: 15px;
     }
 </style>
+
 <form id="InputFrom">
     <p>
         <label for="DateStart">Ngày bắt đầu:</label>
@@ -128,7 +130,7 @@
         @for(int i = 0; i < @Mvc_ESM.Static_Helper.InputHelper.Options.Times.Count; i++)
         {
             <text>
-                oTable.fnAddData(['<span id="BGTime" postvalue="@(Mvc_ESM.Static_Helper.InputHelper.Options.Times[i].AddYears(-1969).AddDays(1).Ticks/10000)">@Mvc_ESM.Static_Helper.InputHelper.Options.Times[i].ToString("HH:mm")</span>', "Xoá"]);
+                oTable.fnAddData(['<span id="BGTime" postvalue="@(Mvc_ESM.Static_Helper.InputHelper.Options.Times[i].AddYears(-1969).AddDays(1).Ticks/10000)" > @Mvc_ESM.Static_Helper.InputHelper.Options.Times[i].ToString("HH:mm")</span>', "Xoá"]);
             </text>
         }
     });

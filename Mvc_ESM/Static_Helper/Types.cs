@@ -59,6 +59,13 @@ namespace Mvc_ESM.Static_Helper
         public List<DateTime> Times { get; set; }
     }
 
+    public class Priority
+    {
+        public String SubjectID { get; set; }
+        public DateTime Date { get; set; }
+        public DateTime Time { get; set; }
+    }
+
     public partial class Event
     {
         public String id { get; set; }

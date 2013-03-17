@@ -24,6 +24,8 @@ namespace Mvc_ESM.Static_Helper
 
         public static List<RoomList> BusyRooms = InitRooms();
 
+        public static List<Priority> SubjectPriority = InitSubjectPriority();
+
         public static Dictionary<String, Group> InitGroups()
         {
             String GroupFile = OutputHelper.RealPath("Groups");
@@ -45,6 +47,19 @@ namespace Mvc_ESM.Static_Helper
                                                    .Distinct()
                                                    .ToDictionary(k => (k.MaMonHoc + "_" + k.Nhom), k => k);
             return aGroups;
+        }
+
+        public static List<Priority> InitSubjectPriority()
+        {
+            String Path = OutputHelper.RealPath("SubjectPriority");
+            if (File.Exists(Path))
+            {
+                return JsonConvert.DeserializeObject<List<Priority>>(File.ReadAllText(Path));
+            }
+            else
+            {
+                return new List<Priority>();
+            }
         }
 
         public static List<RoomList> InitRooms()
@@ -135,7 +150,6 @@ namespace Mvc_ESM.Static_Helper
                         DateTime.Now.Date.AddHours(13),
                         DateTime.Now.Date.AddHours(15).AddMinutes(15)
                     }
-
                 };
             }
         }
