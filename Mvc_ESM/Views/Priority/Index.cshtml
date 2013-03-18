@@ -20,7 +20,7 @@
     </p>
     <p>
         <label for="Date">Ngày thi:</label>
-        <input type="text" id="Date" value="@(Mvc_ESM.Static_Helper.InputHelper.Options.StartDate.AddYears(-1969).AddDays(1).Ticks / 10000)" title="Ngày ưu tiên tổ chức thi" style="position: relative; z-index: 200;"/>
+        <input type="text" id="Date" title="Ngày ưu tiên tổ chức thi" style="position: relative; z-index: 200;" />
     </p>
 
     <p>
@@ -64,10 +64,8 @@
         "bFilter": false,
          @Html.Partial("_DataTable")
     });
-
     var oFH = new FixedHeader(oTable);
-
-    function LoadSubject(suID, NgayThi, GioThi) {
+    function LoadSubject(suID, aDate, aTime) {
         $.ajax({
             url: "/Services/LoadSubjectInfo",
             dataType: 'json',
@@ -80,14 +78,27 @@
                     return false;
                 }
 
+                function _formatdate(aDate)
+                {
+                    var day = new Date(aDate);
+                    return day.getDate() + '/' + (day.getMonth()+1) + '/' + day.getFullYear();
+                }
+
+                function _formattime(aTime)
+                {
+                        aTime -= 25200000;
+                    var time = new Date(aTime);
+                    var HH = time.getHours();
+                    var mm = time.getMinutes();
+                    return ((HH < 10)?("0" + HH):HH) + ":" + ((mm < 10)?("0" + mm):mm);
+                }
+
                 var MSMH = '<span id="SubjectID">' + suID + '</span>';
                 var Delete = '<button id ="Deletebtn" value="' + suID + '">Xoá</button>';
-                //var Ngay = '<span id="NgayThi">' + NgayThi.AddYears(-1969).AddDays(1).Ticks / 10000 + '</span>';
-                var Ngay = '<span id="Date">' + NgayThi + '</span>';
-                //var Gio = '<span id="GioThi">' + GioThi.toString("HH:mm") + '</span>';
-                var Gio = '<span id="Time">' + GioThi + '</span>';
+                var Ngay = '<span id="Date" postvalue="' + aDate + '">' + _formatdate(aDate) + '</span>';
+                var Gio = '<span id="Time" postvalue="' + aTime + '">' + _formattime(aTime) + '</span>';
 
-                oTable.fnAddData([MSMH, Data[0].TenMH, NgayThi, GioThi, Delete]);
+                oTable.fnAddData([MSMH, Data[0].TenMH, Ngay, Gio, Delete]);
 
                 $('#table tbody td button#Deletebtn[value="' + suID + '"]').button({
                     icons: {
@@ -102,16 +113,16 @@
                 oFH.fnUpdate();
             }
         });
+
     }
-    var stID, suID;
-	@foreach (var Item in Mvc_ESM.Static_Helper.InputHelper.SubjectPriority)
- {
+
+    @foreach (var Item in Mvc_ESM.Static_Helper.InputHelper.SubjectPriority)
+    {
             <text>
-    LoadSubject("@Item.SubjectID", "@(Item.Date.AddYears(-1969).AddDays(1).Ticks / 10000)", "@(Item.Time.ToString("HH:mm"))");
+    LoadSubject(@(Item.SubjectID),@(Item.Date.AddYears(-1970).AddDays(1).Ticks / 10000),@((Item.Time.AddYears(-1969).AddDays(1).Ticks/10000)));
             </text>
 
- }
-
+    }
 
     $("#Time").timespinner();
     $("#Addbtn").button().click(function (e) {
@@ -121,9 +132,9 @@
             alert("Dữ liệu môn học có mã số " + suID + " đã được thêm rồi!");
             return false;
         }
-        var Time = ($("#tTime").timespinner("value") + 25200000) % 86400000;
-
-        LoadSubject(suID, "", '<span id="Time" postvalue="' + Time + '">' + $("#Time").val() + '</span>');
+        var Time = ($("#Time").timespinner("value")+ 25200000) % 86400000;
+        var Date = (parseInt($("#Date").datespinner("value")) + 25200000);
+        LoadSubject(suID, Date, Time);
     });
 
     $("#SaveBtn").button().click(function () {
@@ -131,9 +142,11 @@
         oTable.$("#SubjectID").each(function (index, item) {
             sData = sData + (sData == '' ? '' : '&') + 'SubjectID=' + $(this).text();
         });
+       
         oTable.$("#Date").each(function (index, item) {
             sData = sData + '&Date=' + $(this).attr("postvalue");
         });
+
         oTable.$("#Time").each(function (index, item) {
             sData = sData + '&Time=' + $(this).attr("postvalue");
         });
@@ -148,5 +161,5 @@
         changeMonth: true,
         changeYear: true
     }).datespinner();
-
+    oFH = new FixedHeader(oTable);
 </script>

@@ -20,18 +20,18 @@ namespace Mvc_ESM.Controllers
         }
 
         [HttpPost]
-        public String SelectSuccess(List<long> Date, List<String> SubjectID, List<long> Time)
+        public String SelectSuccess(List<String> SubjectID, List<long> Date, List<long> Time)
         {
             string paramInfo = "";
             InputHelper.SubjectPriority = new List<Priority>();
             for (int i = 0; i < SubjectID.Count(); i++)
             {
-
+                DateTime dt = (new DateTime(1970, 1, 1, 0, 0, 0, 0)).AddMilliseconds(Date[i]).Date;
                 InputHelper.SubjectPriority.Add(new Priority
                 {
                     SubjectID = SubjectID[i],
-                    Date = (new DateTime(1970, 1, 1, 0, 0, 0, 0)).AddMilliseconds(Date[i]).Date,
-                    Time = InputHelper.SubjectPriority[i].Date.AddMilliseconds(Time[i])
+                    Date = dt,
+                    Time = dt.AddMilliseconds(Time[i])
                 });
                 paramInfo += "MH:" + SubjectID[i] + " Ngay:" + Date[i] + "Gio:" + Time[i] + "<br /><br />";
             }
