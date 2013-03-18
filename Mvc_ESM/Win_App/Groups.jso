@@ -537,7 +537,7 @@
     "Nhom": 1,
     "SoLuongDK": 141,
     "GroupID": 1,
-    "IsIgnored": false
+    "IsIgnored": true
   },
   "1001011_2": {
     "MaMonHoc": "1001011",
@@ -547,7 +547,7 @@
     "Nhom": 2,
     "SoLuongDK": 102,
     "GroupID": 1,
-    "IsIgnored": false
+    "IsIgnored": true
   },
   "1001011_3": {
     "MaMonHoc": "1001011",
@@ -557,7 +557,7 @@
     "Nhom": 3,
     "SoLuongDK": 104,
     "GroupID": 1,
-    "IsIgnored": false
+    "IsIgnored": true
   },
   "1001011_4": {
     "MaMonHoc": "1001011",
@@ -567,7 +567,7 @@
     "Nhom": 4,
     "SoLuongDK": 178,
     "GroupID": 1,
-    "IsIgnored": false
+    "IsIgnored": true
   },
   "1001011_5": {
     "MaMonHoc": "1001011",
@@ -577,7 +577,7 @@
     "Nhom": 5,
     "SoLuongDK": 175,
     "GroupID": 1,
-    "IsIgnored": false
+    "IsIgnored": true
   },
   "1001012_1": {
     "MaMonHoc": "1001012",
@@ -587,7 +587,7 @@
     "Nhom": 1,
     "SoLuongDK": 124,
     "GroupID": 1,
-    "IsIgnored": false
+    "IsIgnored": true
   },
   "1001012_2": {
     "MaMonHoc": "1001012",
@@ -597,7 +597,7 @@
     "Nhom": 2,
     "SoLuongDK": 118,
     "GroupID": 1,
-    "IsIgnored": false
+    "IsIgnored": true
   },
   "1001012_3": {
     "MaMonHoc": "1001012",
@@ -607,7 +607,7 @@
     "Nhom": 3,
     "SoLuongDK": 104,
     "GroupID": 1,
-    "IsIgnored": false
+    "IsIgnored": true
   },
   "1001012_4": {
     "MaMonHoc": "1001012",
@@ -617,7 +617,7 @@
     "Nhom": 4,
     "SoLuongDK": 182,
     "GroupID": 1,
-    "IsIgnored": false
+    "IsIgnored": true
   },
   "1001012_5": {
     "MaMonHoc": "1001012",
@@ -627,7 +627,7 @@
     "Nhom": 5,
     "SoLuongDK": 179,
     "GroupID": 1,
-    "IsIgnored": false
+    "IsIgnored": true
   },
   "1001013_19": {
     "MaMonHoc": "1001013",
@@ -637,7 +637,7 @@
     "Nhom": 19,
     "SoLuongDK": 146,
     "GroupID": 1,
-    "IsIgnored": false
+    "IsIgnored": true
   },
   "1001013_20": {
     "MaMonHoc": "1001013",
@@ -647,7 +647,7 @@
     "Nhom": 20,
     "SoLuongDK": 128,
     "GroupID": 1,
-    "IsIgnored": false
+    "IsIgnored": true
   },
   "1001013_21": {
     "MaMonHoc": "1001013",
@@ -657,7 +657,7 @@
     "Nhom": 21,
     "SoLuongDK": 181,
     "GroupID": 1,
-    "IsIgnored": false
+    "IsIgnored": true
   },
   "1001013_22": {
     "MaMonHoc": "1001013",
@@ -667,7 +667,7 @@
     "Nhom": 22,
     "SoLuongDK": 118,
     "GroupID": 1,
-    "IsIgnored": false
+    "IsIgnored": true
   },
   "1001013_23": {
     "MaMonHoc": "1001013",
@@ -677,7 +677,7 @@
     "Nhom": 23,
     "SoLuongDK": 103,
     "GroupID": 1,
-    "IsIgnored": false
+    "IsIgnored": true
   },
   "1001013_24": {
     "MaMonHoc": "1001013",
@@ -687,7 +687,7 @@
     "Nhom": 24,
     "SoLuongDK": 174,
     "GroupID": 2,
-    "IsIgnored": false
+    "IsIgnored": true
   },
   "1001013_25": {
     "MaMonHoc": "1001013",
@@ -697,7 +697,7 @@
     "Nhom": 25,
     "SoLuongDK": 182,
     "GroupID": 2,
-    "IsIgnored": false
+    "IsIgnored": true
   },
   "1001013_26": {
     "MaMonHoc": "1001013",
@@ -707,7 +707,7 @@
     "Nhom": 26,
     "SoLuongDK": 175,
     "GroupID": 2,
-    "IsIgnored": false
+    "IsIgnored": true
   },
   "1001013_27": {
     "MaMonHoc": "1001013",
@@ -717,7 +717,7 @@
     "Nhom": 27,
     "SoLuongDK": 137,
     "GroupID": 2,
-    "IsIgnored": false
+    "IsIgnored": true
   },
   "1001013_28": {
     "MaMonHoc": "1001013",
@@ -727,7 +727,7 @@
     "Nhom": 28,
     "SoLuongDK": 180,
     "GroupID": 2,
-    "IsIgnored": false
+    "IsIgnored": true
   },
   "1001013_29": {
     "MaMonHoc": "1001013",
@@ -737,7 +737,7 @@
     "Nhom": 29,
     "SoLuongDK": 175,
     "GroupID": 2,
-    "IsIgnored": false
+    "IsIgnored": true
   },
   "1001013_30": {
     "MaMonHoc": "1001013",
@@ -747,7 +747,7 @@
     "Nhom": 30,
     "SoLuongDK": 144,
     "GroupID": 3,
-    "IsIgnored": false
+    "IsIgnored": true
   },
   "1001013_31": {
     "MaMonHoc": "1001013",
@@ -757,7 +757,7 @@
     "Nhom": 31,
     "SoLuongDK": 117,
     "GroupID": 3,
-    "IsIgnored": false
+    "IsIgnored": true
   },
   "1001013_32": {
     "MaMonHoc": "1001013",
@@ -767,7 +767,7 @@
     "Nhom": 32,
     "SoLuongDK": 115,
     "GroupID": 3,
-    "IsIgnored": false
+    "IsIgnored": true
   },
   "1001013_33": {
     "MaMonHoc": "1001013",
@@ -777,7 +777,7 @@
     "Nhom": 33,
     "SoLuongDK": 180,
     "GroupID": 3,
-    "IsIgnored": false
+    "IsIgnored": true
   },
   "1001013_34": {
     "MaMonHoc": "1001013",
@@ -787,7 +787,7 @@
     "Nhom": 34,
     "SoLuongDK": 113,
     "GroupID": 3,
-    "IsIgnored": false
+    "IsIgnored": true
   },
   "1001013_35": {
     "MaMonHoc": "1001013",
@@ -797,7 +797,7 @@
     "Nhom": 35,
     "SoLuongDK": 144,
     "GroupID": 4,
-    "IsIgnored": false
+    "IsIgnored": true
   },
   "1001013_36": {
     "MaMonHoc": "1001013",
@@ -807,7 +807,7 @@
     "Nhom": 36,
     "SoLuongDK": 121,
     "GroupID": 4,
-    "IsIgnored": false
+    "IsIgnored": true
   },
   "1001013_37": {
     "MaMonHoc": "1001013",
@@ -817,7 +817,7 @@
     "Nhom": 37,
     "SoLuongDK": 108,
     "GroupID": 4,
-    "IsIgnored": false
+    "IsIgnored": true
   },
   "1001013_38": {
     "MaMonHoc": "1001013",
@@ -827,7 +827,7 @@
     "Nhom": 38,
     "SoLuongDK": 114,
     "GroupID": 4,
-    "IsIgnored": false
+    "IsIgnored": true
   },
   "1001013_39": {
     "MaMonHoc": "1001013",
@@ -837,7 +837,7 @@
     "Nhom": 39,
     "SoLuongDK": 182,
     "GroupID": 4,
-    "IsIgnored": false
+    "IsIgnored": true
   },
   "1001013_40": {
     "MaMonHoc": "1001013",
@@ -847,7 +847,7 @@
     "Nhom": 40,
     "SoLuongDK": 114,
     "GroupID": 4,
-    "IsIgnored": false
+    "IsIgnored": true
   },
   "1001013_41": {
     "MaMonHoc": "1001013",
@@ -857,7 +857,7 @@
     "Nhom": 41,
     "SoLuongDK": 115,
     "GroupID": 5,
-    "IsIgnored": false
+    "IsIgnored": true
   },
   "1001013_42": {
     "MaMonHoc": "1001013",
@@ -867,7 +867,7 @@
     "Nhom": 42,
     "SoLuongDK": 180,
     "GroupID": 5,
-    "IsIgnored": false
+    "IsIgnored": true
   },
   "1001013_43": {
     "MaMonHoc": "1001013",
@@ -877,7 +877,7 @@
     "Nhom": 43,
     "SoLuongDK": 151,
     "GroupID": 5,
-    "IsIgnored": false
+    "IsIgnored": true
   },
   "1001014_1": {
     "MaMonHoc": "1001014",

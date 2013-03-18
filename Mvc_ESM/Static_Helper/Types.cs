@@ -69,6 +69,7 @@ namespace Mvc_ESM.Static_Helper
     public partial class Event
     {
         public String id { get; set; }
+        public String MSSV { get; set; }
         public DateTime start_date { get; set; }
         public DateTime end_date { get; set; }
         public String text { get; set; }

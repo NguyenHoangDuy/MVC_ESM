@@ -58,14 +58,18 @@ namespace Mvc_ESM.Controllers
                                            start_date = s.CaThi.GioThi,
                                            end_date = s.CaThi.GioThi,
                                            MaPhong = s.MaPhong,
+                                           MSSV = s.MaSinhVien,
                                            //GhiChu = (InputHelper.IgnoreStudents.ContainsKey(s.MaMonHoc) ? (InputHelper.IgnoreStudents[s.MaMonHoc].Contains(s.MaSinhVien) ? "()" : "a") : "a"),
                                            //GhiChu = " ghi chú",
-                                           //GhiChu = (InputHelper.IgnoreStudents.ContainsKey(s.MaMonHoc.ToString()) ? "@@" : "aa"),
+                                           GhiChu = "",
+                                           //GhiChu = "@@",
                                        }).ToList<Event>();
+
             for (int i = 0; i < SubjectTime.Count(); i++)
             {
                 SubjectTime[i].start_date = SubjectTime[i].start_date;
                 SubjectTime[i].end_date = SubjectTime[i].end_date.AddHours(2);
+                SubjectTime[i].GhiChu = (InputHelper.IgnoreStudents.ContainsKey(SubjectTime[i].id.Substring(0, 7)) ? (InputHelper.IgnoreStudents[SubjectTime[i].id.Substring(0, 7)].Contains(SubjectTime[i].MSSV) ? "  (Cấm thi)" : "") : "");
             }
 
             return Content(Calendar.DataFormater(SubjectTime, true), "text/xml");
