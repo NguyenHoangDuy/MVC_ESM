@@ -80,22 +80,22 @@ namespace Mvc_ESM.Controllers
         public ActionResult StudentsOfSubjects()
         {
 
-            InitViewBag(false, 0);
-
+            InitViewBag(false, 2);
             List<string[]> Result = new List<string[]>();
 
             return View(Result);
         }
 
         [HttpPost]
-        public ActionResult StudentsOfSubjects(String MonHoc)
+        public ActionResult StudentsOfSubjects(String MonHoc, String Ca)
         {
             var sv = (from s in InputHelper.db.sinhviens
                       join m in InputHelper.db.This on s.MaSinhVien equals m.MaSinhVien
-                      where m.MaMonHoc == MonHoc
+                      where m.MaMonHoc == MonHoc && (m.MaCa == Ca || Ca == "")
                       select s).Distinct();
-            InitViewBag(false, 0, MonHoc);
-            //return View(sv.OrderBy(s => s.Ten + s.Ho).ToList());
+
+            InitViewBag(true, 2, MonHoc);
+
             List<string[]> Result = new List<string[]>();
             foreach (var s in sv)
             {
@@ -147,18 +147,22 @@ namespace Mvc_ESM.Controllers
         public ActionResult StudentsOfRooms()
         {
             InitViewBag(false, 1);
+            InitViewBag(false, 2);
             List<string[]> Result = new List<string[]>();
             return View(Result);
         }
 
         [HttpPost]
-        public ActionResult StudentsOfRooms(String MonHoc, String Phong)
+        public ActionResult StudentsOfRooms(String MonHoc, String Phong, String Ca)
         {
             var sv = (from s in InputHelper.db.sinhviens
                       join m in InputHelper.db.This on s.MaSinhVien equals m.MaSinhVien
-                      where m.MaMonHoc == MonHoc && (m.MaPhong == Phong || Phong == "")
+                      where m.MaMonHoc == MonHoc && (m.MaPhong == Phong || Phong == "") && (m.MaCa == Ca || Ca == "")
                       select s).Distinct();
+
             InitViewBag(true, 1, MonHoc);
+            InitViewBag(true, 2, MonHoc);
+
             //return View(sv.OrderBy(s => s.Ten + s.Ho).ToList());
             List<string[]> Result = new List<string[]>();
             foreach (var s in sv)
@@ -180,14 +184,23 @@ namespace Mvc_ESM.Controllers
             var MonQry = (from d in InputHelper.db.This
                           select new { MaMH = d.MaMonHoc, TenMH = (from m in InputHelper.db.monhocs where m.MaMonHoc == d.MaMonHoc select m.TenMonHoc).FirstOrDefault() }).Distinct().OrderBy(d => d.TenMH);
             ViewBag.MonHoc = new SelectList(MonQry.ToArray(), "MaMH", "TenMH");
+
             if (k == 1)
             {
                 var PhongQry = (from b in InputHelper.db.This
                                 where b.MaMonHoc == (IsPost ? SubjectID : MonQry.FirstOrDefault().MaMH)
                                 select new { MaPhong = b.MaPhong, TenPhong = b.MaPhong }).Distinct();
                 ViewBag.Phong = new SelectList(PhongQry.ToArray(), "MaPhong", "TenPhong");
+
             }
-            ViewBag.SearchString = SubjectID;
+            if (k == 2)
+            {
+                var ShiftQry = (from s in InputHelper.db.This
+                                where s.MaMonHoc == (IsPost ? SubjectID : MonQry.FirstOrDefault().MaMH)
+                                select new { MaCa = s.MaCa, TenCa = s.MaCa }).Distinct();
+                ViewBag.Shifts = new SelectList(ShiftQry.ToArray(), "MaCa", "TenCa");
+            }
+
         }
 
         static char[,] Thu;

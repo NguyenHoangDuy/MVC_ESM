@@ -30,7 +30,7 @@ namespace Mvc_ESM.Controllers
                              lh.nhom1.giaovien.TenGiaoVien
                          }
                          ).ToList();
-                        
+
             if (aData.Count() > 0)
             {
                 return Json(new
@@ -49,7 +49,7 @@ namespace Mvc_ESM.Controllers
         public JsonResult LoadRoomsByDateAndShift(long DateMilisecond, int Shift)
         {
             DateTime realDate = (new DateTime(1970, 1, 1, 0, 0, 0, 0)).AddMilliseconds(DateMilisecond).Date + InputHelper.Options.Times[Shift].TimeOfDay;
-            var aData = InputHelper.BusyRooms.FirstOrDefault(m=>m.Time == realDate);
+            var aData = InputHelper.BusyRooms.FirstOrDefault(m => m.Time == realDate);
             if (aData != null)
             {
                 return Json(new
@@ -90,22 +90,23 @@ namespace Mvc_ESM.Controllers
         public JsonResult LoadGroupsBySubjectID(string SubjectID)
         {
             var Groups = (from m in InputHelper.Groups.Values
-                         where m.MaMonHoc == SubjectID && m.IsIgnored
-                         select new
-                         {
-                             m.Nhom,
-                             m.SoLuongDK
-                         }).ToList();
+                          where m.MaMonHoc == SubjectID && m.IsIgnored
+                          select new
+                          {
+                              m.Nhom,
+                              m.SoLuongDK
+                          }).ToList();
             if (Groups.Count() > 0)
             {
                 var Subject = InputHelper.Groups[SubjectID + "_" + Groups[0].Nhom];
-                return Json(new { 
-                                    MSMH = SubjectID,
-                                    TenMH = Subject.TenMonHoc,
-                                    TenKhoa = Subject.TenKhoa,
-                                    TenBM = Subject.TenBoMon,
-                                    Groups = Groups 
-                                }, JsonRequestBehavior.AllowGet);
+                return Json(new
+                {
+                    MSMH = SubjectID,
+                    TenMH = Subject.TenMonHoc,
+                    TenKhoa = Subject.TenKhoa,
+                    TenBM = Subject.TenBoMon,
+                    Groups = Groups
+                }, JsonRequestBehavior.AllowGet);
             }
             else
             {
@@ -123,7 +124,7 @@ namespace Mvc_ESM.Controllers
             Dictionary<String, Group> dbGroups = Clone.Dictionary<String, Group>((Dictionary<String, Group>)(CurrentSession.Get("Groups") ?? InputHelper.Groups));
             var Groups = from m in dbGroups.Values.Where(g => !g.IsIgnored) select m;
             var total = Groups.Count();
-            if (!string.IsNullOrEmpty(Search)) 
+            if (!string.IsNullOrEmpty(Search))
             {
                 Groups = Groups.Where(m => m.MaMonHoc.ToLower().Contains(Search.ToLower()) || m.TenMonHoc.ToLower().Contains(Search.ToLower()));
             }
@@ -143,17 +144,18 @@ namespace Mvc_ESM.Controllers
                                         }
                             );
             }
-            return Json(new{
-                                sEcho = param.sEcho,
-                                iTotalRecords = total,
-                                iTotalDisplayRecords = Groups.Count(),
-                                //iTotalDisplayedRecords = Subjects.Count(),
-                                aaData = Result
-                            },
+            return Json(new
+            {
+                sEcho = param.sEcho,
+                iTotalRecords = total,
+                iTotalDisplayRecords = Groups.Count(),
+                //iTotalDisplayedRecords = Subjects.Count(),
+                aaData = Result
+            },
                             JsonRequestBehavior.AllowGet
                         );
         }
-        
+
         [HttpPost]
         public JsonResult DataTable_IgnoreGroups(jQueryDataTableParamModel param, List<String> SubjectID = null, List<String> Class = null, List<String> Check = null, String Search = null, String ShowIgnore = null, String ShowNotIgnore = null)
         {
@@ -164,7 +166,7 @@ namespace Mvc_ESM.Controllers
             Dictionary<String, Group> dbGroups = Clone.Dictionary<String, Group>((Dictionary<String, Group>)(CurrentSession.Get("IgnoreGroups") ?? InputHelper.Groups));
             var Groups = from m in dbGroups.Values select m;
             var total = Groups.Count();
-            if (!string.IsNullOrEmpty(Search)) 
+            if (!string.IsNullOrEmpty(Search))
             {
                 Groups = Groups.Where(m => m.MaMonHoc.ToLower().Contains(Search.ToLower()) || m.TenMonHoc.ToLower().Contains(Search.ToLower()));
             }
@@ -220,7 +222,7 @@ namespace Mvc_ESM.Controllers
             var Status = System.IO.File.Exists(StatusPath) ? JsonConvert.DeserializeObject<String>(System.IO.File.ReadAllText(StatusPath)) : "";
             var Type = Status.Length > 4 ? Status.Substring(0, 3) : "";
             var Info = Status.Length > 4 ? Status.Substring(4) : "";
-            return Json(new 
+            return Json(new
                     {
                         isBusy,
                         Type,
@@ -253,16 +255,16 @@ namespace Mvc_ESM.Controllers
         public JsonResult LoadSubjectByGroupInfo(string SubjectID)
         {
             var Groups = from g in InputHelper.db.nhoms
-                          where g.MaMonHoc == SubjectID
-                          select new
-                          {
-                              MSMH = g.MaMonHoc,
-                              TenMH = g.monhoc.TenMonHoc,
-                              BoMon = g.monhoc.bomon.TenBoMon,
-                              Khoa = g.monhoc.bomon.khoa.TenKhoa,
-                              Nhom = g.Nhom1,
-                              SL = g.SoLuongDK
-                          };
+                         where g.MaMonHoc == SubjectID
+                         select new
+                         {
+                             MSMH = g.MaMonHoc,
+                             TenMH = g.monhoc.TenMonHoc,
+                             BoMon = g.monhoc.bomon.TenBoMon,
+                             Khoa = g.monhoc.bomon.khoa.TenKhoa,
+                             Nhom = g.Nhom1,
+                             SL = g.SoLuongDK
+                         };
             if (Groups.Count() == 0)
             {
                 return Json(new List<object>(){ new 
@@ -340,12 +342,12 @@ namespace Mvc_ESM.Controllers
         public JsonResult LoadClassByFacultyName(string FacultyName)
         {
             var aData = from b in InputHelper.db.lops
-                       where b.khoi.khoa.TenKhoa == FacultyName || FacultyName == ""
-                       select new SelectListItem()
-                       {
-                           Text = b.MaLop,
-                           Value = b.MaLop,
-                       };
+                        where b.khoi.khoa.TenKhoa == FacultyName || FacultyName == ""
+                        select new SelectListItem()
+                        {
+                            Text = b.MaLop,
+                            Value = b.MaLop,
+                        };
 
             return Json(aData, JsonRequestBehavior.AllowGet);
         }
@@ -354,12 +356,12 @@ namespace Mvc_ESM.Controllers
         public JsonResult LoadClassByFacultyID(string FacultyID)
         {
             var aData = from b in InputHelper.db.lops
-                       where b.khoi.khoa.MaKhoa == FacultyID
-                       select new SelectListItem()
-                       {
-                           Text = b.MaLop,
-                           Value = b.MaLop,
-                       };
+                        where b.khoi.khoa.MaKhoa == FacultyID
+                        select new SelectListItem()
+                        {
+                            Text = b.MaLop,
+                            Value = b.MaLop,
+                        };
 
             return Json(aData, JsonRequestBehavior.AllowGet);
         }
@@ -368,12 +370,12 @@ namespace Mvc_ESM.Controllers
         public JsonResult LoadSubjectsByFacultyID(string FacultyID)
         {
             var aData = from b in InputHelper.db.bomons
-                       where b.khoa.MaKhoa == FacultyID
-                       select new SelectListItem()
-                       {
-                           Text = b.TenBoMon,
-                           Value = b.MaBoMon,
-                       };
+                        where b.khoa.MaKhoa == FacultyID
+                        select new SelectListItem()
+                        {
+                            Text = b.TenBoMon,
+                            Value = b.MaBoMon,
+                        };
 
             return Json(aData, JsonRequestBehavior.AllowGet);
         }
@@ -382,12 +384,12 @@ namespace Mvc_ESM.Controllers
         public JsonResult LoadSubjectsByFacultyName(string FacultyName)
         {
             var aData = (from b in InputHelper.db.bomons
-                        where b.khoa.TenKhoa.Replace("&", "và") == FacultyName || b.khoa.TenKhoa == FacultyName || FacultyName == ""
-                        select new SelectListItem()
-                        {
-                            Text = b.TenBoMon,
-                            Value = b.MaBoMon,
-                        }).Distinct();
+                         where b.khoa.TenKhoa.Replace("&", "và") == FacultyName || b.khoa.TenKhoa == FacultyName || FacultyName == ""
+                         select new SelectListItem()
+                         {
+                             Text = b.TenBoMon,
+                             Value = b.MaBoMon,
+                         }).Distinct();
 
             return Json(aData, JsonRequestBehavior.AllowGet);
         }
@@ -396,8 +398,21 @@ namespace Mvc_ESM.Controllers
         public JsonResult LoadSubjectsBySubject(string SubjectID)
         {
             var aData = (from m in InputHelper.db.monhocs
-                        where m.BoMonQL == SubjectID
-                        select new SelectListItem()
+                         where m.BoMonQL == SubjectID
+                         select new SelectListItem()
+                          {
+                              Text = m.TenMonHoc,
+                              Value = m.MaMonHoc,
+                          });
+            return Json(aData, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public JsonResult LoadSubjectByFacultyID(string FacultyID)
+        {
+            var aData = (from m in InputHelper.db.monhocs
+                         where m.bomon.KhoaQL == FacultyID
+                         select new SelectListItem()
                          {
                              Text = m.TenMonHoc,
                              Value = m.MaMonHoc,
@@ -406,28 +421,43 @@ namespace Mvc_ESM.Controllers
         }
 
         [HttpGet]
-        public JsonResult LoadSubjectByFacultyID(string FacultyID)
+        public JsonResult LoadRoomsBySubjectID(string SubjectID)
         {
-            var aData = (from m in InputHelper.db.monhocs
-                        where m.bomon.KhoaQL == FacultyID
-                        select new SelectListItem()
-                        {
-                            Text = m.TenMonHoc,
-                            Value = m.MaMonHoc,
-                        });
+            var aData = (from b in InputHelper.db.This
+                         where b.MaMonHoc == SubjectID
+                         select new SelectListItem()
+                         {
+                             Text = b.MaPhong,
+                             Value = b.MaPhong,
+                         }).Distinct();
             return Json(aData, JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]
-        public JsonResult LoadRoomsBySubjectID(string SubjectID)
+        public JsonResult LoadShiftsByRoomID(string SubjectID, string RoomID)
         {
             var aData = (from b in InputHelper.db.This
-                       where b.MaMonHoc == SubjectID
-                       select new SelectListItem()
-                       {
-                           Text = b.MaPhong,
-                           Value = b.MaPhong,
-                       }).Distinct();
+                         where b.MaPhong == RoomID && b.MaMonHoc == SubjectID
+                         select new SelectListItem()
+                         {
+                             Text = b.MaCa,
+                             Value = b.MaCa,
+                         }).Distinct();
+                
+            return Json(aData, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public JsonResult LoadShiftsBySubjectID(string SubjectID)
+        {
+            int i = 1;
+            var aData = (from b in InputHelper.db.This
+                         where b.MaMonHoc == SubjectID
+                         select new SelectListItem()
+                         {
+                             Text = b.MaCa,
+                             Value = b.MaCa,
+                         }).Distinct();
             return Json(aData, JsonRequestBehavior.AllowGet);
         }
     }
