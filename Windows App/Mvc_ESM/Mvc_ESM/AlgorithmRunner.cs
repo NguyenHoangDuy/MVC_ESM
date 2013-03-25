@@ -72,7 +72,7 @@ namespace Mvc_ESM.Static_Helper
                 RealPath(Name)
             );
         }
-       
+
         public static String GetSubjectID(String GroupID)
         {
             return GroupID.Substring(0, GroupID.IndexOf('_'));
@@ -105,7 +105,7 @@ namespace Mvc_ESM.Static_Helper
             AdjacencyMatrixSize = Groups.Count;
             AdjacencyMatrix = new int[AdjacencyMatrixSize, AdjacencyMatrixSize];
         }
-                
+
         public void RunCreateAdjacencyMatrix()
         {
             if (OBJExits("AdjacencyMatrix"))
@@ -182,6 +182,13 @@ namespace Mvc_ESM.Static_Helper
             {
                 SaveOBJ("Status", "err Chưa hoàn thiện quá trình xếp lịch");
             }
+        }
+
+        public void RunDeleteDatabase(string Dot)
+        {
+            Thread thread = new Thread(new ThreadStart(() => SaveToDatabase.Delete(Dot)));
+            thread.Name = "DeleteToDatabase";
+            thread.Start();
         }
 
         public void RunStop()

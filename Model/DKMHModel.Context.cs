@@ -39,5 +39,6 @@ namespace Model
         public DbSet<phong> phongs { get; set; }
         public DbSet<sinhvien> sinhviens { get; set; }
         public DbSet<Thi> This { get; set; }
+        public DbSet<sysdiagram> sysdiagrams { get; set; }
     }
 }

@@ -135,6 +135,9 @@
     <Compile Include="sinhvien.cs">
       <DependentUpon>DKMHModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="sysdiagram.cs">
+      <DependentUpon>DKMHModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Thi.cs">
       <DependentUpon>DKMHModel.tt</DependentUpon>
     </Compile>

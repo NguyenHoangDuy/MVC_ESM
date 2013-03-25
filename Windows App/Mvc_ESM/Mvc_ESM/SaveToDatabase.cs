@@ -17,15 +17,15 @@ namespace Mvc_ESM.Static_Helper
         public static void Run()
         {
             AlgorithmRunner.IsBusy = true;
-            AlgorithmRunner.SaveOBJ("Status", "inf Đang Xoá CSDL cũ");
-            DeleteOld();
+            //AlgorithmRunner.SaveOBJ("Status", "inf Đang Xoá CSDL cũ");
+            //DeleteOld();
             AlgorithmRunner.SaveOBJ("Status", "inf Đang Lưu vào cơ sở dữ liệu");
             Save();
             AlgorithmRunner.SaveOBJ("Status", "inf Hoàn tất quá trình lưu!");
             AlgorithmRunner.IsBusy = false;
         }
 
-        public static void Delete()
+        public static void Delete(string Dot)
         {
             AlgorithmRunner.IsBusy = true;
             AlgorithmRunner.SaveOBJ("Status", "inf Đang Xoá CSDL cũ");
@@ -54,6 +54,16 @@ namespace Mvc_ESM.Static_Helper
         private static void Save()
         {
             int GCount = AlgorithmRunner.Groups.Count;
+            var DotQry = (from m in InputHelper.db.This
+                          select m.Dot).Max();
+            int dot = 0;
+            if (DotQry.Length == 0)
+                dot = 1;
+            else
+            {
+                dot = int.Parse(DotQry) + 1;
+            }
+
             for (int GroupIndex = 0; GroupIndex < GCount; GroupIndex++)
             {
                 Thi aRecord = new Thi();
@@ -80,12 +90,13 @@ namespace Mvc_ESM.Static_Helper
                     for (int StudentIndex = 0; StudentIndex < AlgorithmRunner.GroupsRoomStudents[GroupIndex][RoomIndex].Count; StudentIndex++)
                     {
                         aRecord.MaSinhVien = AlgorithmRunner.GroupsRoomStudents[GroupIndex][RoomIndex][StudentIndex];
-                        SQLQuery += String.Format("INSERT INTO Thi (MaCa, MaMonHoc, Nhom, MaPhong, MaSinhVien) VALUES ('{0}', '{1}', '{2}', '{3}', '{4}')\r\n", 
-                                                    aRecord.MaCa, 
-                                                    aRecord.MaMonHoc, 
-                                                    aRecord.Nhom, 
-                                                    aRecord.MaPhong, 
-                                                    aRecord.MaSinhVien
+                        SQLQuery += String.Format("INSERT INTO Thi (MaCa, MaMonHoc, Nhom, MaPhong, MaSinhVien, Dot) VALUES ('{0}', '{1}', '{2}', '{3}', '{4}','{5}')\r\n",
+                                                    aRecord.MaCa,
+                                                    aRecord.MaMonHoc,
+                                                    aRecord.Nhom,
+                                                    aRecord.MaPhong,
+                                                    aRecord.MaSinhVien,
+                                                    dot
                                                 );
                     } // sinh viên
                 } // phòng

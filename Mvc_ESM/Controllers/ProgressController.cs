@@ -15,15 +15,23 @@ namespace Mvc_ESM.Controllers
     {
         //
         // GET: /Progress/
-        
+
         public ActionResult Index()
         {
+            var DotQry = (from m in InputHelper.db.This
+                          select new
+                          {
+                              MaDot = m.Dot,
+                              TenDon = m.Dot
+                          }).Distinct();
+            ViewBag.Dot = new SelectList(DotQry.ToArray(), "MaDot", "TenDot");
             return View();
         }
+
         [HttpPost]
         public ActionResult Run(int StepNumber)
         {
-            
+
             switch (StepNumber)
             {
                 case 0:

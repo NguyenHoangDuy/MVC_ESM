@@ -27,6 +27,8 @@ namespace Mvc_ESM
             // it reached here.
             if (args != null && args.Length != 0)
             {
+                if (args[0].Length > 1)
+                    args[0] = args[0].Substring(0, 1);
                 switch (args[0])
                 {
                     case "0":
@@ -58,6 +60,11 @@ namespace Mvc_ESM
                         InputHelper.Options = InputHelper.InitOptions();
                         AlgorithmRunner.RunHandmade();
                         txtArgs.Text += DateTime.Now.ToString() + " Handmade\r\n";
+                        break;
+                    case "5":
+                        string dot = args[0].Substring(1, args[0].Length - 1);
+                        AlgorithmRunner.RunDeleteDatabase(dot);
+                        txtArgs.Text += DateTime.Now.ToString() + " DeleteToDatabase\r\n";
                         break;
                     default:
                         txtArgs.Text += DateTime.Now.ToString() + " Not Run Anything\r\n";

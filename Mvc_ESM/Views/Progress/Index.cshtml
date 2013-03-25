@@ -4,6 +4,18 @@
 
 <h2>@ViewBag.Title</h2>
 @Html.Partial("_Jquery-UI.Lib")
+
+
+@using (Html.BeginForm("Index", "Progress", FormMethod.Post, new { @id = "FilterForm" }))
+{
+        <p>
+            Đợt: @Html.DropDownList("Dot", ViewBag.Dot as SelectList, Mvc_ESM.Settings.Page.Settings.SelectAllString, new { id = "DotList" })
+            <button id="RunDel">Xóa CSDL</button>
+        </p>
+}
+
+
+
 <div style="text-align:center">
     <p>
         <button id="RunCreateAdjacencyMatrix">1. Phân tích CSDL</button>
@@ -65,6 +77,7 @@
     btn3.button().click(function () {
         $.post("/Progress/Run", "StepNumber=3");
     });
-
+    $("#RunDel").button().click(function () {
+    });
     
 </script>

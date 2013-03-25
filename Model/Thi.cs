@@ -19,6 +19,7 @@ namespace Model
         public string Nhom { get; set; }
         public string MaPhong { get; set; }
         public string MaCa { get; set; }
+        public string Dot { get; set; }
     
         public virtual CaThi CaThi { get; set; }
         public virtual monhoc monhoc { get; set; }
