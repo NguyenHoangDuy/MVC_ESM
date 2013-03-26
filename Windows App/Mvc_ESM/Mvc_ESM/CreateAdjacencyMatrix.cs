@@ -76,11 +76,13 @@ namespace Mvc_ESM.Static_Helper
         public static void Run()
         {
             AlgorithmRunner.IsBusy = true;
+            AlgorithmRunner.SaveOBJ("Status", "inf Chuẩn bị phân tích cơ sở dữ liệu");
             Stop = false;
             Stoped = false;
             Begin(AlgorithmRunner.AdjacencyMatrix, AlgorithmRunner.BeginI);
             Stoped = true;
             AlgorithmRunner.IsBusy = false;
+            AlgorithmRunner.SaveOBJ("Status", "inf Phân tích xong cơ sở dữ liệu");
            // Thread.CurrentThread.Abort();
         }
 

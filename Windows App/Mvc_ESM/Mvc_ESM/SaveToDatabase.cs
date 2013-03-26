@@ -23,7 +23,7 @@ namespace Mvc_ESM.Static_Helper
             Save();
             AlgorithmRunner.SaveOBJ("Status", "inf Hoàn tất quá trình lưu!");
             AlgorithmRunner.IsBusy = false;
-    //        Thread.CurrentThread.Abort();
+            //        Thread.CurrentThread.Abort();
         }
 
         public static void Delete(object Dot)
@@ -100,17 +100,16 @@ namespace Mvc_ESM.Static_Helper
 
                 DateTime FirstShiftTime = InputHelper.Options.StartDate.AddHours(InputHelper.Options.Times[0].Hour)
                                                                       .AddMinutes(InputHelper.Options.Times[0].Minute);
-                String ShiftID = "";// InputHelper.Options.StartDate.Year + "" + InputHelper.Options.StartDate.Month + "" + InputHelper.Options.StartDate.Day;
+                String ShiftID = dot.ToString();// InputHelper.Options.StartDate.Year + "" + InputHelper.Options.StartDate.Month + "" + InputHelper.Options.StartDate.Day;
                 ShiftID += RoomArrangement.CalcShift(FirstShiftTime, AlgorithmRunner.GroupsTime[GroupIndex]).ToString();
-                //Random rand = new Random();
-                //int n = rand.Next(10);
+
 
                 if ((from ct in db.CaThis where ct.MaCa == ShiftID select ct).Count() == 0)
                 {
 
                     var pa = new SqlParameter[] 
                         { 
-                            new SqlParameter("@MaCa", SqlDbType.NVarChar) { Value = dot + ShiftID},
+                            new SqlParameter("@MaCa", SqlDbType.NVarChar) { Value = ShiftID},
                             new SqlParameter("@GioThi", SqlDbType.DateTime) { Value = AlgorithmRunner.GroupsTime[GroupIndex] },
                         };
                     db.Database.ExecuteSqlCommand("INSERT INTO CaThi (MaCa, GioThi) VALUES (@MaCa, @GioThi)", pa);
@@ -124,7 +123,7 @@ namespace Mvc_ESM.Static_Helper
                     {
                         aRecord.MaSinhVien = AlgorithmRunner.GroupsRoomStudents[GroupIndex][RoomIndex][StudentIndex];
                         SQLQuery += String.Format("INSERT INTO Thi (MaCa, MaMonHoc, Nhom, MaPhong, MaSinhVien, Dot) VALUES ('{0}', '{1}', '{2}', '{3}', '{4}','{5}')\r\n",
-                                                    dot + aRecord.MaCa,
+                                                    aRecord.MaCa,
                                                     aRecord.MaMonHoc,
                                                     aRecord.Nhom,
                                                     aRecord.MaPhong,

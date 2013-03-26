@@ -52,12 +52,13 @@
     function GetProgressInfo() {
         $.getJSON("/Services/GetProgressInfo",
             function (Data) {
+                EnableAll();
                 if (!Data.isBusy) {
                     EnableAll();
                     Info.html("...");
                 }
                 else {
-                 //       DisableAll();
+                        DisableAll();
                 }
                 if (Data.Type == "inf")
                     Info.attr("style", "color:blue");
