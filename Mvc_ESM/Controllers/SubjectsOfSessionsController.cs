@@ -40,7 +40,7 @@ namespace Mvc_ESM.Controllers
                 string[] s = new string[5];
                 s[0] = t.MaMonHoc;
                 s[1] = t.TenMonHoc;
-                s[2] = t.TenMonHoc;
+                s[2] = t.Nhom;
                 s[3] = t.GioThi.Date.ToShortDateString();
                 s[4] = t.GioThi.ToString("HH:mm");
                 Result.Add(s);

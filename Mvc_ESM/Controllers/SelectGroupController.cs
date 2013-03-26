@@ -31,6 +31,23 @@ namespace Mvc_ESM.Controllers
         [HttpPost]
         public String IgnoreSuccess(List<String> SubjectID, List<String> Class, List<String> Check)
         {
+            List<Priority> SBP = InputHelper.SubjectPriority;
+
+            InputHelper.SubjectPriority = new List<Priority>();
+
+            foreach (var sbp in SBP)
+                if (!SubjectID.Contains(sbp.SubjectID))
+                {
+                    InputHelper.SubjectPriority.Add(new Priority
+                    {
+                        SubjectID = sbp.SubjectID,
+                        Date = sbp.Date,
+                        Time = sbp.Time
+                    });
+                }
+
+            OutputHelper.SaveOBJ("SubjectPriority", InputHelper.SubjectPriority);
+
             return OutputHelper.SaveIgnoreGroups(SubjectID, Class, Check, true);
         }
 

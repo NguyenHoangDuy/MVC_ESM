@@ -65,7 +65,7 @@
          @Html.Partial("_DataTable")
     });
 
-    var oFH = new FixedHeader(oTable);
+    var oFH;
 
     function LoadSubject(suID, aDate, aTime) {
         $.ajax({
