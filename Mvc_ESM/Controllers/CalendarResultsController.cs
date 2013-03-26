@@ -121,13 +121,14 @@ namespace Mvc_ESM.Controllers
                              m.MaMonHoc,
                              m.monhoc.TenMonHoc,
                              m.CaThi.GioThi,
-                             m.Nhom
+                             m.Nhom,
+                             m.Dot
                          }).Distinct();
             List<string[]> Result = new List<string[]>();
             int stt = 0;
             foreach (var r in rooms)
             {
-                string[] s = new string[7];
+                string[] s = new string[8];
                 s[0] = ++stt + "";
                 s[1] = r.MaPhong;
                 s[2] = r.MaMonHoc;
@@ -138,6 +139,7 @@ namespace Mvc_ESM.Controllers
                         select t.MaSinhVien).Count() + "";
                 s[5] = r.GioThi.Date.ToShortDateString();
                 s[6] = r.GioThi.ToString("HH:mm");
+                s[7] = r.Dot;
                 Result.Add(s);
             }
             return View(Result);

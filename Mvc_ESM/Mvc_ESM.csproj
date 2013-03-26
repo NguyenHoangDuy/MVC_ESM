@@ -115,6 +115,7 @@
     <Compile Include="Controllers\StudentController.cs" />
     <Compile Include="Controllers\SubjectController.cs" />
     <Compile Include="Controllers\SelectGroupController.cs" />
+    <Compile Include="Controllers\SubjectsOfSessionsController.cs" />
     <Compile Include="Controllers\TeacherController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -321,6 +322,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Priority\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\SubjectsOfSessions\Index.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -1,9 +1,21 @@
 ﻿@model  IEnumerable<string[]>
 @{
-    ViewBag.Title = "Danh sách phòng";
+    ViewBag.Title = "Xem danh sách môn theo đợt";
 }
 
 <h2>@ViewBag.Title</h2>
+
+@using (Html.BeginForm("Index", "SubjectsOfSessions", FormMethod.Post, new { @id = "FilterForm" }))
+{
+    <p>
+
+        <p>
+            Đợt: @Html.DropDownList("Dot", ViewBag.Dot as SelectList, Mvc_ESM.Settings.Page.Settings.SelectAllString, new { id = "DotList" })
+            <input type="submit" value="Thực hiện" />
+        </p>
+
+    </p>
+}
 
 @Html.Partial("_DataTable.Lib")
 @Html.Partial("_DataTable.Printer.Lib")
@@ -11,42 +23,43 @@
 <table id="table">
     <thead>
         <tr>
-
-            <th>Phòng</th>
-            <th>Mã môn học</th>
-            <th>Tên môn học</th>
-            <th>SLSV</th>
-            <th>Ngày thi</th>
+            <th>Mã môn học
+            </th>
+            <th>Tên môn học
+            </th>
+            <th>Nhóm
+            </th>
+            <th>Ngày thi
+            </th>
             <th>Giờ thi</th>
         </tr>
+
     </thead>
     <tbody>
         @foreach (var m in Model)
         {
             <tr>
+                <td>@m[0]</td>
                 <td>@m[1]</td>
                 <td>@m[2]</td>
                 <td>@m[3]</td>
                 <td>@m[4]</td>
-                <td>@m[5]</td>
-                <td>@m[6]</td>
             </tr>
         }
     </tbody>
 </table>
 
+
 <script type="text/javascript" charset="utf-8">
     $(document).ready(function () {
         var oTable = $('#table').dataTable({
-            "aoColumnDefs": [
-            { "bSortable": false, "aTargets": [3] },
-            { "bSortable": false, "aTargets": [4] },
-            { "bSortable": false, "aTargets": [5] },
-            ],
             @Html.Partial("_DataTable.Printer")
+            "aoColumnDefs": [
+            { "bSortable": false, "aTargets": [1] },
+            { "bSortable": false, "aTargets": [4] },
+            ],
             @Html.Partial("_DataTable")
         });
         new FixedHeader(oTable);
     });
 </script>
-
