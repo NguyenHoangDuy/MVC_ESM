@@ -23,13 +23,18 @@ namespace Mvc_ESM.Static_Helper
             Save();
             AlgorithmRunner.SaveOBJ("Status", "inf Hoàn tất quá trình lưu!");
             AlgorithmRunner.IsBusy = false;
+    //        Thread.CurrentThread.Abort();
         }
 
-        public static void Delete(string Dot)
+        public static void Delete(object Dot)
         {
             AlgorithmRunner.IsBusy = true;
             AlgorithmRunner.SaveOBJ("Status", "inf Đang Xoá CSDL cũ");
-            DeleteOld();
+
+            if (Dot.ToString() == "")
+                DeleteOld();
+            else
+                DeleteOld((string)Dot);
             AlgorithmRunner.SaveOBJ("Status", "inf Hoàn tất quá trình Xoá CSDL!");
             AlgorithmRunner.IsBusy = false;
         }
@@ -51,17 +56,39 @@ namespace Mvc_ESM.Static_Helper
                 Thread.CurrentThread.Abort();
             }
         }
+
+        private static void DeleteOld(string dot)
+        {
+            try
+            {
+                var MaCaQry = (from ca in InputHelper.db.This
+                               where ca.Dot == dot
+                               select new { MaCa = ca.MaCa }).Distinct().ToList();
+
+                db.Database.ExecuteSqlCommand("DELETE FROM Thi WHERE Dot='" + dot + "'");
+                foreach (var ca in MaCaQry)
+                    db.Database.ExecuteSqlCommand("DELETE FROM CaThi WHERE MaCa='" + ca.MaCa + "'");
+
+                var DbName = Regex.Match(db.Database.Connection.ConnectionString, "initial\\scatalog=([^;]+)").Groups[1].Value;
+                db.Database.ExecuteSqlCommand("DBCC SHRINKFILE (" + DbName + ", 1) ");
+                db.Database.ExecuteSqlCommand("DBCC SHRINKFILE (" + DbName + "_log, 1) ");
+            }
+            catch
+            {
+                AlgorithmRunner.SaveOBJ("Status", "err Lỗi trong khi xoá CSDL, hãy thử chạy lại lần nữa!");
+                AlgorithmRunner.IsBusy = false;
+                Thread.CurrentThread.Abort();
+            }
+        }
         private static void Save()
         {
             int GCount = AlgorithmRunner.Groups.Count;
             var DotQry = (from m in InputHelper.db.This
                           select m.Dot).Max();
-            int dot = 0;
-            if (DotQry.Length == 0)
-                dot = 1;
-            else
+            int dot = 1;
+            if (DotQry != null)
             {
-                dot = int.Parse(DotQry) + 1;
+                dot = int.Parse(DotQry[0].ToString()) + 1;
             }
 
             for (int GroupIndex = 0; GroupIndex < GCount; GroupIndex++)
@@ -69,15 +96,21 @@ namespace Mvc_ESM.Static_Helper
                 Thi aRecord = new Thi();
                 aRecord.MaMonHoc = AlgorithmRunner.GetSubjectID(AlgorithmRunner.Groups[GroupIndex]);
                 aRecord.Nhom = AlgorithmRunner.GetClassList(AlgorithmRunner.Groups[GroupIndex]);
+
+
                 DateTime FirstShiftTime = InputHelper.Options.StartDate.AddHours(InputHelper.Options.Times[0].Hour)
                                                                       .AddMinutes(InputHelper.Options.Times[0].Minute);
                 String ShiftID = "";// InputHelper.Options.StartDate.Year + "" + InputHelper.Options.StartDate.Month + "" + InputHelper.Options.StartDate.Day;
                 ShiftID += RoomArrangement.CalcShift(FirstShiftTime, AlgorithmRunner.GroupsTime[GroupIndex]).ToString();
+                //Random rand = new Random();
+                //int n = rand.Next(10);
+
                 if ((from ct in db.CaThis where ct.MaCa == ShiftID select ct).Count() == 0)
                 {
+
                     var pa = new SqlParameter[] 
                         { 
-                            new SqlParameter("@MaCa", SqlDbType.NVarChar) { Value = ShiftID },
+                            new SqlParameter("@MaCa", SqlDbType.NVarChar) { Value = dot + ShiftID},
                             new SqlParameter("@GioThi", SqlDbType.DateTime) { Value = AlgorithmRunner.GroupsTime[GroupIndex] },
                         };
                     db.Database.ExecuteSqlCommand("INSERT INTO CaThi (MaCa, GioThi) VALUES (@MaCa, @GioThi)", pa);
@@ -91,7 +124,7 @@ namespace Mvc_ESM.Static_Helper
                     {
                         aRecord.MaSinhVien = AlgorithmRunner.GroupsRoomStudents[GroupIndex][RoomIndex][StudentIndex];
                         SQLQuery += String.Format("INSERT INTO Thi (MaCa, MaMonHoc, Nhom, MaPhong, MaSinhVien, Dot) VALUES ('{0}', '{1}', '{2}', '{3}', '{4}','{5}')\r\n",
-                                                    aRecord.MaCa,
+                                                    dot + aRecord.MaCa,
                                                     aRecord.MaMonHoc,
                                                     aRecord.Nhom,
                                                     aRecord.MaPhong,
@@ -113,5 +146,6 @@ namespace Mvc_ESM.Static_Helper
                 }
             }// môn
         }
+
     }
 }

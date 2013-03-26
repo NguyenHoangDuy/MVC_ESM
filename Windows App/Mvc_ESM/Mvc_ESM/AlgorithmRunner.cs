@@ -158,13 +158,14 @@ namespace Mvc_ESM.Static_Helper
                 GraphColoringAlgorithm.Run();
                 SaveOBJ("Status", "inf Tô màu xong! Đang xếp thời gian...");
                 RoomArrangement.Run();
-                SaveOBJ("Status", "inf Xếp lịch xong! Hãy lưu kết quả vào CSDL (Tất cả các kết quả xếp lịch trước sẽ bị xoá)");
+                SaveOBJ("Status", "inf Xếp lịch xong! Hãy lưu kết quả vào CSDL");
             }
             else
             {
                 SaveOBJ("Status", "err Chưa hoàn thiện quá trình phân tích CSDL");
             }
             IsBusy = false;
+           // Thread.CurrentThread.Abort();
         }
 
         public void RunSaveToDatabase()
@@ -186,9 +187,9 @@ namespace Mvc_ESM.Static_Helper
 
         public void RunDeleteDatabase(string Dot)
         {
-            Thread thread = new Thread(new ThreadStart(() => SaveToDatabase.Delete(Dot)));
-            thread.Name = "DeleteToDatabase";
-            thread.Start();
+            Thread t = new Thread(new ParameterizedThreadStart(SaveToDatabase.Delete));
+            t.Start((object)Dot);
+            t.Join();
         }
 
         public void RunStop()

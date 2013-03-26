@@ -27,8 +27,8 @@ namespace Mvc_ESM
             // it reached here.
             if (args != null && args.Length != 0)
             {
-                if (args[0].Length > 1)
-                    args[0] = args[0].Substring(0, 1);
+                string dot = args[0];
+                args[0] = args[0].Substring(0, 1);
                 switch (args[0])
                 {
                     case "0":
@@ -62,8 +62,7 @@ namespace Mvc_ESM
                         txtArgs.Text += DateTime.Now.ToString() + " Handmade\r\n";
                         break;
                     case "5":
-                        string dot = args[0].Substring(1, args[0].Length - 1);
-                        AlgorithmRunner.RunDeleteDatabase(dot);
+                        AlgorithmRunner.RunDeleteDatabase(dot.Substring(1, dot.Length - 1));
                         txtArgs.Text += DateTime.Now.ToString() + " DeleteToDatabase\r\n";
                         break;
                     default:
@@ -80,7 +79,7 @@ namespace Mvc_ESM
         public MainForm()
         {
             InitializeComponent();
-            CheckForIllegalCrossThreadCalls = false; 
+            CheckForIllegalCrossThreadCalls = false;
             AlgorithmRunner = new AlgorithmRunner();
             AlgorithmRunner.Init();
         }
@@ -122,7 +121,8 @@ namespace Mvc_ESM
         {
             btnCreateAdjacencyMatrix_Stop.Enabled = false;
             CreateAdjacencyMatrix.Stop = true;
-            Thread thread = new Thread(new ThreadStart(() => {
+            Thread thread = new Thread(new ThreadStart(() =>
+            {
                 while (CreateAdjacencyMatrix.Stoped == false) { Thread.Sleep(100); }
                 MessageBox.Show("Đã dừng!");
                 btnCreateAdjacencyMatrix.Enabled = true;

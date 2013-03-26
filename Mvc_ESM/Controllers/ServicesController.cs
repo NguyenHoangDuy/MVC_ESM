@@ -130,7 +130,6 @@ namespace Mvc_ESM.Controllers
             }
             var Result = new List<string[]>();
 
-
             var MH = (from m in InputHelper.db.This
                       select new
                       {
@@ -139,19 +138,17 @@ namespace Mvc_ESM.Controllers
                       });
 
             Dictionary<String, List<String>> CheckMH = new Dictionary<string, List<string>>();
+
             foreach (var m in MH)
             {
                 if (CheckMH.ContainsKey(m.MaMonHoc))
-                {
                     CheckMH[m.MaMonHoc].Add(m.Nhom);
-                }
                 else
                     CheckMH.Add(m.MaMonHoc, new List<String> { m.Nhom });
             }
 
             foreach (var su in Groups.OrderBy(m => m.TenMonHoc))
             {
-
                 if (CheckMH.ContainsKey(su.MaMonHoc))
                 {
                     if (!CheckGroup(CheckMH[su.MaMonHoc], su.Nhom.ToString()))
@@ -179,9 +176,11 @@ namespace Mvc_ESM.Controllers
                                             su.SoLuongDK.ToString(),
                                             su.GroupID.ToString(),
                                         }
-                                );
+                                    );
                 }
+
             }
+
             return Json(new
                             {
                                 sEcho = param.sEcho,
@@ -242,8 +241,29 @@ namespace Mvc_ESM.Controllers
 
             var Result = new List<string[]>();
 
-            foreach (var su in Groups.OrderBy(m => m.TenMonHoc).Skip(param.iDisplayStart).Take(param.iDisplayLength))
+            var MH = (from m in InputHelper.db.This
+                      select new
+                      {
+                          MaMonHoc = m.MaMonHoc,
+                          Nhom = m.Nhom,
+                      });
+
+            Dictionary<String, List<String>> CheckMH = new Dictionary<string, List<string>>();
+
+            foreach (var m in MH)
             {
+                if (CheckMH.ContainsKey(m.MaMonHoc))
+                    CheckMH[m.MaMonHoc].Add(m.Nhom);
+                else
+                    CheckMH.Add(m.MaMonHoc, new List<String> { m.Nhom });
+            }
+
+            foreach (var su in Groups.OrderBy(m => m.TenMonHoc))
+            {
+                if (CheckMH.ContainsKey(su.MaMonHoc))
+                {
+                    if (!CheckGroup(CheckMH[su.MaMonHoc], su.Nhom.ToString()))
+                    {
                         Result.Add(new string[] {
                                             su.MaMonHoc,
                                             su.TenMonHoc,
@@ -251,18 +271,34 @@ namespace Mvc_ESM.Controllers
                                             su.TenKhoa,
                                             su.Nhom.ToString(),
                                             su.SoLuongDK.ToString(),
-                                            su.IsIgnored?"checked":"",
+                                            
                                         }
                                     );
+                    }
+                }
+                else
+                {
+                    Result.Add(new string[] {
+                                            su.MaMonHoc,
+                                            su.TenMonHoc,
+                                            su.TenBoMon,
+                                            su.TenKhoa,
+                                            su.Nhom.ToString(),
+                                            su.SoLuongDK.ToString(),
+                                           su.IsIgnored?"checked":"",
+                                        }
+                                );
+                }
+
             }
 
             return Json(new
                             {
                                 sEcho = param.sEcho,
                                 iTotalRecords = total,
-                                iTotalDisplayRecords = Groups.Count(),
+                                iTotalDisplayRecords = Result.Count(),
                                 //iTotalDisplayedRecords = Subjects.Count(),
-                                aaData = Result
+                                aaData = Result.Skip(param.iDisplayStart).Take(param.iDisplayLength)
                             },
                             JsonRequestBehavior.AllowGet
                         );

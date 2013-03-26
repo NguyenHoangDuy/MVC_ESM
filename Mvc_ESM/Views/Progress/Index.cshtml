@@ -8,25 +8,27 @@
 
 @using (Html.BeginForm("Index", "Progress", FormMethod.Post, new { @id = "FilterForm" }))
 {
-        <p>
-            Đợt: @Html.DropDownList("Dot", ViewBag.Dot as SelectList, Mvc_ESM.Settings.Page.Settings.SelectAllString, new { id = "DotList" })
-            <button id="RunDel">Xóa CSDL</button>
-        </p>
+    <p>
+        Đợt: @Html.DropDownList("Dot", ViewBag.Dot as SelectList, Mvc_ESM.Settings.Page.Settings.SelectAllString, new { id = "DotList" })
+    </p>
 }
+ <button id="RunDel">Xóa CSDL</button>
 
 
-
-<div style="text-align:center">
+<div style="text-align: center">
     <p>
         <button id="RunCreateAdjacencyMatrix">1. Phân tích CSDL</button>
         <button id="RunCalc">2. Xếp lịch</button>
         <button id="RunSaveToDatabase">3. Lưu kết quả</button>
     </p>
     <p id="Info">Thông tin</p>
-    <p><button id="RunStop">Dừng ngang tiến trình</button></p>
+    <p>
+        <button id="RunStop">Dừng ngang tiến trình</button>
+    </p>
 </div>
 <script>
     var btn0 = $("#RunStop");
+    btn0.removeAttr("disabled").removeClass("ui-state-focus");
     var btn1 = $("#RunCreateAdjacencyMatrix");
     var btn2 = $("#RunCalc");
     var btn3 = $("#RunSaveToDatabase");
@@ -38,6 +40,7 @@
         btn3.attr('disabled', 'disabled').removeClass("ui-state-focus");
         btn0.removeAttr("disabled").removeClass("ui-state-focus");
     }
+
     function EnableAll() {
         btn1.removeAttr("disabled").removeClass("ui-state-focus");
         btn2.removeAttr("disabled").removeClass("ui-state-focus");
@@ -54,7 +57,7 @@
                     Info.html("...");
                 }
                 else {
-                    DisableAll();
+                 //       DisableAll();
                 }
                 if (Data.Type == "inf")
                     Info.attr("style", "color:blue");
@@ -78,6 +81,8 @@
         $.post("/Progress/Run", "StepNumber=3");
     });
     $("#RunDel").button().click(function () {
+        $.post("/Progress/Run", "StepNumber=5" + $('#DotList').val());
+        alert("Đã xóa xong! Bấm F5 để tải lại trang!");
     });
-    
+
 </script>

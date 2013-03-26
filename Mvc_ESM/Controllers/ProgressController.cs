@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading;
 using System.Web;
 using System.Web.Mvc;
+using Model;
 
 namespace Mvc_ESM.Controllers
 {
@@ -15,7 +16,6 @@ namespace Mvc_ESM.Controllers
     {
         //
         // GET: /Progress/
-
         public ActionResult Index()
         {
             var DotQry = (from m in InputHelper.db.This
@@ -24,15 +24,40 @@ namespace Mvc_ESM.Controllers
                               MaDot = m.Dot,
                               TenDon = m.Dot
                           }).Distinct();
-            ViewBag.Dot = new SelectList(DotQry.ToArray(), "MaDot", "TenDot");
+            ViewBag.Dot = new SelectList(DotQry.ToArray(), "MaDot", "TenDon");
             return View();
         }
 
-        [HttpPost]
-        public ActionResult Run(int StepNumber)
+        private void UnCheckSubject()
         {
+            var aGroupList = InputHelper.Groups.Where(d => !d.Value.IsIgnored);
+            var SubjectsList = aGroupList.Select(m => m.Key.Substring(0, m.Key.IndexOf('_'))).Distinct();
+            List<String> SB = new List<string>();
+            List<String> aClass = new List<string>();
+            List<String> Check = new List<string>();
+            foreach (var subject in SubjectsList)
+            {
+                var GroupsInOneSubject = aGroupList.Where(m => m.Value.MaMonHoc == subject).Select(m => m.Value);
+                var GroupsIDList = GroupsInOneSubject.Select(m => m.GroupID).Distinct();
+                foreach (var aID in GroupsIDList)
+                {
+                    //var aGroupItem = subject;
+                    foreach (var gi in GroupsInOneSubject.Where(m => m.GroupID == aID))
+                    {
+                        SB.Add(subject);
+                        //  aGroupItem += "_" + gi.Nhom;
+                        aClass.Add(gi.Nhom.ToString());
+                        Check.Add("checked");
+                    }
+                }
+            }
+            string st = OutputHelper.SaveIgnoreGroups(SB, aClass, Check, true);
+        }
 
-            switch (StepNumber)
+        [HttpPost]
+        public ActionResult Run(string StepNumber)
+        {
+            switch (int.Parse(StepNumber.Substring(0, 1)))
             {
                 case 0:
                     Process.Start(OutputHelper.WinAppExe, "0");
@@ -45,6 +70,10 @@ namespace Mvc_ESM.Controllers
                     return Content("RunCalc");
                 case 3:
                     Process.Start(OutputHelper.WinAppExe, "3");
+                    UnCheckSubject();
+                    return Content("RunSaveToDatabase");
+                case 5:
+                    Process.Start(OutputHelper.WinAppExe, StepNumber);
                     return Content("RunSaveToDatabase");
                 default:
                     return Content("NotRunAnyThing");
@@ -52,3 +81,4 @@ namespace Mvc_ESM.Controllers
         }
     }
 }
+

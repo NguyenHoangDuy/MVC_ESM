@@ -7,6 +7,7 @@ using System.Data.Entity;
 using System.IO;
 using System.Data.SqlClient;
 using System.Data;
+using System.Threading;
 
 namespace Mvc_ESM.Static_Helper
 {
@@ -80,6 +81,7 @@ namespace Mvc_ESM.Static_Helper
             Begin(AlgorithmRunner.AdjacencyMatrix, AlgorithmRunner.BeginI);
             Stoped = true;
             AlgorithmRunner.IsBusy = false;
+           // Thread.CurrentThread.Abort();
         }
 
         public static void Begin(int[,] oldAdjacencyMatrix, int beginI)
