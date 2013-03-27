@@ -18,6 +18,7 @@ namespace Mvc_ESM.Controllers
         // GET: /Progress/
         public ActionResult Index()
         {
+            OutputHelper.SaveOBJ("Status", "");
             var DotQry = (from m in InputHelper.db.This
                           select new
                           {

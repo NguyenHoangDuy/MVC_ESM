@@ -21,7 +21,7 @@
         <button id="RunCalc">2. Xếp lịch</button>
         <button id="RunSaveToDatabase">3. Lưu kết quả</button>
     </p>
-    <p id="Info">Thông tin</p>
+    <p id="Info"></p>
     <p>
         <button id="RunStop">Dừng ngang tiến trình</button>
     </p>
@@ -32,12 +32,14 @@
     var btn1 = $("#RunCreateAdjacencyMatrix");
     var btn2 = $("#RunCalc");
     var btn3 = $("#RunSaveToDatabase");
+    var btn4 = $("#RunDel");
     var Info = $("#Info");
 
     function DisableAll() {
         btn1.attr('disabled', 'disabled').removeClass("ui-state-focus");
         btn2.attr('disabled', 'disabled').removeClass("ui-state-focus");
         btn3.attr('disabled', 'disabled').removeClass("ui-state-focus");
+        btn4.attr('disabled', 'disabled').removeClass("ui-state-focus");
         btn0.removeAttr("disabled").removeClass("ui-state-focus");
     }
 
@@ -45,14 +47,14 @@
         btn1.removeAttr("disabled").removeClass("ui-state-focus");
         btn2.removeAttr("disabled").removeClass("ui-state-focus");
         btn3.removeAttr("disabled").removeClass("ui-state-focus");
+        btn4.removeAttr("disabled").removeClass("ui-state-focus");
         btn0.attr('disabled', 'disabled').removeClass("ui-state-focus");
-        Info.html("Thông tin");
+        Info.html("");
     }
 
     function GetProgressInfo() {
         $.getJSON("/Services/GetProgressInfo",
             function (Data) {
-                EnableAll();
                 if (!Data.isBusy) {
                     EnableAll();
                     Info.html("...");

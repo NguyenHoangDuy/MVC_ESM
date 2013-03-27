@@ -7,6 +7,7 @@ using System.Web;
 using System.Web.Mvc;
 using Model;
 using Mvc_ESM.Static_Helper;
+using System.Text.RegularExpressions;
 
 namespace Mvc_ESM.Controllers
 {
@@ -32,7 +33,7 @@ namespace Mvc_ESM.Controllers
 
             var Thi = (from t in InputHelper.db.This
                        join m in InputHelper.db.monhocs on t.MaMonHoc equals m.MaMonHoc
-                       where t.Dot == Dot || Dot==""
+                       where t.Dot == Dot || Dot == ""
                        select new { t.MaMonHoc, m.TenMonHoc, t.Nhom, t.CaThi.GioThi }).Distinct();
 
             foreach (var t in Thi)
@@ -61,6 +62,32 @@ namespace Mvc_ESM.Controllers
             ViewBag.Dot = new SelectList(DotQry.ToArray(), "MaDot", "TenDon");
         }
 
+        [HttpPost, ActionName("Delete")]
+        public String Delete(string id)
+        {
+            try
+            {
+                String[] str = id.Split('_');
+                String MSMH = str[0];
+                String MaNhom = str[1];
+                var aThi = InputHelper.db.This.Where(m => m.MaMonHoc.Equals(MSMH)).Where(m => m.Nhom.Equals(MaNhom)).First();
+                string maca = aThi.MaCa.ToString();
+
+                InputHelper.db.DelThi(MSMH, MaNhom);
+
+                var Count = InputHelper.db.This.Where(m => m.MaCa.Equals(maca)).Count();
+
+                if (Count == 0)
+                {
+                    db.DelCaThi(maca);
+                }
+                return "Xoá thành công!";
+            }
+            catch (Exception e)
+            {
+                return "Xoá không được [" + e.Message + "]";
+            }
+        }
 
     }
 }

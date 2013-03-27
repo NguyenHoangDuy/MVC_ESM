@@ -23,15 +23,12 @@
 <table id="table">
     <thead>
         <tr>
-            <th>Mã môn học
-            </th>
-            <th>Tên môn học
-            </th>
-            <th>Nhóm
-            </th>
-            <th>Ngày thi
-            </th>
-            <th>Giờ thi</th>
+            <th>Mã môn học            </th>
+            <th>Tên môn học            </th>
+            <th>Nhóm            </th>
+            <th>Ngày thi            </th>
+            <th>Giờ thi            </th>
+            <th></th>
         </tr>
 
     </thead>
@@ -44,6 +41,9 @@
                 <td>@m[2]</td>
                 <td>@m[3]</td>
                 <td>@m[4]</td>
+                <td>
+                    <button id="Deletebtn" value="@(m[0] + "_" + m[2])">Xóa</button>
+                </td>
             </tr>
         }
     </tbody>
@@ -60,6 +60,44 @@
             ],
             @Html.Partial("_DataTable")
         });
+
+        $('#table tbody td button#Deletebtn').button({
+            icons: {
+                primary: "ui-icon-trash"
+            }
+        }).live('click', function () {
+            var sid = $(this).attr("value");
+            var aDialog = $("#dialog-confirm");
+            var ok = false;
+            aDialog.removeAttr("style");
+            aDialog.dialog({
+                resiable: false,
+                modal: true,
+                buttons: {
+                    "Xóa": function () {
+                        $.post("/SubjectsOfSessions/Delete", "id=" + sid, function (data) {
+                            aler(data);
+                            if (data == "Xoá thành công!") {
+                                //var row = $('#table tbody td button#Deletebtn').parent().parent();
+                                //if (row.length !== 0) {
+                                //    oTable.fnDeleteRow(row[0]);
+                                //}
+                                window.location = "@Url.Action("Index", "SubjectsOfSessions")";
+                            }
+                        });
+                        $(this).dialog("close");
+                    },
+                    "Không": function () {
+                        $(this).dialog("close");
+                    }
+                }
+            });
+        }).parent().attr('align', 'center');
         new FixedHeader(oTable);
     });
 </script>
+
+
+<div id="dialog-confirm" title="Xóa dữ liệu?" style="visibility: hidden">
+    <p><span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>Bạn có muốn xoá dữ liệu này không?</p>
+</div>
