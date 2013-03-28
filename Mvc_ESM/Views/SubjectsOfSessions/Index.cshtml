@@ -8,12 +8,10 @@
 @using (Html.BeginForm("Index", "SubjectsOfSessions", FormMethod.Post, new { @id = "FilterForm" }))
 {
     <p>
-
         <p>
             Đợt: @Html.DropDownList("Dot", ViewBag.Dot as SelectList, Mvc_ESM.Settings.Page.Settings.SelectAllString, new { id = "DotList" })
             <input type="submit" value="Thực hiện" />
         </p>
-
     </p>
 }
 
@@ -23,11 +21,16 @@
 <table id="table">
     <thead>
         <tr>
-            <th>Mã môn học            </th>
-            <th>Tên môn học            </th>
-            <th>Nhóm            </th>
-            <th>Ngày thi            </th>
-            <th>Giờ thi            </th>
+            <th>Mã môn học            
+            </th>
+            <th>Tên môn học            
+            </th>
+            <th>Nhóm            
+            </th>
+            <th>Ngày thi           
+            </th>
+            <th>Giờ thi           
+            </th>
             <th></th>
         </tr>
 
@@ -42,13 +45,12 @@
                 <td>@m[3]</td>
                 <td>@m[4]</td>
                 <td>
-                    <button id="Deletebtn" value="@(m[0] + "_" + m[2])">Xóa</button>
+                    <button id="Deletebtn" value="@(m[0] + "_" + m[2])" >Xóa</button>
                 </td>
             </tr>
         }
     </tbody>
 </table>
-
 
 <script type="text/javascript" charset="utf-8">
     $(document).ready(function () {
@@ -76,13 +78,12 @@
                 buttons: {
                     "Xóa": function () {
                         $.post("/SubjectsOfSessions/Delete", "id=" + sid, function (data) {
-                            aler(data);
+                            alert(data);
                             if (data == "Xoá thành công!") {
-                                //var row = $('#table tbody td button#Deletebtn').parent().parent();
-                                //if (row.length !== 0) {
-                                //    oTable.fnDeleteRow(row[0]);
-                                //}
-                                window.location = "@Url.Action("Index", "SubjectsOfSessions")";
+                                var row = $('#table tbody td button#Deletebtn').parent().parent();
+                                if (row.length !== 0) {
+                                    oTable.fnDeleteRow(row[0]);
+                                }
                             }
                         });
                         $(this).dialog("close");
@@ -93,6 +94,8 @@
                 }
             });
         }).parent().attr('align', 'center');
+        //  oFH.fnUpdate();
+
         new FixedHeader(oTable);
     });
 </script>

@@ -42,7 +42,7 @@
 	    @Html.Partial("_DataTable")
     });
 
-    var oFH;// = new FixedHeader(oTable);
+    var oFH = new FixedHeader(oTable);
 
     function LoadStudent(stID, suID) {
         $.ajax({
@@ -94,9 +94,9 @@
             <text>
     LoadStudent("@subItem", "@Item.Key");
             </text>
-        }
-        
-    }
+     }
+
+ }
 
     $('#AddStudent').button().click(function (e) {
         e.preventDefault(); // không chạy sự kiện mặc định của đối tượng
@@ -119,7 +119,7 @@
         });
         $.post("/SelectIgnoreStudents/SelectSuccess", sData);
         alert("Đã lưu xong");
-        return false; 
+        return false;
     });
     oFH = new FixedHeader(oTable);
 </script>

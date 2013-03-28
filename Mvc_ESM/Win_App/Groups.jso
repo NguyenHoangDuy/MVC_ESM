@@ -17107,7 +17107,7 @@
     "Nhom": 1,
     "SoLuongDK": 45,
     "GroupID": 1,
-    "IsIgnored": false
+    "IsIgnored": true
   },
   "1251250_2": {
     "MaMonHoc": "1251250",
@@ -17117,7 +17117,7 @@
     "Nhom": 2,
     "SoLuongDK": 19,
     "GroupID": 1,
-    "IsIgnored": false
+    "IsIgnored": true
   },
   "1251261_1": {
     "MaMonHoc": "1251261",

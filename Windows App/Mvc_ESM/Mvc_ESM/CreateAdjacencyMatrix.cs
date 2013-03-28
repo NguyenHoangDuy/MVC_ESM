@@ -36,9 +36,9 @@ namespace Mvc_ESM.Static_Helper
             {
                 return 1;
             }
-            String StudentsList1 = "";
+            /*String StudentsList1 = "";
             String StudentsList2 = "";
-           /* try
+            try
             {
                 foreach (String st in InputHelper.IgnoreStudents[Subject1ID])
                 {
@@ -82,7 +82,7 @@ namespace Mvc_ESM.Static_Helper
             Begin(AlgorithmRunner.AdjacencyMatrix, AlgorithmRunner.BeginI);
             Stoped = true;
             AlgorithmRunner.IsBusy = false;
-            AlgorithmRunner.SaveOBJ("Status", "inf Phân tích xong cơ sở dữ liệu");
+            AlgorithmRunner.SaveOBJ("Status", "inf Phân tích xong cơ sở dữ liệu lúc: " + DateTime.Now);
            // Thread.CurrentThread.Abort();
         }
 

@@ -85,7 +85,8 @@
     });
     $("#RunDel").button().click(function () {
         $.post("/Progress/Run", "StepNumber=5" + $('#DotList').val());
-        alert("Đã xóa xong! Bấm F5 để tải lại trang!");
+        alert("Đã xóa xong");
+        window.location = "@Url.Action("Index", "Progress")";
     });
 
 </script>
