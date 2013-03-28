@@ -334,6 +334,16 @@ namespace Mvc_ESM.Controllers
             {
                 return Json(new List<object>(){ new 
                         {
+                            MSMH = "error"
+                        }}, JsonRequestBehavior.AllowGet);
+            }
+
+            var aThi = InputHelper.db.This.Where(m => m.MaMonHoc.Equals(SubjectID)).FirstOrDefault();
+
+            if (aThi != null)
+            {
+                return Json(new List<object>(){ new 
+                        {
                             MSMH = "false"
                         }}, JsonRequestBehavior.AllowGet);
             }

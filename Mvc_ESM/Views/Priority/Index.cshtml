@@ -1,5 +1,5 @@
 ﻿@{
-    ViewBag.Title = "Ưu tiên môn học";
+    ViewBag.Title = "Thiết lập môn thi ưu tiên";
 }
 
 <h2>@ViewBag.Title</h2>
@@ -75,8 +75,13 @@
             async: false,
             success: function (Data) {
 
-                if (Data[0].MSMH == "false") {
+                if (Data[0].MSMH == "error") {
                     alert("Không tìm thấy môn học có mã số: " + suID);
+                    return false;
+                }
+
+                if (Data[0].MSMH == "false") {
+                    alert("Môn học có mã số: " + suID + " đã được xếp lịch thi rồi");
                     return false;
                 }
 
@@ -88,7 +93,7 @@
 
                 function _formattime(aTime)
                 {
-                        aTime -= 25200000;
+                    aTime -= 25200000;
                     var time = new Date(aTime);
                     var HH = time.getHours();
                     var mm = time.getMinutes();
@@ -121,7 +126,7 @@
     @foreach (var Item in Mvc_ESM.Static_Helper.InputHelper.SubjectPriority)
     {
             <text>
-    LoadSubject(@(Item.SubjectID),@(Item.Date.AddYears(-1970).AddDays(1).Ticks / 10000),@((Item.Time.AddYears(-1969).AddDays(1).Ticks/10000)));
+    LoadSubject(@(Item.SubjectID),@(Item.Date.AddYears(-1970).AddDays(1).Ticks / 10000),@((Item.Time.AddYears(-1969).AddDays(1).Ticks / 10000)));
             </text>
     }
 

@@ -53,6 +53,8 @@ namespace Mvc_ESM.Controllers
                 }
             }
             string st = OutputHelper.SaveIgnoreGroups(SB, aClass, Check, true);
+            InputHelper.SubjectPriority = new List<Priority>();
+            OutputHelper.SaveOBJ("SubjectPriority", InputHelper.SubjectPriority);       
         }
 
         [HttpPost]
