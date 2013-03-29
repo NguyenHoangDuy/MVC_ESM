@@ -246,7 +246,7 @@ namespace Mvc_ESM.Controllers
                       {
                           MaMonHoc = m.MaMonHoc,
                           Nhom = m.Nhom,
-                      });
+                      }).Distinct();
 
             Dictionary<String, List<String>> CheckMH = new Dictionary<string, List<string>>();
 

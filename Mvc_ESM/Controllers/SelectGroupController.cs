@@ -33,21 +33,13 @@ namespace Mvc_ESM.Controllers
         {
             List<Priority> SBP = InputHelper.SubjectPriority;
 
-            InputHelper.SubjectPriority = new List<Priority>();
+            for (int i = 0; i < SubjectID.Count; ++i)
+                foreach (var sbp in SBP)
+                    if (SubjectID[i] == sbp.SubjectID)
+                        if (Check[i] == "checked")
+                            Check[i] = "undefined";
 
-            foreach (var sbp in SBP)
-                if (!SubjectID.Contains(sbp.SubjectID))
-                {
-                    InputHelper.SubjectPriority.Add(new Priority
-                    {
-                        SubjectID = sbp.SubjectID,
-                        Date = sbp.Date,
-                        Time = sbp.Time
-                    });
-                }
-
-            OutputHelper.SaveOBJ("SubjectPriority", InputHelper.SubjectPriority);
-
+     //       string st = OutputHelper.SaveIgnoreGroups(SubjectID, Class, Check, false);
             return OutputHelper.SaveIgnoreGroups(SubjectID, Class, Check, true);
         }
 

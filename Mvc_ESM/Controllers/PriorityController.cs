@@ -53,7 +53,7 @@ namespace Mvc_ESM.Controllers
                     {
                         SB.Add(SubjectID[i]);
                         aClass.Add(r.ToString());
-                        Check.Add("checked");
+                        Check.Add("undefined");
                     }
 
                     paramInfo += "MH:" + SubjectID[i] + " Ngay:" + Date[i] + "Gio:" + Time[i] + "<br /><br />";
