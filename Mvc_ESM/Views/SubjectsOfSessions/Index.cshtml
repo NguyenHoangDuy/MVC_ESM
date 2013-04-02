@@ -53,6 +53,8 @@
 </table>
 
 <script type="text/javascript" charset="utf-8">
+   // var oTable;
+
     $(document).ready(function () {
         var oTable = $('#table').dataTable({
             @Html.Partial("_DataTable.Printer")
@@ -62,42 +64,41 @@
             ],
             @Html.Partial("_DataTable")
         });
-
-        $('#table tbody td button#Deletebtn').button({
-            icons: {
-                primary: "ui-icon-trash"
-            }
-        }).live('click', function () {
-            var sid = $(this).attr("value");
-            var aDialog = $("#dialog-confirm");
-            var ok = false;
-            aDialog.removeAttr("style");
-            aDialog.dialog({
-                resiable: false,
-                modal: true,
-                buttons: {
-                    "Xóa": function () {
-                        $.post("/SubjectsOfSessions/Delete", "id=" + sid, function (data) {
-                            alert(data);
-                            if (data == "Xoá thành công!") {
-                                var row = $('#table tbody td button#Deletebtn').parent().parent();
-                                if (row.length !== 0) {
-                                    oTable.fnDeleteRow(row[0]);
-                                }
-                            }
-                        });
-                        $(this).dialog("close");
-                    },
-                    "Không": function () {
-                        $(this).dialog("close");
-                    }
-                }
-            });
-        }).parent().attr('align', 'center');
-        //  oFH.fnUpdate();
-
         new FixedHeader(oTable);
     });
+
+    $('#table tbody td button#Deletebtn').button({
+        icons: {
+            primary: "ui-icon-trash"
+        }
+    }).live('click', function () {
+        var sid = $(this).attr("value");
+        var row = $(this).parent().parent();
+        var aDialog = $("#dialog-confirm");
+        var ok = false;
+        aDialog.removeAttr("style");
+        aDialog.dialog({
+            resiable: false,
+            modal: true,
+            buttons: {
+                "Xóa": function () {
+                    $.post("/SubjectsOfSessions/Delete", "id=" + sid, function (data) {
+                        alert(data);
+                        if (data == "Xoá thành công!") {
+                            if (row.length !== 0) {
+                                oTable.fnDeleteRow(row[0]);
+                            }
+                        }
+                    });
+                    $(this).dialog("close");
+                },
+                "Không": function () {
+                    $(this).dialog("close");
+                }
+            }
+        });
+    }).parent().attr('align', 'center');
+
 </script>
 
 

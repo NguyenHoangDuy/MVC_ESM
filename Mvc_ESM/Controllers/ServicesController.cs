@@ -550,7 +550,6 @@ namespace Mvc_ESM.Controllers
         [HttpGet]
         public JsonResult LoadShiftsBySubjectID(string SubjectID)
         {
-            int i = 1;
             var aData = (from b in InputHelper.db.This
                          where b.MaMonHoc == SubjectID
                          select new SelectListItem()
