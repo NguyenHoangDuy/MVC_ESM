@@ -39,7 +39,7 @@
         @foreach (var m in Model)
         {
             <tr>
-                <td>@m[0]</td>
+                <td>@Html.ActionLink(m[0], "StudentsOfRooms", "CalendarResults", new { SearchString = m[0] }, null)</td>
                 <td>@m[1]</td>
                 <td>@m[2]</td>
                 <td>@m[3]</td>
@@ -53,10 +53,10 @@
 </table>
 
 <script type="text/javascript" charset="utf-8">
-   // var oTable;
+    var oTable;
 
     $(document).ready(function () {
-        var oTable = $('#table').dataTable({
+        oTable = $('#table').dataTable({
             @Html.Partial("_DataTable.Printer")
             "aoColumnDefs": [
             { "bSortable": false, "aTargets": [1] },
@@ -85,9 +85,9 @@
                     $.post("/SubjectsOfSessions/Delete", "id=" + sid, function (data) {
                         alert(data);
                         if (data == "Xoá thành công!") {
-                            if (row.length !== 0) {
-                                oTable.fnDeleteRow(row[0]);
-                            }
+                            //if (row.length !== 0) {
+                            oTable.fnDeleteRow(row[0]);
+                            // }
                         }
                     });
                     $(this).dialog("close");

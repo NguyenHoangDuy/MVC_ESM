@@ -59,10 +59,7 @@ namespace Mvc_ESM.Controllers
                                            end_date = s.CaThi.GioThi,
                                            MaPhong = s.MaPhong,
                                            MSSV = s.MaSinhVien,
-                                           //GhiChu = (InputHelper.IgnoreStudents.ContainsKey(s.MaMonHoc) ? (InputHelper.IgnoreStudents[s.MaMonHoc].Contains(s.MaSinhVien) ? "()" : "a") : "a"),
-                                           //GhiChu = " ghi chú",
                                            GhiChu = "",
-                                           //GhiChu = "@@",
                                        }).ToList<Event>();
 
             for (int i = 0; i < SubjectTime.Count(); i++)
@@ -75,15 +72,21 @@ namespace Mvc_ESM.Controllers
             return Content(Calendar.DataFormater(SubjectTime, true), "text/xml");
         }
 
-
         [HttpGet]
-        public ActionResult StudentsOfSubjects()
+        public ActionResult StudentsOfSubjects(String SearchString = "")
         {
 
             InitViewBag(false, 2);
-            List<string[]> Result = new List<string[]>();
 
-            return View(Result);
+            if (SearchString == "")
+            {
+                ViewBag.SearchString = SearchString;
+                List<string[]> Result = new List<string[]>();
+                return View(Result);
+            }
+            String[] str = SearchString.Split('_');
+            ViewBag.SearchString = str[0];
+            return StudentsOfSubjects(str[0], str[1]);
         }
 
         [HttpPost]
@@ -92,19 +95,20 @@ namespace Mvc_ESM.Controllers
             var sv = (from s in InputHelper.db.sinhviens
                       join m in InputHelper.db.This on s.MaSinhVien equals m.MaSinhVien
                       where m.MaMonHoc == MonHoc && (m.MaCa == Ca || Ca == "")
-                      select s).Distinct();
+                      select new { s.MaSinhVien, s.Ho, s.Ten, s.NgaySinh, s.Lop, m.MaPhong }).Distinct();
 
             InitViewBag(true, 2, MonHoc);
-
+            ViewBag.SearchString = MonHoc;
             List<string[]> Result = new List<string[]>();
             foreach (var s in sv)
             {
-                string[] st = new string[6];
+                string[] st = new string[7];
                 st[0] = s.MaSinhVien;
                 st[1] = s.Ho;
                 st[2] = s.Ten;
                 st[3] = s.NgaySinh;
                 st[4] = s.Lop;
+
                 st[5] = (InputHelper.IgnoreStudents.ContainsKey(MonHoc) ? (InputHelper.IgnoreStudents[MonHoc].Contains(s.MaSinhVien) ? "Cấm thi" : "") : "");
                 Result.Add(st);
             }
@@ -146,10 +150,19 @@ namespace Mvc_ESM.Controllers
         }
 
         [HttpGet]
-        public ActionResult StudentsOfRooms()
+        public ActionResult StudentsOfRooms(String SearchString = "")
         {
-            InitViewBag(false, 1);
-            InitViewBag(false, 2);
+            if (SearchString == "")
+            {
+                InitViewBag(false, 1);
+                InitViewBag(false, 2);
+            }
+            else
+            {
+                InitViewBag(true, 1, SearchString);
+                InitViewBag(true, 2, SearchString);
+            }
+            ViewBag.SearchString = SearchString;
             List<string[]> Result = new List<string[]>();
             return View(Result);
         }
@@ -164,7 +177,7 @@ namespace Mvc_ESM.Controllers
 
             InitViewBag(true, 1, MonHoc);
             InitViewBag(true, 2, MonHoc);
-
+            ViewBag.SearchString = MonHoc;
             //return View(sv.OrderBy(s => s.Ten + s.Ho).ToList());
             List<string[]> Result = new List<string[]>();
             foreach (var s in sv)
@@ -317,14 +330,20 @@ namespace Mvc_ESM.Controllers
         }
 
         [HttpGet]
-        public ActionResult StudentSchedule()
+        public ActionResult StudentSchedule(string SearchString = "", string s = "")
         {
-            List<String[]> Results = new List<string[]>();
-            return View(Results);
+            ViewBag.SearchString = SearchString;
+            List<string[]> Results;
+            if (SearchString == "")
+            {
+                Results = new List<string[]>();
+                return View(Results);
+            }
+            return StudentSchedule(SearchString);
         }
 
         [HttpPost]
-        public ActionResult StudentSchedule(String SearchString)
+        public ActionResult StudentSchedule(string SearchString)
         {
             var sinhviens = (from mh in InputHelper.db.This
                              where mh.MaSinhVien == SearchString

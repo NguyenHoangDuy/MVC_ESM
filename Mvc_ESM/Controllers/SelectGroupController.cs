@@ -38,8 +38,21 @@ namespace Mvc_ESM.Controllers
                     if (SubjectID[i] == sbp.SubjectID)
                         if (Check[i] == "checked")
                             Check[i] = "undefined";
+            /*List<Priority> SBP = InputHelper.SubjectPriority;
 
-     //       string st = OutputHelper.SaveIgnoreGroups(SubjectID, Class, Check, false);
+            InputHelper.SubjectPriority = new List<Priority>();
+
+            foreach (var sbp in SBP)
+                if (!SubjectID.Contains(sbp.SubjectID))
+                {
+                    InputHelper.SubjectPriority.Add(new Priority
+                    {
+                        SubjectID = sbp.SubjectID,
+                        Date = sbp.Date,
+                        Time = sbp.Time
+                    });
+                }
+            string st = OutputHelper.SaveIgnoreGroups(SubjectID, Class, Check, false);*/
             return OutputHelper.SaveIgnoreGroups(SubjectID, Class, Check, true);
         }
 

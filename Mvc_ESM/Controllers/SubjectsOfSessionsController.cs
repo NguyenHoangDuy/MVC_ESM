@@ -21,7 +21,7 @@ namespace Mvc_ESM.Controllers
             InitViewBag();
             List<string[]> Result = new List<string[]>();
 
-            var Thi = (from t in InputHelper.db.This
+            /*var Thi = (from t in InputHelper.db.This
                        join m in InputHelper.db.monhocs on t.MaMonHoc equals m.MaMonHoc
                        select new { t.MaMonHoc, m.TenMonHoc, t.Nhom, t.CaThi.GioThi }).Distinct();
 
@@ -34,7 +34,7 @@ namespace Mvc_ESM.Controllers
                 s[3] = t.GioThi.Date.ToShortDateString();
                 s[4] = t.GioThi.ToString("HH:mm");
                 Result.Add(s);
-            }
+            }*/
             return View(Result);
         }
 
@@ -48,16 +48,17 @@ namespace Mvc_ESM.Controllers
             var Thi = (from t in InputHelper.db.This
                        join m in InputHelper.db.monhocs on t.MaMonHoc equals m.MaMonHoc
                        where t.Dot == Dot || Dot == ""
-                       select new { t.MaMonHoc, m.TenMonHoc, t.Nhom, t.CaThi.GioThi }).Distinct();
+                       select new { t.MaMonHoc, m.TenMonHoc, t.Nhom, t.CaThi.GioThi, t.MaCa }).Distinct();
 
             foreach (var t in Thi)
             {
-                string[] s = new string[5];
+                string[] s = new string[6];
                 s[0] = t.MaMonHoc;
                 s[1] = t.TenMonHoc;
                 s[2] = t.Nhom;
                 s[3] = t.GioThi.Date.ToShortDateString();
                 s[4] = t.GioThi.ToString("HH:mm");
+                s[5] = t.MaCa.ToString();
                 Result.Add(s);
             }
 

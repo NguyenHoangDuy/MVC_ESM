@@ -12,7 +12,7 @@
 {
     <p>
         <p>
-            Môn học: @Html.DropDownList("MonHoc", ViewBag.MonHoc as SelectList, new { id = "MonHocList" })
+            Môn học:  @Html.TextBox("MonHoc", ViewBag.SearchString as string, new { id = "txtSubjectID" })
             Phòng:  @Html.DropDownList("Phong", ViewBag.Phong as SelectList, Mvc_ESM.Settings.Page.Settings.SelectAllString, new { id = "PhongList" })
             Ca:  @Html.DropDownList("Ca", ViewBag.Shifts as SelectList, Mvc_ESM.Settings.Page.Settings.SelectAllString, new { id = "ShiftsList" })
             <input type="submit" value="Thực hiện" />
@@ -40,7 +40,7 @@
         @foreach (var m in Model)
         {
             <tr>
-                <td>@m[0]</td>
+                <td>@Html.ActionLink(m[0], "StudentSchedule", "CalendarResults", new { SearchString = m[0] }, null)</td>
                 <td>@m[1]</td>
                 <td>@m[2]</td>
                 <td>@m[3]</td>
@@ -68,7 +68,7 @@
         });
         new FixedHeader(oTable);
 
-        $("#MonHocList").change(function () {
+        $("#txtSubjectID").change(function () {
             var idSubject = $(this).val();
             $.getJSON("/Services/LoadRoomsBySubjectID", { SubjectID: idSubject },
             function (Data) {
@@ -94,9 +94,9 @@
         });
 
         $("#PhongList").change(function () {
-            var idSubject = $("#MonHocList").val();
+            var idSubject = $("#txtSubjectID").val();
             var id = $(this).val();
-            $.getJSON("/Services/LoadShiftsByRoomID", {SubjectID: idSubject, RoomID: id },
+            $.getJSON("/Services/LoadShiftsByRoomID", { SubjectID: idSubject, RoomID: id },
             function (Data) {
                 var select = $("#ShiftsList");
                 select.empty();
