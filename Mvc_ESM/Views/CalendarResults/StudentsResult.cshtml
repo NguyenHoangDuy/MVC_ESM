@@ -9,6 +9,7 @@
 <script src="@Url.Content("~/Scripts/Scheduler/dhtmlxscheduler_dhx_terrace.js")" type="text/javascript" charset="utf-8"></script>
 <link href="@Url.Content("~/Content/Scheduler/dhtmlxscheduler_dhx_terrace.css")" rel="stylesheet" type="text/css" />
 
+@Html.Partial("_Jquery-UI.Lib")
 MSSV:<input type="text" id="ID" />
 <button id="Go">Thực hiện</button>
 
@@ -25,7 +26,7 @@ MSSV:<input type="text" id="ID" />
 	    dp.init(scheduler);
 	    dp.setTransactionMode("POST", false);
     });
-    $('#Go').click(function () {
+    $('#Go').button().click(function () {
         scheduler.clearAll();
         scheduler.load("/CalendarResults/StudentsData?id=" + $("#ID").val());
     });

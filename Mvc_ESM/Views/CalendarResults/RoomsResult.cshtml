@@ -9,7 +9,7 @@
 <script src="@Url.Content("~/Scripts/Scheduler/dhtmlxscheduler_dhx_terrace.js")" type="text/javascript" charset="utf-8"></script>
 <link href="@Url.Content("~/Content/Scheduler/dhtmlxscheduler_dhx_terrace.css")" rel="stylesheet" type="text/css" />
 
-
+@Html.Partial("_Jquery-UI.Lib")
 Phòng:<input type="text" id="ID" />
 <button id="Go">Thực hiện</button>
 
@@ -71,7 +71,7 @@ Phòng:<input type="text" id="ID" />
         });
 
     });
-    $("#Go").click(function () {
+    $("#Go").button().click(function () {
         scheduler.clearAll();
         var link = "/CalendarResults/RoomsData?id=" + $("#ID").val();
         scheduler.load(link);

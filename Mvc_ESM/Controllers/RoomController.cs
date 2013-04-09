@@ -17,8 +17,10 @@ namespace Mvc_ESM.Controllers
         [HttpGet]
         public ViewResult Index()
         {
-            var phongs = (from r in InputHelper.db.phongs
-                          select r);
+            //var phongs = (from r in InputHelper.db.phongs
+            //              select r);
+            var phongs = InputHelper.db.phongs.Where(m => m.SucChua != null).Select(m => m);
+
             return View(phongs.ToList());
         }
 

@@ -15,7 +15,8 @@
             Khoa: @Html.DropDownList("Khoa", ViewBag.Khoa as SelectList, new { id = "KhoaList" })
             Lớp: @Html.DropDownList("Lop", ViewBag.Lop as SelectList, Mvc_ESM.Settings.Page.Settings.SelectAllString, new { id = "LopList" })
             Tên: @Html.TextBox("SearchString", ViewBag.SearchString as string, new { id = "SearchString" })
-            <input type="submit" value="Thực hiện" />
+            @*<input type="submit" value="Thực hiện" />*@
+            <button id="Submit" type ="submit">Thực hiện</button>
         </p>
 
     </p>
@@ -97,6 +98,7 @@
         return sOut;
     }
 
+    $('#Submit').button();
 
     $('#KhoaList').change(function () {
         var id = $(this).val();

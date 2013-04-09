@@ -12,7 +12,8 @@
             Khoa: @Html.DropDownList("Khoa", ViewBag.Khoa as SelectList, new { id = "KhoaList" })
             Bộ môn: @Html.DropDownList("BoMon", ViewBag.BoMon as SelectList, Mvc_ESM.Settings.Page.Settings.SelectAllString, new { id = "BoMonList" })
             Tên: @Html.TextBox("SearchString", ViewBag.SearchString as string, new { id = "SearchString" })
-            <input type="submit" value="Thực hiện" />
+            @*<input type="submit" value="Thực hiện" />*@
+            <button id="Submit" type ="submit">Thực hiện</button>
         </p>
 
     </p>
@@ -85,6 +86,8 @@
             $("#SearchString").empty();
         });
     });
+
+    $('#Submit').button();
 
     var oTable = $('#table').dataTable({
         @Html.Partial("_DataTable")

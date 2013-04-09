@@ -79,6 +79,17 @@ namespace Mvc_ESM.Static_Helper
         public String GhiChu { get; set; }
     }
 
+    public partial class SinhVien
+    {
+        public int STT { get; set; }
+        public String MSSV { get; set; }
+        public String Ho { get; set; }
+        public String Ten { get; set; }
+        public String Lop { get; set; }
+        public String GhiChu { get; set; }
+        public String NgaySinh { get; set; }
+    }
+
     public class jQueryDataTableParamModel
     {
         /// <summary>

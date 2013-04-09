@@ -559,5 +559,65 @@ namespace Mvc_ESM.Controllers
                          }).Distinct();
             return Json(aData, JsonRequestBehavior.AllowGet);
         }
+
+        [HttpGet]
+        public JsonResult GetSubjectsID()
+        {
+            var aData = (from a in InputHelper.db.This
+                         select new
+                         {
+                             MaMonHoc = a.MaMonHoc
+                         }).Distinct();
+            return Json(aData, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public JsonResult GetShiftsID(string SubjectID)
+        {
+            var aData = (from a in InputHelper.db.This
+                         where a.MaMonHoc == SubjectID
+                         select new
+                         {
+                             MaCa = a.MaCa
+                         }).Distinct();
+            return Json(aData, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public JsonResult GetRoomsID(string SubjectID, string ShiftID)
+        {
+            var aData = (from a in InputHelper.db.This
+                         where (a.MaMonHoc == SubjectID && a.MaCa == ShiftID)
+                         select new
+                         {
+                             MaPhong = a.MaPhong
+                         }).Distinct();
+            return Json(aData, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public JsonResult GetStudents(string SubjectID, string ShiftID, string RoomID)
+        {
+            var SV = (from sv in InputHelper.db.sinhviens
+                      join a in InputHelper.db.This on sv.MaSinhVien equals a.MaSinhVien
+                      where (a.MaMonHoc == SubjectID && a.MaCa == ShiftID && a.MaPhong == RoomID)
+                      select new SinhVien()
+                      {
+                          STT = 1,
+                          MSSV = sv.MaSinhVien,
+                          Ho = sv.Ho,
+                          Ten = sv.Ten,
+                          Lop = sv.Lop,
+                          NgaySinh = sv.NgaySinh,
+                          GhiChu = ""
+                      }).OrderBy(sv => sv.Ten).ToList<SinhVien>();
+
+            for (int i = 0; i < SV.Count; ++i)
+            {
+                SV[i].STT = i + 1;
+                SV[i].GhiChu = (InputHelper.IgnoreStudents.ContainsKey(SubjectID) ? (InputHelper.IgnoreStudents[SubjectID].Contains(SV[i].MSSV) ? "  (Cấm thi)" : "") : "");
+            }
+            return Json(SV, JsonRequestBehavior.AllowGet);
+        }
     }
 }

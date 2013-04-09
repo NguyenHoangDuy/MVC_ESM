@@ -12,7 +12,8 @@
 {
     <p>
         Tên: @Html.TextBox("SearchString", ViewBag.SearchString as string, new { id = "SearchString" })
-            <input type="submit" value="Thực hiện" />
+            @*<input type="submit" value="Thực hiện" />*@
+             <button id="Submit" type ="submit">Thực hiện</button>
     </p>
 }
 
@@ -60,5 +61,6 @@
         });
         new FixedHeader(oTable);
     });
+    $('#Submit').button();
 </script>
 
