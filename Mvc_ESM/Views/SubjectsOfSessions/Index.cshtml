@@ -84,10 +84,11 @@
             buttons: {
                 "Xóa": function () {
                     $.post("/SubjectsOfSessions/Delete", "id=" + sid, function (data) {
-                        alert(data);
+                        
                         if (data == "Xoá thành công!") {
                             //if (row.length !== 0) {
                             oTable.fnDeleteRow(row[0]);
+                            alert(data);
                             // }
                         }
                     });

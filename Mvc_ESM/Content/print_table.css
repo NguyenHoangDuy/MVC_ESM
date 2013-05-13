@@ -1,0 +1,9 @@
+table{
+    border: solid 1px rgb(204, 204, 204);
+    border-collapse: collapse;
+}
+
+
+table>tbody>tr>td, table>thead>tr>th {
+    border: solid 1px rgb(204, 204, 204);
+}

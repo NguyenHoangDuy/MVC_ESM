@@ -9,6 +9,8 @@ using Mvc_ESM;
 using Mvc_ESM.Models;
 using Newtonsoft.Json;
 using Mvc_ESM.Static_Helper;
+using CrystalDecisions.CrystalReports.Engine;
+using System.IO;
 namespace Mvc_ESM.Controllers
 {
     [Authorize]
@@ -159,8 +161,16 @@ namespace Mvc_ESM.Controllers
             }
             else
             {
-                InitViewBag(true, 1, SearchString);
-                InitViewBag(true, 2, SearchString);
+                string[] st = SearchString.Split('_');
+                if (st.Length == 3)
+                {
+                    return StudentsOfRooms(st[0], st[1], st[2]);
+                }
+                else
+                {
+                    InitViewBag(true, 1, SearchString);
+                    InitViewBag(true, 2, SearchString);
+                }
             }
             ViewBag.SearchString = SearchString;
             List<string[]> Result = new List<string[]>();
@@ -351,13 +361,14 @@ namespace Mvc_ESM.Controllers
                              {
                                  MaMonHoc = mh.MaMonHoc,
                                  MaPhong = mh.MaPhong,
-                                 GioThi = mh.CaThi.GioThi
+                                 GioThi = mh.CaThi.GioThi,
+                                 CaThi=mh.MaCa
                              }).OrderBy(m => m.GioThi);
             List<String[]> Results = new List<string[]>();
             int stt = 0;
             foreach (var sv in sinhviens)
             {
-                string[] s = new string[7];
+                string[] s = new string[8];
                 s[0] = ++stt + "";
                 s[1] = sv.MaMonHoc;
                 s[2] = (from mh in InputHelper.db.monhocs
@@ -367,6 +378,7 @@ namespace Mvc_ESM.Controllers
                 s[4] = sv.MaPhong;
                 s[5] = sv.GioThi.ToString("HH:mm");
                 s[6] = (InputHelper.IgnoreStudents.ContainsKey(sv.MaMonHoc) ? (InputHelper.IgnoreStudents[sv.MaMonHoc].Contains(SearchString) ? "Cấm thi" : "") : "");
+                s[7] = sv.CaThi;
                 Results.Add(s);
             }
             ViewBag.SearchString = SearchString;
@@ -408,6 +420,14 @@ namespace Mvc_ESM.Controllers
             String Result = "<data>"
                           + "<action type='" + action_type + "' sid='" + source_id + "' tid='" + target_id + "'></action></data>";
             return Content(Result, "text/xml");
+        }
+
+        public ActionResult Report()
+        {
+            this.HttpContext.Session["ReportName"] = "test.rpt";
+            this.HttpContext.Session["rptSource"] = new ServicesController().GetStudents("1991030", "188", "A206");
+
+            return RedirectToAction("ShowGenericRpt", "GenericReportViewer");
         }
 
     }

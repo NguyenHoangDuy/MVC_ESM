@@ -1,6 +1,6 @@
 ﻿@model  IEnumerable<string[]>
 @{
-    ViewBag.Title = "Danh sách sinh viên thi theo ";
+    ViewBag.Title = "Danh sách sinh viên thi theo môn theo phòng";
 }
 
 <h2>@ViewBag.Title</h2>
@@ -22,6 +22,10 @@
 }
 
 <button id="PrintAll">In tất cả</button>
+@using (Html.BeginForm("Report", "CalendarResults"))
+{
+    <input id="Report" type="submit" value="Report" />
+}
 
 <table id="table">
     <thead>
@@ -122,7 +126,8 @@
 <script>
 
     $('#PrintAll').button().click(function () {
-        var text = "";
+        var $text = "";
+        var sophong = 0;
         $.ajax({
             url: "/Services/GetSubjectsID",
             dataType: 'json',
@@ -130,7 +135,6 @@
             async: false,
             success: function (DataSB) {
                 $.each(DataSB, function (indexSB, itemSubject) {
-
                     $.ajax({
                         url: "/Services/GetShiftsID",
                         dataType: 'json',
@@ -146,9 +150,11 @@
                                     async: false,
                                     success: function (DataR) {
                                         $.each(DataR, function (indexR, itemRoom) {
-                                            //$('#info').html('Mã môn học: 1991030');
-                                            text = text + 'Mã môn học: ' + itemSubject.MaMonHoc + '. Phòng: ' + itemRoom.MaPhong;
-                                            text = text + "<table><thead><tr><th>Mã Sinh viên</th><th>Họ</th></tr></thead><tbody>";
+                                            //    $('#info').html('Mã môn học: 1991030');
+                                            $text += 'Mã môn học: ' + itemSubject.MaMonHoc + '. Phòng: ' + itemRoom.MaPhong;
+                                            //        $text += 'Mã môn học: 1991030. Phòng: A209' ;
+                                            //         sophong++;
+                                            $text += "<table><thead><tr><th>Mã Sinh viên</th><th>Họ</th><th>Tên</th><th>Lớp</th></tr></thead><tbody>";
                                             $.ajax({
                                                 url: "/Services/GetStudents",
                                                 dataType: 'json',
@@ -157,11 +163,18 @@
                                                 async: false,
                                                 success: function (DataStu) {
                                                     $.each(DataStu, function (indexStu, itemStudent) {
-                                                        text = text + "<tr><td>" + itemStudent.MSSV + "</td><td>" + itemStudent.Ten + "</td></tr>";
+                                                        $text += "<tr><td>" + itemStudent.MSSV + "</td><td>" + itemStudent.Ho + "</td><td>" + itemStudent.Ten + "</td><td>" + itemStudent.Lop + "</td></tr>";
                                                     });
                                                 }
                                             });
-                                            text = text + "</tbody></table>";
+                                            $text += "</tbody></table>";
+                                            /*if (sophong == 1000) {
+                                                $('#danhsach').empty();
+                                                $('#danhsach').append($text);
+                                                $('div#ListPrint').printElement({ overrideElementCSS: ['/Content/print_table.css'] });
+                                                $('#ListPrint').hide();
+                                                sophong = 0;
+                                            }*/
                                         });
                                     }
                                 });
@@ -172,12 +185,13 @@
             }
         });
         $('#danhsach').empty();
-        $('#danhsach').html(text);
-        $('div#ListPrint').printElement();
+        $('#danhsach').append($text);
+        $('div#ListPrint').printElement({ overrideElementCSS: ['/Content/print_table.css'] });
         $('#ListPrint').hide();
     });
 
     $('#Submit').button();
+    $('#Report').button();
 
 </script>
 

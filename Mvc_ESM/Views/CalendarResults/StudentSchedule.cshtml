@@ -12,8 +12,8 @@
 {
     <p>
         Tên: @Html.TextBox("SearchString", ViewBag.SearchString as string, new { id = "SearchString" })
-            @*<input type="submit" value="Thực hiện" />*@
-             <button id="Submit" type ="submit">Thực hiện</button>
+        @*<input type="submit" value="Thực hiện" />*@
+        <button id="Submit" type="submit">Thực hiện</button>
     </p>
 }
 
@@ -34,10 +34,10 @@
         {
             <tr>
                 <td>@m[0]</td>
-                <td>@m[1]</td>
+                <td>@Html.ActionLink(m[1], "StudentsOfSubjects", "CalendarResults", new { SearchString = m[1]+"_ " }, null)</td>
                 <td>@m[2]</td>
                 <td>@m[3]</td>
-                <td>@m[4]</td>
+                <td>@Html.ActionLink(m[4], "StudentsOfRooms", "CalendarResults", new { SearchString = m[1] + "_" + m[4] + "_" + m[7] }, null)</td>
                 <td>@m[5]</td>
                 <td>@m[6]</td>
             </tr>
