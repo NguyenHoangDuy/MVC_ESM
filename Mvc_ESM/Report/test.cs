@@ -66,7 +66,7 @@ namespace Mvc_ESM.Report {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.CrystalReports.Engine.Section GroupHeaderSection1 {
+        public CrystalDecisions.CrystalReports.Engine.Section GroupHeaderSection3 {
             get {
                 return this.ReportDefinition.Sections[2];
             }
@@ -74,7 +74,7 @@ namespace Mvc_ESM.Report {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.CrystalReports.Engine.Section GroupHeaderSection5 {
+        public CrystalDecisions.CrystalReports.Engine.Section GroupHeaderSection1 {
             get {
                 return this.ReportDefinition.Sections[3];
             }
@@ -82,7 +82,7 @@ namespace Mvc_ESM.Report {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.CrystalReports.Engine.Section GroupHeaderSection3 {
+        public CrystalDecisions.CrystalReports.Engine.Section GroupHeaderSection5 {
             get {
                 return this.ReportDefinition.Sections[4];
             }
@@ -98,7 +98,7 @@ namespace Mvc_ESM.Report {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.CrystalReports.Engine.Section GroupFooterSection3 {
+        public CrystalDecisions.CrystalReports.Engine.Section GroupFooterSection2 {
             get {
                 return this.ReportDefinition.Sections[6];
             }
@@ -106,7 +106,7 @@ namespace Mvc_ESM.Report {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.CrystalReports.Engine.Section GroupFooterSection2 {
+        public CrystalDecisions.CrystalReports.Engine.Section GroupFooterSection1 {
             get {
                 return this.ReportDefinition.Sections[7];
             }
@@ -114,7 +114,7 @@ namespace Mvc_ESM.Report {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.CrystalReports.Engine.Section GroupFooterSection1 {
+        public CrystalDecisions.CrystalReports.Engine.Section GroupFooterSection3 {
             get {
                 return this.ReportDefinition.Sections[8];
             }
