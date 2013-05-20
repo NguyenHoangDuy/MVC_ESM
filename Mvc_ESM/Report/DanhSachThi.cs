@@ -16,14 +16,14 @@ namespace Mvc_ESM.Report {
     using CrystalDecisions.CrystalReports.Engine;
     
     
-    public class test : ReportClass {
+    public class DanhSachThi : ReportClass {
         
-        public test() {
+        public DanhSachThi() {
         }
         
         public override string ResourceName {
             get {
-                return "test.rpt";
+                return "DanhSachThi.rpt";
             }
             set {
                 // Do nothing
@@ -41,7 +41,7 @@ namespace Mvc_ESM.Report {
         
         public override string FullResourceName {
             get {
-                return "Mvc_ESM.Report.test.rpt";
+                return "Mvc_ESM.Report.DanhSachThi.rpt";
             }
             set {
                 // Do nothing
@@ -138,9 +138,9 @@ namespace Mvc_ESM.Report {
     }
     
     [System.Drawing.ToolboxBitmapAttribute(typeof(CrystalDecisions.Shared.ExportOptions), "report.bmp")]
-    public class Cachedtest : Component, ICachedReport {
+    public class CachedDanhSachThi : Component, ICachedReport {
         
-        public Cachedtest() {
+        public CachedDanhSachThi() {
         }
         
         [Browsable(false)]
@@ -177,7 +177,7 @@ namespace Mvc_ESM.Report {
         }
         
         public virtual CrystalDecisions.CrystalReports.Engine.ReportDocument CreateReport() {
-            test rpt = new test();
+            DanhSachThi rpt = new DanhSachThi();
             rpt.Site = this.Site;
             return rpt;
         }

@@ -424,9 +424,7 @@ namespace Mvc_ESM.Controllers
 
         public ActionResult Report()
         {
-            this.HttpContext.Session["ReportName"] = "test.rpt";
-            this.HttpContext.Session["rptSource"] = new ServicesController().GetStudents("1991030", "188", "A206");
-
+            this.HttpContext.Session["ReportName"] = "DanhSachThi.rpt";
             return RedirectToAction("ShowGenericRpt", "GenericReportViewer");
         }
 

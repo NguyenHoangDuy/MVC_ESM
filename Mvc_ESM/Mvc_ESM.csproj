@@ -128,10 +128,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Provider\CustomMembershipProvider.cs" />
     <Compile Include="Provider\CustomRoleProvider.cs" />
-    <Compile Include="Report\test.cs">
+    <Compile Include="Report\DanhSachThi.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>test.rpt</DependentUpon>
+      <DependentUpon>DanhSachThi.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Settings\Page.cs" />
@@ -339,9 +339,9 @@
     <Content Include="Views\SubjectsOfSessions\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Report\test.rpt">
+    <Content Include="Report\DanhSachThi.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
-      <LastGenOutput>test.cs</LastGenOutput>
+      <LastGenOutput>DanhSachThi.cs</LastGenOutput>
     </Content>
   </ItemGroup>
   <PropertyGroup>
