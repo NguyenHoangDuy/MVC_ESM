@@ -5,6 +5,7 @@ using System.Data;
 using System.Data.Common;
 using System.Data.Objects;
 using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -75,7 +76,7 @@ namespace Mvc_ESM.Static_Helper
             }
             catch
             {
-                AlgorithmRunner.SaveOBJ("Status", "err Lỗi trong khi xoá CSDL, hãy thử chạy lại lần nữa!");
+                AlgorithmRunner.SaveOBJ("Status", "err Lỗi Pri trong khi xoá CSDL, hãy thử chạy lại lần nữa!");
                 AlgorithmRunner.IsBusy = false;
                 Thread.CurrentThread.Abort();
             }
@@ -91,18 +92,26 @@ namespace Mvc_ESM.Static_Helper
                 dot = int.Parse(DotQry[0].ToString()) + 1;
             }
 
-            int GCount = RoomPriority.Groups.Count;
+            SaveDatabase(dot, RoomPriority.Groups, RoomPriority.GroupsTime, RoomPriority.GroupsRoom, RoomPriority.GroupsRoomStudents);
+
+            SaveDatabase(dot, AlgorithmRunner.Groups, AlgorithmRunner.GroupsTime, AlgorithmRunner.GroupsRoom, AlgorithmRunner.GroupsRoomStudents);
+        }
+
+        private static void SaveDatabase(int dot, List<String> Groups, DateTime[] GroupsTime, List<Room>[] GroupsRoom, List<String>[][] GroupsRoomStudents)
+        {
+            int GCount = Groups.Count;
             for (int GroupIndex = 0; GroupIndex < GCount; GroupIndex++)
             {
                 Thi aRecord = new Thi();
-                aRecord.MaMonHoc = AlgorithmRunner.GetSubjectID(RoomPriority.Groups[GroupIndex]);
-                aRecord.Nhom = AlgorithmRunner.GetClassList(RoomPriority.Groups[GroupIndex]);
+                aRecord.MaMonHoc = AlgorithmRunner.GetSubjectID(Groups[GroupIndex]);
+                aRecord.Nhom = AlgorithmRunner.GetClassList(Groups[GroupIndex]);
 
 
                 DateTime FirstShiftTime = InputHelper.Options.StartDate.AddHours(InputHelper.Options.Times[0].Hour)
                                                                       .AddMinutes(InputHelper.Options.Times[0].Minute);
                 String ShiftID = dot.ToString();// InputHelper.Options.StartDate.Year + "" + InputHelper.Options.StartDate.Month + "" + InputHelper.Options.StartDate.Day;
-                ShiftID += RoomArrangement.CalcShift(FirstShiftTime, RoomPriority.GroupsTime[GroupIndex]).ToString() + "UT";
+
+                ShiftID += "_" + RoomArrangement.CalcShift(FirstShiftTime, GroupsTime[GroupIndex]).ToString();
 
 
                 if ((from ct in db.CaThis where ct.MaCa == ShiftID select ct).Count() == 0)
@@ -111,72 +120,16 @@ namespace Mvc_ESM.Static_Helper
                     var pa = new SqlParameter[] 
                         { 
                             new SqlParameter("@MaCa", SqlDbType.NVarChar) { Value = ShiftID},
-                            new SqlParameter("@GioThi", SqlDbType.DateTime) { Value = RoomPriority.GroupsTime[GroupIndex] },
+                            new SqlParameter("@GioThi", SqlDbType.DateTime) { Value = GroupsTime[GroupIndex] },
                         };
                     db.Database.ExecuteSqlCommand("INSERT INTO CaThi (MaCa, GioThi) VALUES (@MaCa, @GioThi)", pa);
                 }
                 aRecord.MaCa = ShiftID;
                 String SQLQuery = "";
-                for (int RoomIndex = 0; RoomIndex < RoomPriority.GroupsRoom[GroupIndex].Count; RoomIndex++)
+                for (int RoomIndex = 0; RoomIndex < GroupsRoom[GroupIndex].Count; RoomIndex++)
                 {
-                    aRecord.MaPhong = RoomPriority.GroupsRoom[GroupIndex][RoomIndex].RoomID;
-                    for (int StudentIndex = 0; StudentIndex < RoomPriority.GroupsRoomStudents[GroupIndex][RoomIndex].Count; StudentIndex++)
-                    {
-                        aRecord.MaSinhVien = RoomPriority.GroupsRoomStudents[GroupIndex][RoomIndex][StudentIndex];
-                        SQLQuery += String.Format("INSERT INTO Thi (MaCa, MaMonHoc, Nhom, MaPhong, MaSinhVien, Dot) VALUES ('{0}', '{1}', '{2}', '{3}', '{4}','{5}')\r\n",
-                                                    aRecord.MaCa,
-                                                    aRecord.MaMonHoc,
-                                                    aRecord.Nhom,
-                                                    aRecord.MaPhong,
-                                                    aRecord.MaSinhVien,
-                                                    dot
-                                                );
-                    } // sinh viên
-                } // phòng
-                try
-                {
-                    AlgorithmRunner.SaveOBJ("Status", "inf Đang Lưu vào cơ sở dữ liệu (" + (GroupIndex + 1) + "/" + GCount + ")");
-                    db.Database.ExecuteSqlCommand(SQLQuery);
-                }
-                catch
-                {
-                    AlgorithmRunner.SaveOBJ("Status", "err Lỗi trong khi chèn thêm nội dung vào CSDL! Hãy thử lại hoặc liên hệ với quản trị nếu vẫn lỗi!");
-                    AlgorithmRunner.IsBusy = false;
-                    Thread.CurrentThread.Abort();
-                }
-            }// môn
-
-
-            GCount = AlgorithmRunner.Groups.Count;
-            for (int GroupIndex = 0; GroupIndex < GCount; GroupIndex++)
-            {
-                Thi aRecord = new Thi();
-                aRecord.MaMonHoc = AlgorithmRunner.GetSubjectID(AlgorithmRunner.Groups[GroupIndex]);
-                aRecord.Nhom = AlgorithmRunner.GetClassList(AlgorithmRunner.Groups[GroupIndex]);
-
-
-                DateTime FirstShiftTime = InputHelper.Options.StartDate.AddHours(InputHelper.Options.Times[0].Hour)
-                                                                      .AddMinutes(InputHelper.Options.Times[0].Minute);
-                String ShiftID = dot.ToString();// InputHelper.Options.StartDate.Year + "" + InputHelper.Options.StartDate.Month + "" + InputHelper.Options.StartDate.Day;
-                ShiftID += RoomArrangement.CalcShift(FirstShiftTime, AlgorithmRunner.GroupsTime[GroupIndex]).ToString();
-
-
-                if ((from ct in db.CaThis where ct.MaCa == ShiftID select ct).Count() == 0)
-                {
-
-                    var pa = new SqlParameter[] 
-                        { 
-                            new SqlParameter("@MaCa", SqlDbType.NVarChar) { Value = ShiftID},
-                            new SqlParameter("@GioThi", SqlDbType.DateTime) { Value = AlgorithmRunner.GroupsTime[GroupIndex] },
-                        };
-                    db.Database.ExecuteSqlCommand("INSERT INTO CaThi (MaCa, GioThi) VALUES (@MaCa, @GioThi)", pa);
-                }
-                aRecord.MaCa = ShiftID;
-                String SQLQuery = "";
-                for (int RoomIndex = 0; RoomIndex < AlgorithmRunner.GroupsRoom[GroupIndex].Count; RoomIndex++)
-                {
-                    aRecord.MaPhong = AlgorithmRunner.GroupsRoom[GroupIndex][RoomIndex].RoomID;
-                    for (int StudentIndex = 0; StudentIndex < AlgorithmRunner.GroupsRoomStudents[GroupIndex][RoomIndex].Count; StudentIndex++)
+                    aRecord.MaPhong = GroupsRoom[GroupIndex][RoomIndex].RoomID;
+                    for (int StudentIndex = 0; StudentIndex < GroupsRoomStudents[GroupIndex][RoomIndex].Count; StudentIndex++)
                     {
                         aRecord.MaSinhVien = AlgorithmRunner.GroupsRoomStudents[GroupIndex][RoomIndex][StudentIndex];
                         SQLQuery += String.Format("INSERT INTO Thi (MaCa, MaMonHoc, Nhom, MaPhong, MaSinhVien, Dot) VALUES ('{0}', '{1}', '{2}', '{3}', '{4}','{5}')\r\n",
@@ -187,12 +140,13 @@ namespace Mvc_ESM.Static_Helper
                                                     aRecord.MaSinhVien,
                                                     dot
                                                 );
-                    } // sinh viên
-                } // phòng
+                    }
+                }
                 try
                 {
                     AlgorithmRunner.SaveOBJ("Status", "inf Đang Lưu vào cơ sở dữ liệu (" + (GroupIndex + 1) + "/" + GCount + ")");
                     db.Database.ExecuteSqlCommand(SQLQuery);
+                    Check(aRecord.MaMonHoc, aRecord.Nhom);
                 }
                 catch
                 {
@@ -200,8 +154,22 @@ namespace Mvc_ESM.Static_Helper
                     AlgorithmRunner.IsBusy = false;
                     Thread.CurrentThread.Abort();
                 }
-            }// môn
+            }
+        }
+
+        private static void Check(String MaMH, String Class)
+        {
+            String[] aClass = Class.Split(',');
+            for (int i = 0; i < aClass.Length; i++)
+            {
+                if (InputHelper.Groups.ContainsKey(MaMH + "_" + aClass[i]))
+                    InputHelper.Groups[MaMH + "_" + aClass[i]].IsIgnored = true;
+            }
+            // OutputHelper.SaveOBJ("Groups", InputHelper.Groups);
+            AlgorithmRunner.SaveOBJ("Groups", InputHelper.Groups);
         }
 
     }
+
+
 }

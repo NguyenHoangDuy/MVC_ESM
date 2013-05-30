@@ -73,7 +73,7 @@ namespace Mvc_ESM.Controllers
                           {
                               MaDot = m.Dot,
                               TenDon = m.Dot
-                          }).Distinct();
+                          }).Distinct().OrderBy(m => m.MaDot);
             ViewBag.Dot = new SelectList(DotQry.ToArray(), "MaDot", "TenDon");
         }
 
