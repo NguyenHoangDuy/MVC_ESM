@@ -115,34 +115,41 @@ namespace Mvc_ESM.Static_Helper
 
         public void RunCreateAdjacencyMatrix()
         {
-            if (OBJExits("AdjacencyMatrix"))
-            {
-                //AdjacencyMatrix = ReadOBJ<int[,]>("AdjacencyMatrix");
-                ReadAdjacencyMatrix(RealPath("AdjacencyMatrix"));
-                if (AdjacencyMatrixSize != Groups.Count())
-                {
-                    AdjacencyMatrixSize = Groups.Count;
-                    AdjacencyMatrix = new int[AdjacencyMatrixSize, AdjacencyMatrixSize];
-                    BeginI = 0;
-                }
-                else
-                {
-                    if (OBJExits("BeginI"))
-                    {
-                        BeginI = ReadOBJ<int>("BeginI");
-                    }
-                    else
-                    {
-                        BeginI = 0;
-                    }
-                }
-            }
-            else
-            {
-                AdjacencyMatrixSize = Groups.Count;
-                AdjacencyMatrix = new int[AdjacencyMatrixSize, AdjacencyMatrixSize];
-                BeginI = 0;
-            }
+
+            //if (OBJExits("AdjacencyMatrix"))
+            //{
+            //    //AdjacencyMatrix = ReadOBJ<int[,]>("AdjacencyMatrix");
+            //    ReadAdjacencyMatrix(RealPath("AdjacencyMatrix"));
+            //    if (AdjacencyMatrixSize != Groups.Count())
+            //    {
+            //        AdjacencyMatrixSize = Groups.Count;
+            //        AdjacencyMatrix = new int[AdjacencyMatrixSize, AdjacencyMatrixSize];
+            //        BeginI = 0;
+            //    }
+            //    else
+            //    {
+            //        if (OBJExits("BeginI"))
+            //        {
+            //            BeginI = ReadOBJ<int>("BeginI");
+            //        }
+            //        else
+            //        {
+            //            BeginI = 0;
+            //        }
+            //    }
+            //}
+            //else
+            //{
+            //   // Init();
+            //    AdjacencyMatrixSize = Groups.Count;
+            //    AdjacencyMatrix = new int[AdjacencyMatrixSize, AdjacencyMatrixSize];
+            //    BeginI = 0;
+            //}
+
+            Init();
+            AdjacencyMatrixSize = Groups.Count;
+            AdjacencyMatrix = new int[AdjacencyMatrixSize, AdjacencyMatrixSize];
+            BeginI = 0;
             Thread thread = new Thread(new ThreadStart(CreateAdjacencyMatrix.Run));
             thread.Name = "CreateAdjacencyMatrix";
             thread.Start();
@@ -172,7 +179,7 @@ namespace Mvc_ESM.Static_Helper
                 SaveOBJ("Status", "err Chưa hoàn thiện quá trình phân tích CSDL");
             }
             IsBusy = false;
-           // Thread.CurrentThread.Abort();
+            // Thread.CurrentThread.Abort();
         }
 
         public void RunSaveToDatabase()

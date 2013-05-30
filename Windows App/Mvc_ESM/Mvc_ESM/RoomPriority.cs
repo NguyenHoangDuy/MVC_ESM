@@ -17,8 +17,6 @@ namespace Mvc_ESM
         public static DateTime[] GroupsTime;
         private static int RoomUsedIndex;
         private static int MaxContaint;
-        public static int Count;
-
 
         public static void Run()
         {
@@ -44,7 +42,6 @@ namespace Mvc_ESM
                 Groups.Add(st);
                 GroupsTime[i++] = pri.Time;
             }
-            Count = InputHelper.Priorities.Count;
             MaxContaint = InputHelper.Rooms.Max(m => m.Rooms.Where(w => !w.IsBusy).Sum(s => s.Container));
         }
 
@@ -94,7 +91,7 @@ namespace Mvc_ESM
             int StudentsNumber = StudentByGroup[Groups[GroupIndex]].Count;
             if (StudentsNumber > MaxContaint)
             {
-                AlgorithmRunner.SaveOBJ("Status", "err Phòng thi không đủ, đang dừng lại ở nhóm thi: " + AlgorithmRunner.Groups[GroupIndex] + " với số sinh viên là:" + StudentsNumber);
+                AlgorithmRunner.SaveOBJ("Status", "err Phòng thi không đủ, đang dừng lại ở nhóm thi: " + Groups[GroupIndex] + " với số sinh viên là:" + StudentsNumber);
                 AlgorithmRunner.IsBusy = false;
                 Thread.CurrentThread.Abort();
             }

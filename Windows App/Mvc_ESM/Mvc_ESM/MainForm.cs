@@ -37,12 +37,14 @@ namespace Mvc_ESM
                         break;
                     case "1":
                         InputHelper.Groups = InputHelper.InitGroups();
-                        InputHelper.IgnoreStudents = InputHelper.InitIgnoreStudents();
+                       // InputHelper.IgnoreStudents = InputHelper.InitIgnoreStudents();
                         AlgorithmRunner.RunCreateAdjacencyMatrix();
                         txtArgs.Text += DateTime.Now.ToString() + " RunCreateAdjacencyMatrix\r\n";
                         break;
                     case "2":
                         AlgorithmRunner.RunPriority();
+
+                       // InputHelper.Groups = InputHelper.InitGroups();
                         InputHelper.IgnoreStudents = InputHelper.InitIgnoreStudents();
                         InputHelper.Shifts = InputHelper.InitShift();
                         InputHelper.Rooms = InputHelper.InitRooms();

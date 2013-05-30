@@ -19,10 +19,10 @@ namespace Mvc_ESM.Static_Helper
         public static void SaveOBJ(String Name, Object OBJ)
         {
             System.IO.File.WriteAllText(
-                RealPath( Name ),
+                RealPath(Name),
                 JsonConvert.SerializeObject(OBJ, Formatting.Indented),
                 Encoding.UTF8
-            );            
+            );
         }
         public static void DeleteOBJ(String Name)
         {
@@ -77,13 +77,25 @@ namespace Mvc_ESM.Static_Helper
                 String aKey = SubjectID[i] + "_" + Class[i];
                 if (IgnoreGroups.ContainsKey(aKey))
                 {
-                    IgnoreGroups[aKey].IsIgnored = (Check[i] == "checked"); // Check[i] != "undefined"
+                    IgnoreGroups[aKey].IsIgnored = (Check[i] == "checked") ? true : false; // Check[i] != "undefined"
                 }
                 paramInfo += "MH:" + SubjectID[i] + " Class: " + Class[i] + " Check: " + Check[i] + "<br />";
             }
+
             if (IsFinal)
             {
                 InputHelper.Groups = Clone.Dictionary<String, Group>(IgnoreGroups);
+
+                //for (int i = 0; i < SubjectID.Count; i++)
+                //{
+                //    if (InputHelper.Groups.ContainsKey(SubjectID[i] + "_" + Class[i]))
+                //    {
+                //        if (Check[i] == "undefined")
+                //            InputHelper.Groups[SubjectID[i] + "_" + Class[i]].IsIgnored = false;
+                //        else
+                //            InputHelper.Groups[SubjectID[i] + "_" + Class[i]].IsIgnored = true;
+                //    }
+                //}
                 OutputHelper.SaveOBJ("Groups", InputHelper.Groups);
             }
             else
@@ -107,15 +119,15 @@ namespace Mvc_ESM.Static_Helper
 
                 paramInfo += "MH:" + SubjectID[i] + " Class: " + Class[i] + " Group: " + Group[i] + "<br />";
             }
-             if (IsFinal)
-             {
-                 InputHelper.Groups = Clone.Dictionary<String, Group>(Groups);
-                 OutputHelper.SaveOBJ("Groups", InputHelper.Groups); 
-             }
-             else
-             {
-                 CurrentSession.Set("Groups", Clone.Dictionary<String, Group>(Groups));
-             }
+            if (IsFinal)
+            {
+                InputHelper.Groups = Clone.Dictionary<String, Group>(Groups);
+                OutputHelper.SaveOBJ("Groups", InputHelper.Groups);
+            }
+            else
+            {
+                CurrentSession.Set("Groups", Clone.Dictionary<String, Group>(Groups));
+            }
             return paramInfo;
         }
     }

@@ -131,7 +131,7 @@ namespace Mvc_ESM.Static_Helper
                     aRecord.MaPhong = GroupsRoom[GroupIndex][RoomIndex].RoomID;
                     for (int StudentIndex = 0; StudentIndex < GroupsRoomStudents[GroupIndex][RoomIndex].Count; StudentIndex++)
                     {
-                        aRecord.MaSinhVien = AlgorithmRunner.GroupsRoomStudents[GroupIndex][RoomIndex][StudentIndex];
+                        aRecord.MaSinhVien = GroupsRoomStudents[GroupIndex][RoomIndex][StudentIndex];
                         SQLQuery += String.Format("INSERT INTO Thi (MaCa, MaMonHoc, Nhom, MaPhong, MaSinhVien, Dot) VALUES ('{0}', '{1}', '{2}', '{3}', '{4}','{5}')\r\n",
                                                     aRecord.MaCa,
                                                     aRecord.MaMonHoc,

@@ -82,7 +82,7 @@ namespace Mvc_ESM.Static_Helper
                 AlgorithmRunner.GroupsRoomStudents[GroupIndex][RoomIndex] = new List<String>();
                 for (int StudentIndex = Used; StudentIndex < Used + Use; StudentIndex++)
                 {
-                    AlgorithmRunner.GroupsRoomStudents[GroupIndex][RoomIndex].Add(StudentByGroup[AlgorithmRunner.Groups[GroupIndex]][StudentIndex]);
+                    AlgorithmRunner.GroupsRoomStudents[GroupIndex][RoomIndex].Add(RoomArrangement.StudentByGroup[AlgorithmRunner.Groups[GroupIndex]][StudentIndex]);
 
                 }
                 Used += Use;
@@ -140,14 +140,13 @@ namespace Mvc_ESM.Static_Helper
             for (int GroupIndex = 0; GroupIndex < AlgorithmRunner.Groups.Count; GroupIndex++)
             {
                 String SubjectID = AlgorithmRunner.GetSubjectID(AlgorithmRunner.Groups[GroupIndex]);
-                
                 String ClassList = AlgorithmRunner.GetClassList(AlgorithmRunner.Groups[GroupIndex]);
                 //String IgnoreStudents = InputHelper.IgnoreStudents.ContainsKey(SubjectID) ? JsonConvert.SerializeObject(InputHelper.IgnoreStudents[SubjectID]) : "[]";
                 //IgnoreStudents = IgnoreStudents.Substring(1, IgnoreStudents.Length - 2).Replace("\"", "'");
                 IEnumerable<String> Result = InputHelper.db.Database.SqlQuery<String>("select sinhvien.MaSinhVien from pdkmh, sinhvien "
                                                                             + "where pdkmh.MaSinhVien = sinhvien.MaSinhVien "
                                                                             + "and MaMonHoc = '" + SubjectID + "' "
-                                                                          //  + (IgnoreStudents.Length > 0 ? "and not(sinhvien.MaSinhVien in (" + IgnoreStudents + ")) " : "")
+                                                          //                  + (IgnoreStudents.Length > 0 ? "and not(sinhvien.MaSinhVien in (" + IgnoreStudents + ")) " : "")
                                                                             + "and pdkmh.Nhom in(" + ClassList + ") "
                                                                             + "order by (Ten + Ho)");
                 StudentByGroup.Add(AlgorithmRunner.Groups[GroupIndex], Result.ToList<String>());

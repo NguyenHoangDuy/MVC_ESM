@@ -32,12 +32,14 @@ namespace Mvc_ESM.Controllers
         public String IgnoreSuccess(List<String> SubjectID, List<String> Class, List<String> Check)
         {
             List<Priority> SBP = InputHelper.SubjectPriority;
-
-            for (int i = 0; i < SubjectID.Count; ++i)
-                foreach (var sbp in SBP)
-                    if (SubjectID[i] == sbp.SubjectID)
-                        if (Check[i] == "undefined")
-                            Check[i] = "checked";
+            if (SBP.Count != 0)
+            {
+                for (int i = 0; i < SubjectID.Count; ++i)
+                    foreach (var sbp in SBP)
+                        if (SubjectID[i] == sbp.SubjectID)
+                            if (Check[i] == "undefined")
+                                Check[i] = "checked";
+            }
             /*List<Priority> SBP = InputHelper.SubjectPriority;
 
             InputHelper.SubjectPriority = new List<Priority>();
