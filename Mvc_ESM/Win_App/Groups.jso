@@ -57,7 +57,7 @@
     "Nhom": 6,
     "SoLuongDK": 19,
     "GroupID": 1,
-    "IsIgnored": true
+    "IsIgnored": false
   },
   "0160022_1": {
     "MaMonHoc": "0160022",
@@ -9247,7 +9247,7 @@
     "Nhom": 1,
     "SoLuongDK": 43,
     "GroupID": 1,
-    "IsIgnored": true
+    "IsIgnored": false
   },
   "1123060_2": {
     "MaMonHoc": "1123060",
@@ -9257,7 +9257,7 @@
     "Nhom": 2,
     "SoLuongDK": 25,
     "GroupID": 1,
-    "IsIgnored": true
+    "IsIgnored": false
   },
   "1123060_3": {
     "MaMonHoc": "1123060",
@@ -9267,7 +9267,7 @@
     "Nhom": 3,
     "SoLuongDK": 21,
     "GroupID": 1,
-    "IsIgnored": true
+    "IsIgnored": false
   },
   "1123080_1": {
     "MaMonHoc": "1123080",
@@ -9277,7 +9277,7 @@
     "Nhom": 1,
     "SoLuongDK": 18,
     "GroupID": 1,
-    "IsIgnored": true
+    "IsIgnored": false
   },
   "1123080_2": {
     "MaMonHoc": "1123080",
@@ -9287,7 +9287,7 @@
     "Nhom": 2,
     "SoLuongDK": 19,
     "GroupID": 1,
-    "IsIgnored": true
+    "IsIgnored": false
   },
   "1123080_3": {
     "MaMonHoc": "1123080",
@@ -9297,7 +9297,7 @@
     "Nhom": 3,
     "SoLuongDK": 31,
     "GroupID": 1,
-    "IsIgnored": true
+    "IsIgnored": false
   },
   "1123090_1": {
     "MaMonHoc": "1123090",

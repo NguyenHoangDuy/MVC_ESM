@@ -71,6 +71,7 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RoomArrangement.cs" />
+    <Compile Include="RoomPriority.cs" />
     <Compile Include="SaveToDatabase.cs" />
     <Compile Include="Types.cs" />
     <EmbeddedResource Include="MainForm.resx">

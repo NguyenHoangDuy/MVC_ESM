@@ -24,6 +24,13 @@ namespace Mvc_ESM.Static_Helper
         public Boolean IsIgnored { get; set; }
     }
 
+    public class Priority
+    {
+        public String SubjectID { get; set; }
+        public DateTime Date { get; set; }
+        public DateTime Time { get; set; }
+    }
+
     public class Room
     {
         public String RoomID { get; set; }

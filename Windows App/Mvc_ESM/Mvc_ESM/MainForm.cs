@@ -42,6 +42,7 @@ namespace Mvc_ESM
                         txtArgs.Text += DateTime.Now.ToString() + " RunCreateAdjacencyMatrix\r\n";
                         break;
                     case "2":
+                        AlgorithmRunner.RunPriority();
                         InputHelper.IgnoreStudents = InputHelper.InitIgnoreStudents();
                         InputHelper.Shifts = InputHelper.InitShift();
                         InputHelper.Rooms = InputHelper.InitRooms();
@@ -86,6 +87,7 @@ namespace Mvc_ESM
 
         private void btnRunCalc_Click(object sender, EventArgs e)
         {
+            AlgorithmRunner.RunPriority();
             AlgorithmRunner.RunCalc();
         }
 

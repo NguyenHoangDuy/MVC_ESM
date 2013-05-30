@@ -4,9 +4,28 @@
       "RoomID": "A101",
       "Container": 48,
       "IsBusy": false
-    },
+    }
+  ],
+  [
     {
       "RoomID": "A102",
+      "Container": 48,
+      "IsBusy": false
+    },
+    {
+      "RoomID": "A103",
+      "Container": 48,
+      "IsBusy": false
+    }
+  ],
+  [
+    {
+      "RoomID": "A104",
+      "Container": 48,
+      "IsBusy": false
+    },
+    {
+      "RoomID": "A105",
       "Container": 48,
       "IsBusy": false
     }

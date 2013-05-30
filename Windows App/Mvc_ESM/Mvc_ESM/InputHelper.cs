@@ -29,6 +29,9 @@ namespace Mvc_ESM.Static_Helper
         /// Phòng thi
         /// </summary>
         public static List<RoomList> Rooms = InitRooms();
+
+
+        public static List<Priority> Priorities = InitSubjectPriority();
         /// <summary>
         /// Lấy danh sách các nhóm của môn học
         /// </summary>
@@ -158,6 +161,19 @@ namespace Mvc_ESM.Static_Helper
                     }
 
                 };
+            }
+        }
+
+        public static List<Priority> InitSubjectPriority()
+        {
+            String Path = AlgorithmRunner.RealPath("SubjectPriority");
+            if (File.Exists(Path))
+            {
+                return JsonConvert.DeserializeObject<List<Priority>>(File.ReadAllText(Path));
+            }
+            else
+            {
+                return new List<Priority>();
             }
         }
 

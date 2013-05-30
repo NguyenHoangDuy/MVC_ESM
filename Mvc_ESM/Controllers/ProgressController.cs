@@ -24,7 +24,7 @@ namespace Mvc_ESM.Controllers
                           {
                               MaDot = m.Dot,
                               TenDon = m.Dot
-                          }).Distinct();
+                          }).Distinct().OrderBy(m => m.MaDot);
             ViewBag.Dot = new SelectList(DotQry.ToArray(), "MaDot", "TenDon");
             return View();
         }
@@ -54,7 +54,7 @@ namespace Mvc_ESM.Controllers
             }
             string st = OutputHelper.SaveIgnoreGroups(SB, aClass, Check, true);
             InputHelper.SubjectPriority = new List<Priority>();
-            OutputHelper.SaveOBJ("SubjectPriority", InputHelper.SubjectPriority);       
+            OutputHelper.SaveOBJ("SubjectPriority", InputHelper.SubjectPriority);
         }
 
         [HttpPost]
@@ -73,7 +73,7 @@ namespace Mvc_ESM.Controllers
                     return Content("RunCalc");
                 case 3:
                     Process.Start(OutputHelper.WinAppExe, "3");
-                    UnCheckSubject();
+                   // UnCheckSubject();
                     return Content("RunSaveToDatabase");
                 case 5:
                     Process.Start(OutputHelper.WinAppExe, StepNumber);

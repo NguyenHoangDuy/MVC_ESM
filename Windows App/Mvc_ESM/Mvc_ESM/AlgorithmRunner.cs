@@ -106,6 +106,13 @@ namespace Mvc_ESM.Static_Helper
             AdjacencyMatrix = new int[AdjacencyMatrixSize, AdjacencyMatrixSize];
         }
 
+        public void RunPriority()
+        {
+            Thread thread = new Thread(new ThreadStart(RoomPriority.Run));
+            thread.Name = "RoomPriority";
+            thread.Start();
+        }
+
         public void RunCreateAdjacencyMatrix()
         {
             if (OBJExits("AdjacencyMatrix"))
@@ -172,6 +179,10 @@ namespace Mvc_ESM.Static_Helper
         {
             if (OBJExits("GroupsTime") && OBJExits("GroupsRoom") && OBJExits("GroupsRoomStudents"))
             {
+                RoomPriority.GroupsTime = ReadOBJ<DateTime[]>("GroupsTimePri");
+                RoomPriority.GroupsRoom = ReadOBJ<List<Room>[]>("GroupsRoomPri");
+                RoomPriority.GroupsRoomStudents = ReadOBJ<List<String>[][]>("GroupsRoomStudentsPri");
+
                 GroupsTime = ReadOBJ<DateTime[]>("GroupsTime");
                 GroupsRoom = ReadOBJ<List<Room>[]>("GroupsRoom");
                 GroupsRoomStudents = ReadOBJ<List<String>[][]>("GroupsRoomStudents");

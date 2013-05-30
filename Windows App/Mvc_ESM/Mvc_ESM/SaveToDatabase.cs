@@ -82,7 +82,7 @@ namespace Mvc_ESM.Static_Helper
         }
         private static void Save()
         {
-            int GCount = AlgorithmRunner.Groups.Count;
+
             var DotQry = (from m in InputHelper.db.This
                           select m.Dot).Max();
             int dot = 1;
@@ -91,6 +91,63 @@ namespace Mvc_ESM.Static_Helper
                 dot = int.Parse(DotQry[0].ToString()) + 1;
             }
 
+            int GCount = RoomPriority.Groups.Count;
+            for (int GroupIndex = 0; GroupIndex < GCount; GroupIndex++)
+            {
+                Thi aRecord = new Thi();
+                aRecord.MaMonHoc = AlgorithmRunner.GetSubjectID(RoomPriority.Groups[GroupIndex]);
+                aRecord.Nhom = AlgorithmRunner.GetClassList(RoomPriority.Groups[GroupIndex]);
+
+
+                DateTime FirstShiftTime = InputHelper.Options.StartDate.AddHours(InputHelper.Options.Times[0].Hour)
+                                                                      .AddMinutes(InputHelper.Options.Times[0].Minute);
+                String ShiftID = dot.ToString();// InputHelper.Options.StartDate.Year + "" + InputHelper.Options.StartDate.Month + "" + InputHelper.Options.StartDate.Day;
+                ShiftID += RoomArrangement.CalcShift(FirstShiftTime, RoomPriority.GroupsTime[GroupIndex]).ToString() + "UT";
+
+
+                if ((from ct in db.CaThis where ct.MaCa == ShiftID select ct).Count() == 0)
+                {
+
+                    var pa = new SqlParameter[] 
+                        { 
+                            new SqlParameter("@MaCa", SqlDbType.NVarChar) { Value = ShiftID},
+                            new SqlParameter("@GioThi", SqlDbType.DateTime) { Value = RoomPriority.GroupsTime[GroupIndex] },
+                        };
+                    db.Database.ExecuteSqlCommand("INSERT INTO CaThi (MaCa, GioThi) VALUES (@MaCa, @GioThi)", pa);
+                }
+                aRecord.MaCa = ShiftID;
+                String SQLQuery = "";
+                for (int RoomIndex = 0; RoomIndex < RoomPriority.GroupsRoom[GroupIndex].Count; RoomIndex++)
+                {
+                    aRecord.MaPhong = RoomPriority.GroupsRoom[GroupIndex][RoomIndex].RoomID;
+                    for (int StudentIndex = 0; StudentIndex < RoomPriority.GroupsRoomStudents[GroupIndex][RoomIndex].Count; StudentIndex++)
+                    {
+                        aRecord.MaSinhVien = RoomPriority.GroupsRoomStudents[GroupIndex][RoomIndex][StudentIndex];
+                        SQLQuery += String.Format("INSERT INTO Thi (MaCa, MaMonHoc, Nhom, MaPhong, MaSinhVien, Dot) VALUES ('{0}', '{1}', '{2}', '{3}', '{4}','{5}')\r\n",
+                                                    aRecord.MaCa,
+                                                    aRecord.MaMonHoc,
+                                                    aRecord.Nhom,
+                                                    aRecord.MaPhong,
+                                                    aRecord.MaSinhVien,
+                                                    dot
+                                                );
+                    } // sinh viên
+                } // phòng
+                try
+                {
+                    AlgorithmRunner.SaveOBJ("Status", "inf Đang Lưu vào cơ sở dữ liệu (" + (GroupIndex + 1) + "/" + GCount + ")");
+                    db.Database.ExecuteSqlCommand(SQLQuery);
+                }
+                catch
+                {
+                    AlgorithmRunner.SaveOBJ("Status", "err Lỗi trong khi chèn thêm nội dung vào CSDL! Hãy thử lại hoặc liên hệ với quản trị nếu vẫn lỗi!");
+                    AlgorithmRunner.IsBusy = false;
+                    Thread.CurrentThread.Abort();
+                }
+            }// môn
+
+
+            GCount = AlgorithmRunner.Groups.Count;
             for (int GroupIndex = 0; GroupIndex < GCount; GroupIndex++)
             {
                 Thi aRecord = new Thi();
