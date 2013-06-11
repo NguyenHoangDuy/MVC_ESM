@@ -123,6 +123,21 @@ namespace Mvc_ESM.Controllers
                               m.Nhom,
                               m.SoLuongDK
                           }).ToList();
+
+            var monhocs = (from m in InputHelper.db.This
+                           where m.MaMonHoc == SubjectID
+                           select m.Nhom).Distinct();
+
+            foreach (var mh in monhocs)
+            {
+                String[] st = mh.Split(',');
+                for (int i = 0; i < st.Length; i++)
+                {
+                    int index = Groups.FindIndex(m => m.Nhom.ToString() == st[i]);
+                    Groups.RemoveAt(index);
+                }
+            }
+
             if (Groups.Count() > 0)
             {
                 var Subject = InputHelper.Groups[SubjectID + "_" + Groups[0].Nhom];

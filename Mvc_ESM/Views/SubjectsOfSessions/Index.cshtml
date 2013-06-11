@@ -11,7 +11,7 @@
         <p>
             Đợt: @Html.DropDownList("Dot", ViewBag.Dot as SelectList, Mvc_ESM.Settings.Page.Settings.SelectAllString, new { id = "DotList" })
             @*<input type="submit" value="Thực hiện" />*@
-            <button id="Submit" type ="submit">Thực hiện</button>
+            <button id="Submit" type="submit">Thực hiện</button>
         </p>
     </p>
 }
@@ -33,6 +33,7 @@
             <th>Giờ thi           
             </th>
             <th></th>
+            <th></th>
         </tr>
 
     </thead>
@@ -48,6 +49,9 @@
                 <td>
                     <button id="Deletebtn" value="@(m[0] + "_" + m[2])" >Xóa</button>
                 </td>
+               @* <td>
+                    <button id="Editbtn" value="@(m[0] + "_" + m[2])" >Sửa</button>
+                </td>*@
             </tr>
         }
     </tbody>
@@ -84,7 +88,7 @@
             buttons: {
                 "Xóa": function () {
                     $.post("/SubjectsOfSessions/Delete", "id=" + sid, function (data) {
-                        
+
                         if (data == "Xoá thành công!") {
                             //if (row.length !== 0) {
                             oTable.fnDeleteRow(row[0]);
@@ -101,6 +105,17 @@
         });
     }).parent().attr('align', 'center');
     $('#Submit').button();
+
+    @*$('#table tbody td button#Editbtn').button({
+        icons: {
+            primary: "ui-icon-pencil"
+        }
+    }).live('click', function () {
+        var sid = $(this).attr("value");
+        var link = '@Url.Action("Index", "FixSubject", new { SearchString = "-1" })';
+        link = link.replace("-1", sid);
+        window.location = link;
+    });*@
 </script>
 
 

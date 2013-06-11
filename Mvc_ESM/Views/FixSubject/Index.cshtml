@@ -1,8 +1,9 @@
 ﻿@{
-    ViewBag.Title = "Làm thủ công";
+    ViewBag.Title = "Sửa lịch thi";
 }
 
 <h2>@ViewBag.Title</h2>
+
 <script src="@Url.Content("~/Scripts/SlidingForm/sliding.form.js")" type="text/javascript" lang="javascript" ></script>
 <link href="@Url.Content("~/Content/SlidingForm/css/style.css")" rel="stylesheet" type="text/css" />
 
@@ -26,7 +27,7 @@
                     <thead>
                         <tr>
                             <th>Nhóm</th>
-                            <th>Số lượng SV đăng ký</th>
+                            <th>Ngày thi</th>
                             <th>Chọn</th>
                         </tr>
                     </thead>
@@ -162,19 +163,29 @@
             alert("Chưa nhập mã môn học!");
             return false;
         }
-        $.getJSON("/Services/LoadGroupsBySubjectID", { SubjectID: suID },
+        $.getJSON("/FixSubject/LoadGroupsBySubjectID", { SubjectID: suID },
             function (Data) {
                 oTableGroup.fnClearTable(true);
                 if (Data.MSMH == "false") {
-                    alert("Không tìm thấy môn học có mã số hoặc đã được xếp lịch thi rồi: " + suID);
+                    alert("Không tìm thấy môn học có mã số hoặc chưa được xếp lịch : " + suID);
                     return false;
                 }
                 $("#SubjectInfo").html("<p>Tên môn học: " + Data.TenMH + "</p><p>Thuộc bộ môn: " + Data.TenBM + "</p><p>Thuộc Khoa: " + Data.TenKhoa + "</p>");
                 $.each(Data.Groups, function (index, itemData) {
                     var Class = '<span id="Class">' + itemData.Nhom + '</span>';
-                    var Num = '<span id="ClassNum">' + itemData.SoLuongDK + '</span>';
-                    var CheckBox = '<input type="checkbox" id="ClassCheck" checked />';
-                    oTableGroup.fnAddData([Class, Num, CheckBox]);
+                    var date = new Date(parseInt(itemData.NgayThi.substr(6)));
+                    var dd = date.getDate();
+                    var mm = date.getMonth() + 1;//January is 0!
+                    var yyyy = date.getFullYear();
+                    var hours = date.getHours();
+                    var minutes = date.getMinutes();
+                    if (dd < 10) { dd = '0' + dd }
+                    if (mm < 10) { mm = '0' + mm }
+                    if (minutes < 10) { minutes = '0' + minutes }
+                    var d = mm + '/' + dd + '/' + yyyy + ' ' + hours + ':' + minutes
+                    var Ngay = '<span id="ClassNum">' + d + '</span>';
+                    var CheckBox = '<input type="radio" id="ClassCheck" value="' + itemData.Nhom + '" ' + (index == 0 ? "checked" : "") + ' />';
+                    oTableGroup.fnAddData([Class, Ngay, CheckBox]);
                 });
             });
         return false;
@@ -202,14 +213,10 @@
         var date = $('#datepicker').datespinner("value") + 25200000; // bù 7h
         var shift = oTableTime.$("#TimeCheck:checked").attr("value") - 1;
         var MSMH = $('#SubjectID').val();
-        var Class = new Array();
+        var Class = oTableGroup.$("#ClassCheck:checked").attr("value");
         var Time = oTableTime.$("#TimeCheck:checked").parent().parent().find("#Time").html();
-        oTableGroup.$("#Class").each(function (index, itemData) {
-            if ($(itemData).parent().parent().find("#ClassCheck:checked").length == 1)
-                Class.push($(itemData).html());
-        });
 
-        $.getJSON("/Services/CheckSubject", $.param({ SubjectID: MSMH, Class: Class, DateMilisecond: date, Shift: shift }, true),
+        $.getJSON("/FixSubject/CheckSubject", $.param({ SubjectID: MSMH, Class: Class, DateMilisecond: date, Shift: shift }, true),
             function (Data) {
 
                 if (Data.Ok == "false") {
@@ -226,7 +233,7 @@
                     alert("Không tìm thấy phòng nào!");
                     return false;
                 }
-               
+
                 $.each(Data.Rooms, function (index, itemData) {
                     var Room = '<span id="Room">' + itemData.RoomID + '</span>';
                     var Container = '<span id="RoomContainer">' + itemData.Container + '</span>';
@@ -239,11 +246,15 @@
 
     $("#btnRoomCalc").click(function () {
         var NumStudent = 0;
-        oTableGroup.$("#ClassNum").each(function (index, itemData) {
-            if ($(itemData).parent().parent().find("#ClassCheck:checked").length == 1)
-                NumStudent += parseInt($(itemData).html());
-        });
-        $("#NumStudent").html('<p id="pNumStudent" value="' + NumStudent + '">Số lượng sinh viên: ' + NumStudent + '</p>');
+      
+        var MSMH = $('#SubjectID').val();
+        var Class = oTableGroup.$("#ClassCheck:checked").attr("value");
+        $.getJSON("/FixSubject/CountStudent", { SubjectID: MSMH, Class: Class },
+            function (Data) {
+                NumStudent = Data.NumberStudent;
+                $("#NumStudent").html('<p id="pNumStudent" value="' + Data.NumberStudent + '">Số lượng sinh viên: ' + Data.NumberStudent + '</p>');
+            });
+        
         oTableRoomNum.fnClearTable(true);
         oTableRoom.$("#Room").each(function (index, itemData) {
             if ($(itemData).parent().parent().find("#RoomCheck:checked").length == 1) {
@@ -261,6 +272,8 @@
         oTableRoomNum.$("#RoomNumText").each(function (index, itemData) {
             num += parseInt($(itemData).val());
         });
+        var MSMH = $('#SubjectID').val();
+        var Class = oTableGroup.$("#ClassCheck:checked").attr("value");
         var numStudent = parseInt($("#pNumStudent").attr("value"));
         if (num != numStudent) {
             if (num < numStudent) {
@@ -282,11 +295,7 @@
         }
         else {
             var MSMH = $('#SubjectID').val();
-            var Class = new Array();
-            oTableGroup.$("#Class").each(function (index, itemData) {
-                if ($(itemData).parent().parent().find("#ClassCheck:checked").length == 1)
-                    Class.push($(itemData).html());
-            });
+            var Class = oTableGroup.$("#ClassCheck:checked").attr("value");
             var Time = oTableTime.$("#TimeCheck:checked").parent().parent().find("#Time").html();
             var Room = new Array();
             var Num = new Array();
@@ -294,7 +303,7 @@
                 Room.push($(itemData).html());
                 Num.push($(itemData).parent().parent().find("#RoomNumText").val());
             });
-            $.post("/Handmade/SelectSuccess", $.param({ SubjectID: MSMH, Class: Class, Time: Time, Room: Room, Num: Num }, true));
+            $.post("/FixSubject/SelectSuccess", $.param({ SubjectID: MSMH, Classes: Class, Time: Time, Room: Room, Num: Num }, true));
             alert("Đã lưu xong");
         }
         return false;

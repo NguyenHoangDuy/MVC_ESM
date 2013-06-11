@@ -242,7 +242,14 @@ namespace Mvc_ESM.Static_Helper
             Thread thread = new Thread(new ThreadStart(Handmade.Run));
             thread.Name = "Handmade";
             thread.Start();
-            //DeleteOBJ("Handmade");
+        }
+
+        public void RunFixSubject()
+        {
+            HandmadeData = ReadOBJ<Handmade.HandmadeData>("FixSubject");
+            Thread thread = new Thread(new ThreadStart(Handmade.RunFixSubJect));
+            thread.Name = "FixSubject";
+            thread.Start();
         }
 
         public static bool IsBusy

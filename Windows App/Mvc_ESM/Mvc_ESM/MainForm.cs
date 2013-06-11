@@ -57,7 +57,7 @@ namespace Mvc_ESM
                         txtArgs.Text += DateTime.Now.ToString() + " RunSaveToDatabase\r\n";
                         break;
                     case "4":
-                        InputHelper.IgnoreStudents = InputHelper.InitIgnoreStudents();
+                        //InputHelper.IgnoreStudents = InputHelper.InitIgnoreStudents();
                         InputHelper.Shifts = InputHelper.InitShift();
                         InputHelper.Rooms = InputHelper.InitRooms();
                         InputHelper.Options = InputHelper.InitOptions();
@@ -67,6 +67,13 @@ namespace Mvc_ESM
                     case "5":
                         AlgorithmRunner.RunDeleteDatabase(dot.Substring(1, dot.Length - 1));
                         txtArgs.Text += DateTime.Now.ToString() + " DeleteToDatabase\r\n";
+                        break;
+                    case "6":
+                        InputHelper.Shifts = InputHelper.InitShift();
+                        InputHelper.Rooms = InputHelper.InitRooms();
+                        InputHelper.Options = InputHelper.InitOptions();
+                        AlgorithmRunner.RunFixSubject();
+                        txtArgs.Text += DateTime.Now.ToString() + " FixSubject\r\n";
                         break;
                     default:
                         txtArgs.Text += DateTime.Now.ToString() + " Not Run Anything\r\n";
@@ -159,6 +166,14 @@ namespace Mvc_ESM
                 this.Left = this.Top = -10000;
                 this.Hide();
             }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            InputHelper.Shifts = InputHelper.InitShift();
+            InputHelper.Rooms = InputHelper.InitRooms();
+            InputHelper.Options = InputHelper.InitOptions();
+            AlgorithmRunner.RunFixSubject();
         }
 
     }

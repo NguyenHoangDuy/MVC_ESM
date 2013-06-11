@@ -77,6 +77,13 @@ namespace Mvc_ESM.Controllers
             ViewBag.Dot = new SelectList(DotQry.ToArray(), "MaDot", "TenDon");
         }
 
+        [HttpPost]
+        public ActionResult Linker(string id)
+        {
+            return RedirectToAction( "Index", "FixSubject", new { sid = id });
+        }
+
+
         [HttpPost, ActionName("Delete")]
         public String Delete(string id)
         {
