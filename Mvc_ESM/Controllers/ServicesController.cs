@@ -3,6 +3,7 @@ using Mvc_ESM.Static_Helper;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Web.Mvc;
 namespace Mvc_ESM.Controllers
@@ -46,7 +47,7 @@ namespace Mvc_ESM.Controllers
         }
 
         [HttpGet]
-        public JsonResult LoadRoomsByDateAndShift(long DateMilisecond, int Shift)
+        public JsonResult LoadRoomsByDateAndShift(String SubjectID, List<String> Class, long DateMilisecond, int Shift)
         {
             DateTime realDate = (new DateTime(1970, 1, 1, 0, 0, 0, 0)).AddMilliseconds(DateMilisecond).Date + InputHelper.Options.Times[Shift].TimeOfDay;
             var aData = InputHelper.BusyRooms.FirstOrDefault(m => m.Time == realDate);
@@ -62,6 +63,32 @@ namespace Mvc_ESM.Controllers
             {
                 return Json(new { Ok = "false" }, JsonRequestBehavior.AllowGet);
             }
+        }
+
+        [HttpGet]
+        public JsonResult CheckSubject(String SubjectID, List<String> Class, long DateMilisecond, int Shift)
+        {
+            DateTime realDate = (new DateTime(1970, 1, 1, 0, 0, 0, 0)).AddMilliseconds(DateMilisecond).Date + InputHelper.Options.Times[Shift].TimeOfDay;
+            var MaCa = InputHelper.db.Database.SqlQuery<String>("select MaCa  from CaThi " +
+                                                                "where GioThi='" + realDate.ToString("yyyy-MM-dd HH:mm:ss.fff") + "'"
+                                                                ).ToList();
+            var ClassList = "";
+            foreach (String cl in Class)
+            {
+                ClassList += (ClassList.Length > 0 ? ", " : "") + "'" + cl + "'";
+            }
+            //lấy danh sách sinh viên môn xếp bằng tay
+            var StudentList = InputHelper.db.Database.SqlQuery<String>("select pdkmh.MaSinhVien from pdkmh, sinhvien " +
+                                                                "where pdkmh.MaSinhVien = sinhvien.MaSinhVien and MaMonHoc = '" + SubjectID + "' and Nhom in (" + ClassList + ") "
+                                                                ).ToList();
+            foreach (var mc in MaCa)
+            {
+                var Student = InputHelper.db.This.Where(m => m.MaCa == mc);
+                foreach (var st in Student)
+                    if (StudentList.Contains(st.MaSinhVien))
+                        return Json(new { Ok = "false" }, JsonRequestBehavior.AllowGet);
+            }
+            return Json(new { Ok = "true" }, JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]

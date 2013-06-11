@@ -16,6 +16,7 @@ namespace Mvc_ESM.Controllers
     {
         public ViewResult Index()
         {
+            InputHelper.BusyRooms = InputHelper.InitRooms();
             return View();
         }
 

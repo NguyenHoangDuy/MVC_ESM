@@ -36,6 +36,7 @@ namespace Mvc_ESM.Controllers
                     ReportDocument rd = new ReportDocument();
                     string strRptPath = System.Web.HttpContext.Current.Server.MapPath("~/") + "Report//" + strReportName;
                     rd.Load(strRptPath);
+                    rd.VerifyDatabase();
                     rd.ExportToHttpResponse(ExportFormatType.PortableDocFormat, System.Web.HttpContext.Current.Response, false, "crReport");
                     // Clear all sessions value
                     Session["ReportName"] = null;

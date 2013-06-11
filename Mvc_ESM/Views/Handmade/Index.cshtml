@@ -13,12 +13,12 @@
                 <legend>1. Lựa chọn môn học</legend>
                 <p>
                     <label for="SubjectID">Mã số môn học</label>
-                    <input type="text" id="SubjectID" placeholder="Nhập mã số môn học vào đây!"/>
+                    <input type="text" id="SubjectID" placeholder="Nhập mã số môn học vào đây!" />
                 </p>
-                <p class="submit"> 
+                <p class="submit">
                     <button id="btnCheckSubject">Kiểm tra</button>
                 </p>
-                <div id ="SubjectInfo"></div>
+                <div id="SubjectInfo"></div>
             </fieldset>
             <fieldset class="step">
                 <legend>2. Lựa chọn nhóm</legend>
@@ -50,7 +50,7 @@
                         </tr>
                     </thead>
                 </table>
-                <p class="submit"> 
+                <p class="submit">
                     <button id="btnLoadRooms">Lấy danh sách phòng</button>
                 </p>
                 <div id="step3err"></div>
@@ -66,7 +66,7 @@
                         </tr>
                     </thead>
                 </table>
-                <p class="submit"> 
+                <p class="submit">
                     <button id="btnRoomCalc">Lập danh sách phòng</button>
                 </p>
                 <div id="NumStudent"></div>
@@ -79,27 +79,27 @@
                         </tr>
                     </thead>
                 </table>
-                <p class="submit"> 
+                <p class="submit">
                     <button id="btnCheckRooms">Kiểm tra</button>
                 </p>
                 <div id="RoomCheckStatus"></div>
                 <div id="step4err"></div>
             </fieldset>
-			<fieldset class="step">
+            <fieldset class="step">
                 <legend>5. Lưu vào cơ sở dữ liệu</legend>
-				<p>
-					Tất cả các bước cần được hoàn thiện đề có thể thực hiện xếp lịch
+                <p>
+                    Tất cả các bước cần được hoàn thiện đề có thể thực hiện xếp lịch
 					(Nếu tất cả các bước đều có dấu kiểm màu xanh).
 					Nếu một bước nào đó có dấu kiểm màu đỏ, thì bước đó bị sai cần chỉnh sửa.
                     Nhấn nút bên dưới để thực hiện lưu vào cơ sở dữ liệu.
-				</p>
+                </p>
                 <p class="submit">
                     <button id="btnSave">Lưu vào CSDL</button>
                 </p>
             </fieldset>
         </form>
     </div>
-    <div id="navigation" style="display:none;">
+    <div id="navigation" style="display: none;">
         <ul>
             <li class="selected">
                 <a href="#">Môn Thi</a>
@@ -113,7 +113,7 @@
             <li>
                 <a href="#">Phòng thi</a>
             </li>
-			<li>
+            <li>
                 <a href="#">Lưu CSDL</a>
             </li>
         </ul>
@@ -201,11 +201,33 @@
     $("#btnLoadRooms").click(function () {
         var date = $('#datepicker').datespinner("value") + 25200000; // bù 7h
         var shift = oTableTime.$("#TimeCheck:checked").attr("value") - 1;
+        var MSMH = $('#SubjectID').val();
+        var Class = new Array();
+        var Time = oTableTime.$("#TimeCheck:checked").parent().parent().find("#Time").html();
+        oTableGroup.$("#Class").each(function (index, itemData) {
+            if ($(itemData).parent().parent().find("#ClassCheck:checked").length == 1)
+                Class.push($(itemData).html());
+        });
+
+        $.getJSON("/Services/CheckSubject", $.param({ SubjectID: MSMH, Class: Class, DateMilisecond: date, Shift: shift }, true),
+            function (Data) {
+
+                if (Data.Ok == "false") {
+                    oTableRoom.fnClearTable(true);
+                    alert("Có sinh viên trùng lịch thi!");
+                    return false;
+                }
+            });
+
         $.getJSON("/Services/LoadRoomsByDateAndShift", { DateMilisecond: date, Shift: shift },
             function (Data) {
                 oTableRoom.fnClearTable(true);
                 if (Data.Ok == "false") {
                     alert("Không tìm thấy phòng nào!");
+                    return false;
+                }
+                if (Data.Ok == "NOT") {
+                    alert("Có sinh viên bị trùng giờ thi!");
                     return false;
                 }
                 $.each(Data.Rooms, function (index, itemData) {
@@ -221,14 +243,13 @@
     $("#btnRoomCalc").click(function () {
         var NumStudent = 0;
         oTableGroup.$("#ClassNum").each(function (index, itemData) {
-            if($(itemData).parent().parent().find("#ClassCheck:checked").length == 1)
+            if ($(itemData).parent().parent().find("#ClassCheck:checked").length == 1)
                 NumStudent += parseInt($(itemData).html());
         });
         $("#NumStudent").html('<p id="pNumStudent" value="' + NumStudent + '">Số lượng sinh viên: ' + NumStudent + '</p>');
         oTableRoomNum.fnClearTable(true);
         oTableRoom.$("#Room").each(function (index, itemData) {
-            if($(itemData).parent().parent().find("#RoomCheck:checked").length == 1)
-            {
+            if ($(itemData).parent().parent().find("#RoomCheck:checked").length == 1) {
                 var RoomNum = '<span id="RoomNum">' + $(itemData).html() + '</span>';
                 var Container = $(itemData).parent().parent().find("#RoomContainer").html();
                 var TextBox = '<input type="text" id="RoomNumText" placeholder="?" size="3"/>';
@@ -240,41 +261,35 @@
 
     $("#btnCheckRooms").click(function () {
         var num = 0;
-        oTableRoomNum.$("#RoomNumText").each(function(index, itemData) {
+        oTableRoomNum.$("#RoomNumText").each(function (index, itemData) {
             num += parseInt($(itemData).val());
         });
         var numStudent = parseInt($("#pNumStudent").attr("value"));
-        if(num != numStudent)
-        {
-            if(num < numStudent)
-            {
+        if (num != numStudent) {
+            if (num < numStudent) {
                 alert("Phân sinh viên vào phòng thiếu " + (numStudent - num) + " sinh viên!");
             }
-            else
-            {
+            else {
                 alert("Phân sinh viên vào phòng bị dư " + (num - numStudent) + " sinh viên!");
             }
         }
-        else
-        {
+        else {
             $("#RoomCheckStatus").html("<p>Kiểm tra thành công</p>");
         }
         return false;
     });
 
     $('#btnSave').click(function () {
-        if ($('#formElem').data('errors'))
-        {
+        if ($('#formElem').data('errors')) {
             alert('Cần hoàn thiện tất cả các bước để có thể lưu!');
         }
-        else
-        {
+        else {
             var MSMH = $('#SubjectID').val();
             var Class = new Array();
             oTableGroup.$("#Class").each(function (index, itemData) {
                 if ($(itemData).parent().parent().find("#ClassCheck:checked").length == 1)
                     Class.push($(itemData).html());
-            });            
+            });
             var Time = oTableTime.$("#TimeCheck:checked").parent().parent().find("#Time").html();
             var Room = new Array();
             var Num = new Array();
@@ -296,10 +311,9 @@
         var hasError = false;
         var intStep = parseInt(step);
         var $CurrentEl = $('#formElem').children(':nth-child(' + intStep + ')');
-        switch(intStep)
-        {
+        switch (intStep) {
             case 1:
-                if ($("#SubjectInfo").html().length == 0){
+                if ($("#SubjectInfo").html().length == 0) {
                     hasError = true;
                     $('#SubjectID').css('background-color', '#FFEDEF');
                 }
@@ -316,34 +330,28 @@
                     $("#step2err").html("");
                 break;
             case 3:
-                if(oTableTime.$("#Time").length == 0)
-                {
+                if (oTableTime.$("#Time").length == 0) {
                     $("#step3err").html("<p>Chưa lấy danh sách ca thi!</p>");
                     hasError = true;
                 }
-                else if(oTableRoom.$("#Room").length == 0)
-                {
+                else if (oTableRoom.$("#Room").length == 0) {
                     $("#step3err").html("<p>Chưa lấy danh sách phòng thi!</p>");
                     hasError = true;
                 }
-                else 
-                {
+                else {
                     $("#step3err").html("");
                 }
                 break;
             case 4:
-                if($("#NumStudent").html().length == 0)
-                {
+                if ($("#NumStudent").html().length == 0) {
                     $("#step4err").html("<p>Cần lập danh sách phòng!</p>");
                     hasError = true;
                 }
-                else if($("#RoomCheckStatus").html().length == 0)
-                {
+                else if ($("#RoomCheckStatus").html().length == 0) {
                     $("#step4err").html("<p>Số lượng sinh viên được gán phải đúng!</p>");
                     hasError = true;
                 }
-                else
-                {
+                else {
                     $("#step4err").html("");
                 }
                 break;

@@ -86,6 +86,8 @@ namespace Mvc_ESM.Static_Helper
                         aRoomList.Add(new RoomList() { Rooms = new List<Room>(Rooms), Time = ShiftTime + Options.Times[j].TimeOfDay });
                     }
                 }
+                InputHelper.BusyRooms = aRoomList;
+                OutputHelper.SaveOBJ("Rooms", InputHelper.BusyRooms);
                 return aRoomList;
             }
         }

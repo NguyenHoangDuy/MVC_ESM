@@ -62,6 +62,13 @@ namespace Mvc_ESM.Static_Helper
                         };
                 db.Database.ExecuteSqlCommand("INSERT INTO CaThi (MaCa, GioThi) VALUES (@MaCa, @GioThi)", pa);
             }
+            var DotQry = (from m in InputHelper.db.This
+                          select m.Dot).Max();
+            int dot = 1;
+            if (DotQry != null)
+            {
+                dot = int.Parse(DotQry[0].ToString());
+            }
             Thi aRecord = new Thi();
             aRecord.MaMonHoc = Data.SubjectID;
             aRecord.MaCa = ShiftID;
@@ -79,12 +86,13 @@ namespace Mvc_ESM.Static_Helper
                 for (int i = 0; i < Data.Num[Index]; i++)
                 {
                     aRecord.MaSinhVien = StudentList[StudentIndex].MaSinhVien;
-                    SQLQuery += String.Format("INSERT INTO Thi (MaCa, MaMonHoc, Nhom, MaPhong, MaSinhVien) VALUES ('{0}', '{1}', '{2}', '{3}', '{4}')\r\n",
+                    SQLQuery += String.Format("INSERT INTO Thi (MaCa, MaMonHoc, Nhom, MaPhong, MaSinhVien, Dot) VALUES ('{0}', '{1}', '{2}', '{3}', '{4}','{5}')\r\n",
                                                 aRecord.MaCa,
                                                 aRecord.MaMonHoc,
                                                 aRecord.Nhom,
                                                 aRecord.MaPhong,
-                                                aRecord.MaSinhVien
+                                                aRecord.MaSinhVien,
+                                                dot
                                             );
                     StudentIndex++;
                 }

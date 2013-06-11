@@ -90,6 +90,12 @@ namespace Mvc_ESM.Static_Helper
         public String NgaySinh { get; set; }
     }
 
+    public partial class StudentInfo
+    {
+        public string MaSinhVien { get; set; }
+        public byte Nhom { get; set; }
+    }
+
     public class jQueryDataTableParamModel
     {
         /// <summary>
