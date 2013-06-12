@@ -2926,7 +2926,7 @@
     "TenKhoa": "Ngoại ngữ",
     "Nhom": 30,
     "SoLuongDK": 53,
-    "GroupID": 2,
+    "GroupID": 1,
     "IsIgnored": true
   },
   "1004020_31": {
@@ -2936,7 +2936,7 @@
     "TenKhoa": "Ngoại ngữ",
     "Nhom": 31,
     "SoLuongDK": 66,
-    "GroupID": 2,
+    "GroupID": 1,
     "IsIgnored": true
   },
   "1004020_32": {
@@ -2946,7 +2946,7 @@
     "TenKhoa": "Ngoại ngữ",
     "Nhom": 32,
     "SoLuongDK": 50,
-    "GroupID": 2,
+    "GroupID": 1,
     "IsIgnored": true
   },
   "1004020_33": {
@@ -2956,7 +2956,7 @@
     "TenKhoa": "Ngoại ngữ",
     "Nhom": 33,
     "SoLuongDK": 50,
-    "GroupID": 2,
+    "GroupID": 1,
     "IsIgnored": true
   },
   "1004020_34": {
@@ -2966,7 +2966,7 @@
     "TenKhoa": "Ngoại ngữ",
     "Nhom": 34,
     "SoLuongDK": 52,
-    "GroupID": 2,
+    "GroupID": 1,
     "IsIgnored": true
   },
   "1004020_35": {
@@ -2976,7 +2976,7 @@
     "TenKhoa": "Ngoại ngữ",
     "Nhom": 35,
     "SoLuongDK": 49,
-    "GroupID": 2,
+    "GroupID": 1,
     "IsIgnored": true
   },
   "1004020_36": {
@@ -2986,7 +2986,7 @@
     "TenKhoa": "Ngoại ngữ",
     "Nhom": 36,
     "SoLuongDK": 50,
-    "GroupID": 2,
+    "GroupID": 1,
     "IsIgnored": true
   },
   "1004020_37": {
@@ -2996,7 +2996,7 @@
     "TenKhoa": "Ngoại ngữ",
     "Nhom": 37,
     "SoLuongDK": 48,
-    "GroupID": 2,
+    "GroupID": 1,
     "IsIgnored": true
   },
   "1004020_38": {
@@ -3006,7 +3006,7 @@
     "TenKhoa": "Ngoại ngữ",
     "Nhom": 38,
     "SoLuongDK": 51,
-    "GroupID": 2,
+    "GroupID": 1,
     "IsIgnored": true
   },
   "1004020_39": {
@@ -3016,7 +3016,7 @@
     "TenKhoa": "Ngoại ngữ",
     "Nhom": 39,
     "SoLuongDK": 49,
-    "GroupID": 2,
+    "GroupID": 1,
     "IsIgnored": true
   },
   "1004020_40": {
@@ -3026,7 +3026,7 @@
     "TenKhoa": "Ngoại ngữ",
     "Nhom": 40,
     "SoLuongDK": 48,
-    "GroupID": 3,
+    "GroupID": 1,
     "IsIgnored": true
   },
   "1004020_41": {
@@ -3036,7 +3036,7 @@
     "TenKhoa": "Ngoại ngữ",
     "Nhom": 41,
     "SoLuongDK": 49,
-    "GroupID": 3,
+    "GroupID": 1,
     "IsIgnored": true
   },
   "1004020_42": {
@@ -3046,7 +3046,7 @@
     "TenKhoa": "Ngoại ngữ",
     "Nhom": 42,
     "SoLuongDK": 56,
-    "GroupID": 3,
+    "GroupID": 1,
     "IsIgnored": true
   },
   "1004020_43": {
@@ -3056,7 +3056,7 @@
     "TenKhoa": "Ngoại ngữ",
     "Nhom": 43,
     "SoLuongDK": 49,
-    "GroupID": 3,
+    "GroupID": 1,
     "IsIgnored": true
   },
   "1004020_44": {
@@ -3066,7 +3066,7 @@
     "TenKhoa": "Ngoại ngữ",
     "Nhom": 44,
     "SoLuongDK": 49,
-    "GroupID": 3,
+    "GroupID": 1,
     "IsIgnored": true
   },
   "1004020_45": {
@@ -3076,7 +3076,7 @@
     "TenKhoa": "Ngoại ngữ",
     "Nhom": 45,
     "SoLuongDK": 49,
-    "GroupID": 3,
+    "GroupID": 1,
     "IsIgnored": true
   },
   "1004020_46": {
@@ -3086,7 +3086,7 @@
     "TenKhoa": "Ngoại ngữ",
     "Nhom": 46,
     "SoLuongDK": 50,
-    "GroupID": 3,
+    "GroupID": 1,
     "IsIgnored": true
   },
   "1004020_47": {
@@ -3096,7 +3096,7 @@
     "TenKhoa": "Ngoại ngữ",
     "Nhom": 47,
     "SoLuongDK": 50,
-    "GroupID": 3,
+    "GroupID": 1,
     "IsIgnored": true
   },
   "1004020_48": {
@@ -3106,7 +3106,7 @@
     "TenKhoa": "Ngoại ngữ",
     "Nhom": 48,
     "SoLuongDK": 49,
-    "GroupID": 3,
+    "GroupID": 1,
     "IsIgnored": true
   },
   "1004020_49": {
@@ -3116,7 +3116,7 @@
     "TenKhoa": "Ngoại ngữ",
     "Nhom": 49,
     "SoLuongDK": 48,
-    "GroupID": 3,
+    "GroupID": 1,
     "IsIgnored": true
   },
   "1004020_50": {
@@ -3126,7 +3126,7 @@
     "TenKhoa": "Ngoại ngữ",
     "Nhom": 50,
     "SoLuongDK": 53,
-    "GroupID": 4,
+    "GroupID": 1,
     "IsIgnored": true
   },
   "1004020_51": {
@@ -3136,7 +3136,7 @@
     "TenKhoa": "Ngoại ngữ",
     "Nhom": 51,
     "SoLuongDK": 50,
-    "GroupID": 4,
+    "GroupID": 1,
     "IsIgnored": true
   },
   "1004020_52": {
@@ -3146,7 +3146,7 @@
     "TenKhoa": "Ngoại ngữ",
     "Nhom": 52,
     "SoLuongDK": 50,
-    "GroupID": 4,
+    "GroupID": 1,
     "IsIgnored": true
   },
   "1004020_53": {
@@ -3156,7 +3156,7 @@
     "TenKhoa": "Ngoại ngữ",
     "Nhom": 53,
     "SoLuongDK": 49,
-    "GroupID": 4,
+    "GroupID": 1,
     "IsIgnored": true
   },
   "1004020_54": {
@@ -3166,7 +3166,7 @@
     "TenKhoa": "Ngoại ngữ",
     "Nhom": 54,
     "SoLuongDK": 50,
-    "GroupID": 4,
+    "GroupID": 1,
     "IsIgnored": true
   },
   "1004020_55": {
@@ -3176,7 +3176,7 @@
     "TenKhoa": "Ngoại ngữ",
     "Nhom": 55,
     "SoLuongDK": 49,
-    "GroupID": 4,
+    "GroupID": 1,
     "IsIgnored": true
   },
   "1004020_56": {
@@ -3186,7 +3186,7 @@
     "TenKhoa": "Ngoại ngữ",
     "Nhom": 56,
     "SoLuongDK": 52,
-    "GroupID": 4,
+    "GroupID": 1,
     "IsIgnored": true
   },
   "1004020_57": {
@@ -3196,7 +3196,7 @@
     "TenKhoa": "Ngoại ngữ",
     "Nhom": 57,
     "SoLuongDK": 49,
-    "GroupID": 4,
+    "GroupID": 1,
     "IsIgnored": true
   },
   "1004020_58": {
@@ -3206,7 +3206,7 @@
     "TenKhoa": "Ngoại ngữ",
     "Nhom": 58,
     "SoLuongDK": 50,
-    "GroupID": 4,
+    "GroupID": 1,
     "IsIgnored": true
   },
   "1004020_59": {
@@ -3216,7 +3216,7 @@
     "TenKhoa": "Ngoại ngữ",
     "Nhom": 59,
     "SoLuongDK": 49,
-    "GroupID": 4,
+    "GroupID": 1,
     "IsIgnored": true
   },
   "1004020_60": {
@@ -3226,7 +3226,7 @@
     "TenKhoa": "Ngoại ngữ",
     "Nhom": 60,
     "SoLuongDK": 50,
-    "GroupID": 5,
+    "GroupID": 1,
     "IsIgnored": true
   },
   "1004020_61": {
@@ -3236,7 +3236,7 @@
     "TenKhoa": "Ngoại ngữ",
     "Nhom": 61,
     "SoLuongDK": 50,
-    "GroupID": 5,
+    "GroupID": 1,
     "IsIgnored": true
   },
   "1004020_62": {
@@ -3246,7 +3246,7 @@
     "TenKhoa": "Ngoại ngữ",
     "Nhom": 62,
     "SoLuongDK": 50,
-    "GroupID": 5,
+    "GroupID": 1,
     "IsIgnored": true
   },
   "1004020_63": {
@@ -3256,7 +3256,7 @@
     "TenKhoa": "Ngoại ngữ",
     "Nhom": 63,
     "SoLuongDK": 55,
-    "GroupID": 5,
+    "GroupID": 1,
     "IsIgnored": true
   },
   "1004020_64": {
@@ -3266,7 +3266,7 @@
     "TenKhoa": "Ngoại ngữ",
     "Nhom": 64,
     "SoLuongDK": 50,
-    "GroupID": 5,
+    "GroupID": 1,
     "IsIgnored": true
   },
   "1004020_65": {
@@ -3276,7 +3276,7 @@
     "TenKhoa": "Ngoại ngữ",
     "Nhom": 65,
     "SoLuongDK": 50,
-    "GroupID": 5,
+    "GroupID": 1,
     "IsIgnored": true
   },
   "1004020_66": {
@@ -3286,7 +3286,7 @@
     "TenKhoa": "Ngoại ngữ",
     "Nhom": 66,
     "SoLuongDK": 50,
-    "GroupID": 5,
+    "GroupID": 1,
     "IsIgnored": true
   },
   "1004020_67": {
@@ -3296,7 +3296,7 @@
     "TenKhoa": "Ngoại ngữ",
     "Nhom": 67,
     "SoLuongDK": 50,
-    "GroupID": 5,
+    "GroupID": 1,
     "IsIgnored": true
   },
   "1004020_68": {
@@ -3306,7 +3306,7 @@
     "TenKhoa": "Ngoại ngữ",
     "Nhom": 68,
     "SoLuongDK": 50,
-    "GroupID": 5,
+    "GroupID": 1,
     "IsIgnored": true
   },
   "1004020_69": {
@@ -3316,7 +3316,7 @@
     "TenKhoa": "Ngoại ngữ",
     "Nhom": 69,
     "SoLuongDK": 63,
-    "GroupID": 6,
+    "GroupID": 1,
     "IsIgnored": true
   },
   "1004020_70": {
@@ -3326,7 +3326,7 @@
     "TenKhoa": "Ngoại ngữ",
     "Nhom": 70,
     "SoLuongDK": 50,
-    "GroupID": 6,
+    "GroupID": 1,
     "IsIgnored": true
   },
   "1004020_71": {
@@ -3336,7 +3336,7 @@
     "TenKhoa": "Ngoại ngữ",
     "Nhom": 71,
     "SoLuongDK": 48,
-    "GroupID": 6,
+    "GroupID": 1,
     "IsIgnored": true
   },
   "1004020_72": {
@@ -3346,7 +3346,7 @@
     "TenKhoa": "Ngoại ngữ",
     "Nhom": 72,
     "SoLuongDK": 50,
-    "GroupID": 6,
+    "GroupID": 1,
     "IsIgnored": true
   },
   "1004030_14": {

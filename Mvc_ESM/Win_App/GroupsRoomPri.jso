@@ -1,1 +1,79 @@
-﻿[]
+﻿[
+  [
+    {
+      "RoomID": "A102",
+      "Container": 48,
+      "IsBusy": false
+    },
+    {
+      "RoomID": "A103",
+      "Container": 48,
+      "IsBusy": false
+    },
+    {
+      "RoomID": "A104",
+      "Container": 48,
+      "IsBusy": false
+    },
+    {
+      "RoomID": "A105",
+      "Container": 48,
+      "IsBusy": false
+    },
+    {
+      "RoomID": "A106",
+      "Container": 48,
+      "IsBusy": false
+    },
+    {
+      "RoomID": "A107",
+      "Container": 48,
+      "IsBusy": false
+    },
+    {
+      "RoomID": "A108",
+      "Container": 48,
+      "IsBusy": false
+    },
+    {
+      "RoomID": "A109",
+      "Container": 48,
+      "IsBusy": false
+    },
+    {
+      "RoomID": "A110",
+      "Container": 48,
+      "IsBusy": false
+    },
+    {
+      "RoomID": "A111",
+      "Container": 48,
+      "IsBusy": false
+    },
+    {
+      "RoomID": "A112",
+      "Container": 48,
+      "IsBusy": false
+    },
+    {
+      "RoomID": "A113",
+      "Container": 48,
+      "IsBusy": false
+    },
+    {
+      "RoomID": "A201",
+      "Container": 48,
+      "IsBusy": false
+    },
+    {
+      "RoomID": "A202",
+      "Container": 48,
+      "IsBusy": false
+    },
+    {
+      "RoomID": "A203",
+      "Container": 48,
+      "IsBusy": false
+    }
+  ]
+]
