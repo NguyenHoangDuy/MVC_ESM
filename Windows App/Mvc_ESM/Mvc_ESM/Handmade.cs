@@ -41,7 +41,7 @@ namespace Mvc_ESM.Static_Helper
         {
             AlgorithmRunner.IsBusy = true;
             AlgorithmRunner.SaveOBJ("Status", "inf Đang Xoá CSDL cũ");
-            //    Delete(AlgorithmRunner.HandmadeData);
+            Delete(AlgorithmRunner.HandmadeData);
             AlgorithmRunner.SaveOBJ("Status", "inf Đang lưu dữ liệu xếp lịch");
             Save(AlgorithmRunner.HandmadeData);
             AlgorithmRunner.SaveOBJ("Status", "inf Hoàn tất lưu dữ liệu xếp lịch");

@@ -86,7 +86,7 @@ namespace Mvc_ESM.Controllers
                 List<string[]> Result = new List<string[]>();
                 return View(Result);
             }
-            String[] str = SearchString.Split('_');
+            String[] str = SearchString.Split('=');
             ViewBag.SearchString = str[0];
             return StudentsOfSubjects(str[0], str[1]);
         }
@@ -161,9 +161,10 @@ namespace Mvc_ESM.Controllers
             }
             else
             {
-                string[] st = SearchString.Split('_');
+                string[] st = SearchString.Split('=');
                 if (st.Length == 3)
                 {
+                    ViewBag.SearchString = st[0];
                     return StudentsOfRooms(st[0], st[1], st[2]);
                 }
                 else

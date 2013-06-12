@@ -34,10 +34,10 @@
         {
             <tr>
                 <td>@m[0]</td>
-                <td>@Html.ActionLink(m[1], "StudentsOfSubjects", "CalendarResults", new { SearchString = m[1]+"_ " }, null)</td>
+                <td>@Html.ActionLink(m[1], "StudentsOfSubjects", "CalendarResults", new { SearchString = m[1]+"=" }, null)</td>
                 <td>@m[2]</td>
                 <td>@m[3]</td>
-                <td>@Html.ActionLink(m[4], "StudentsOfRooms", "CalendarResults", new { SearchString = m[1] + "_" + m[4] + "_" + m[7] }, null)</td>
+                <td>@Html.ActionLink(m[4], "StudentsOfRooms", "CalendarResults", new { SearchString = m[1] + "=" + m[4] + "=" + m[7] }, null)</td>
                 <td>@m[5]</td>
                 <td>@m[6]</td>
             </tr>

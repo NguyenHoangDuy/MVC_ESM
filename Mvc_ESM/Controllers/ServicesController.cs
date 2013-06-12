@@ -255,6 +255,7 @@ namespace Mvc_ESM.Controllers
             }
 
             Dictionary<String, Group> dbGroups = Clone.Dictionary<String, Group>((Dictionary<String, Group>)(CurrentSession.Get("IgnoreGroups") ?? InputHelper.Groups));
+            //Dictionary<String, Group> dbGroups = InputHelper.Groups;
 
             var Groups = from m in dbGroups.Values select m;
 
@@ -313,7 +314,7 @@ namespace Mvc_ESM.Controllers
                                             su.TenKhoa,
                                             su.Nhom.ToString(),
                                             su.SoLuongDK.ToString(),
-                                            
+                                            su.IsIgnored ? "checked" : "",
                                         }
                                     );
                     }
@@ -327,7 +328,7 @@ namespace Mvc_ESM.Controllers
                                             su.TenKhoa,
                                             su.Nhom.ToString(),
                                             su.SoLuongDK.ToString(),
-                                           su.IsIgnored?"checked":"",
+                                            su.IsIgnored ? "checked" : "",
                                         }
                                 );
                 }
@@ -337,7 +338,7 @@ namespace Mvc_ESM.Controllers
             return Json(new
                             {
                                 sEcho = param.sEcho,
-                                iTotalRecords = total,
+                                iTotalRecords = Result.Count(),
                                 iTotalDisplayRecords = Result.Count(),
                                 //iTotalDisplayedRecords = Subjects.Count(),
                                 aaData = Result.Skip(param.iDisplayStart).Take(param.iDisplayLength)

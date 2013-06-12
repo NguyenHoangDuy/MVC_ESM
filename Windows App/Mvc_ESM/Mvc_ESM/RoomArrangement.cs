@@ -21,6 +21,7 @@ namespace Mvc_ESM.Static_Helper
         private static Boolean[] Progressed;
         private static int RoomUsedIndex;
         private static int MaxContaint;
+        private static int SumContaint;
 
         public static void Run()
         {
@@ -136,6 +137,7 @@ namespace Mvc_ESM.Static_Helper
         /// </summary>
         private static void GetStudentList()
         {
+            int SumStudents = 0;
             StudentByGroup = new Dictionary<String, List<String>>();
             for (int GroupIndex = 0; GroupIndex < AlgorithmRunner.Groups.Count; GroupIndex++)
             {
@@ -146,24 +148,34 @@ namespace Mvc_ESM.Static_Helper
                 IEnumerable<String> Result = InputHelper.db.Database.SqlQuery<String>("select sinhvien.MaSinhVien from pdkmh, sinhvien "
                                                                             + "where pdkmh.MaSinhVien = sinhvien.MaSinhVien "
                                                                             + "and MaMonHoc = '" + SubjectID + "' "
-                                                          //                  + (IgnoreStudents.Length > 0 ? "and not(sinhvien.MaSinhVien in (" + IgnoreStudents + ")) " : "")
+                    //                  + (IgnoreStudents.Length > 0 ? "and not(sinhvien.MaSinhVien in (" + IgnoreStudents + ")) " : "")
                                                                             + "and pdkmh.Nhom in(" + ClassList + ") "
                                                                             + "order by (Ten + Ho)");
                 StudentByGroup.Add(AlgorithmRunner.Groups[GroupIndex], Result.ToList<String>());
+                SumStudents += Result.ToList<String>().Count;
             }
+
+            if (SumStudents > SumContaint)
+            {
+                AlgorithmRunner.SaveOBJ("Status", "err Phòng thi không đủ");
+                AlgorithmRunner.IsBusy = false;
+                Thread.CurrentThread.Abort();
+            }
+
             AlgorithmRunner.GroupsRoom = new List<Room>[AlgorithmRunner.Groups.Count];
             AlgorithmRunner.GroupsRoomStudents = new List<String>[AlgorithmRunner.Groups.Count][];
         }
-        
-        
+
+
         private static void Init()
         {
             ShiftList = InputHelper.Shifts.Where(m => !m.IsBusy).ToList();
             Progressed = new Boolean[AlgorithmRunner.Groups.Count];
             MaxContaint = InputHelper.Rooms.Max(m => m.Rooms.Where(w => !w.IsBusy).Sum(s => s.Container));
+            SumContaint = InputHelper.Rooms.Sum(m => m.Rooms.Where(w => !w.IsBusy).Sum(s => s.Container));
             SetDefaultTime();
             GetStudentList();
-            
+
             //InputHelper.Rooms = InputHelper.Rooms.OrderBy(r => r.Container).ToList<Room>();
         }
 
@@ -207,11 +219,11 @@ namespace Mvc_ESM.Static_Helper
             {
                 RoomUsedIndex++;
                 if (RoomUsedIndex < RoomList.Count) // còn phòng
-                {                    
-                    
+                {
+
                     AlgorithmRunner.GroupsRoom[GroupIndex].Add(RoomList[RoomUsedIndex]);
                     StudentsNumber -= RoomList[RoomUsedIndex].Container;
-                    
+
                     // đáng lẽ code phân trực tiếp sv vào phòng ở đây, nhưng như vậy phòng ít phòng nhiều
                     // để đó sau này truy vấn lại môn này thi mấy phòng rồi chia sau!
                 }
