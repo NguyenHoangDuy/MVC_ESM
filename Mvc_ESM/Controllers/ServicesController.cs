@@ -172,30 +172,9 @@ namespace Mvc_ESM.Controllers
             }
             var Result = new List<string[]>();
 
-            var MH = (from m in InputHelper.db.This
-                      select new
-                      {
-                          MaMonHoc = m.MaMonHoc,
-                          Nhom = m.Nhom,
-                      });
-
-            Dictionary<String, List<String>> CheckMH = new Dictionary<string, List<string>>();
-
-            foreach (var m in MH)
+            foreach (var su in Groups.OrderBy(m => m.TenMonHoc).Skip(param.iDisplayStart).Take(param.iDisplayLength))
             {
-                if (CheckMH.ContainsKey(m.MaMonHoc))
-                    CheckMH[m.MaMonHoc].Add(m.Nhom);
-                else
-                    CheckMH.Add(m.MaMonHoc, new List<String> { m.Nhom });
-            }
-
-            foreach (var su in Groups.OrderBy(m => m.TenMonHoc))
-            {
-                if (CheckMH.ContainsKey(su.MaMonHoc))
-                {
-                    if (!CheckGroup(CheckMH[su.MaMonHoc], su.Nhom.ToString()))
-                    {
-                        Result.Add(new string[] {
+                Result.Add(new string[] {
                                             su.MaMonHoc,
                                             su.TenMonHoc,
                                             su.TenBoMon,
@@ -203,36 +182,97 @@ namespace Mvc_ESM.Controllers
                                             su.Nhom.ToString(),
                                             su.SoLuongDK.ToString(),
                                             su.GroupID.ToString(),
+                                            //"Xoá"
                                         }
-                                    );
-                    }
-                }
-                else
-                {
-                    Result.Add(new string[] {
-                                            su.MaMonHoc,
-                                            su.TenMonHoc,
-                                            su.TenBoMon,
-                                            su.TenKhoa,
-                                            su.Nhom.ToString(),
-                                            su.SoLuongDK.ToString(),
-                                            su.GroupID.ToString(),
-                                        }
-                                    );
-                }
-
+                            );
             }
-
             return Json(new
-                            {
-                                sEcho = param.sEcho,
-                                iTotalRecords = total,
-                                iTotalDisplayRecords = Result.Count(),
-                                //iTotalDisplayedRecords = Subjects.Count(),
-                                aaData = Result.Skip(param.iDisplayStart).Take(param.iDisplayLength)
-                            },
+            {
+                sEcho = param.sEcho,
+                iTotalRecords = total,
+                iTotalDisplayRecords = Groups.Count(),
+                //iTotalDisplayedRecords = Subjects.Count(),
+                aaData = Result
+            },
                             JsonRequestBehavior.AllowGet
                         );
+
+            //if (SubjectID != null && Class != null && Group != null)
+            //{
+            //    OutputHelper.SaveGroups(SubjectID, Class, Group, false);
+            //}
+
+            //Dictionary<String, Group> dbGroups = Clone.Dictionary<String, Group>((Dictionary<String, Group>)(CurrentSession.Get("Groups") ?? InputHelper.Groups));
+            //var Groups = from m in dbGroups.Values.Where(g => !g.IsIgnored) select m;
+            //var total = Groups.Count();
+            //if (!string.IsNullOrEmpty(Search))
+            //{
+            //    Groups = Groups.Where(m => m.MaMonHoc.ToLower().Contains(Search.ToLower()) || m.TenMonHoc.ToLower().Contains(Search.ToLower()));
+            //}
+
+            //var Result = new List<string[]>();
+
+            //var MH = (from m in InputHelper.db.This
+            //          select new
+            //          {
+            //              MaMonHoc = m.MaMonHoc,
+            //              Nhom = m.Nhom,
+            //          });
+
+            //Dictionary<String, List<String>> CheckMH = new Dictionary<string, List<string>>();
+
+            //foreach (var m in MH)
+            //{
+            //    if (CheckMH.ContainsKey(m.MaMonHoc))
+            //        CheckMH[m.MaMonHoc].Add(m.Nhom);
+            //    else
+            //        CheckMH.Add(m.MaMonHoc, new List<String> { m.Nhom });
+            //}
+
+            //foreach (var su in Groups.OrderBy(m => m.TenMonHoc))
+            //{
+            //    if (CheckMH.ContainsKey(su.MaMonHoc))
+            //    {
+            //        if (!CheckGroup(CheckMH[su.MaMonHoc], su.Nhom.ToString()))
+            //        {
+            //            Result.Add(new string[] {
+            //                                su.MaMonHoc,
+            //                                su.TenMonHoc,
+            //                                su.TenBoMon,
+            //                                su.TenKhoa,
+            //                                su.Nhom.ToString(),
+            //                                su.SoLuongDK.ToString(),
+            //                                su.GroupID.ToString(),
+            //                            }
+            //                        );
+            //        }
+            //    }
+            //    else
+            //    {
+            //        Result.Add(new string[] {
+            //                                su.MaMonHoc,
+            //                                su.TenMonHoc,
+            //                                su.TenBoMon,
+            //                                su.TenKhoa,
+            //                                su.Nhom.ToString(),
+            //                                su.SoLuongDK.ToString(),
+            //                                su.GroupID.ToString(),
+            //                            }
+            //                        );
+            //    }
+
+            //}
+
+            //return Json(new
+            //                {
+            //                    sEcho = param.sEcho,
+            //                    iTotalRecords = total,
+            //                    iTotalDisplayRecords = Result.Count(),
+            //                    //iTotalDisplayedRecords = Subjects.Count(),
+            //                    aaData = Result.Skip(param.iDisplayStart).Take(param.iDisplayLength)
+            //                },
+            //                JsonRequestBehavior.AllowGet
+            //            );
         }
 
         public static Boolean CheckGroup(List<String> Group, String Checkgroup)

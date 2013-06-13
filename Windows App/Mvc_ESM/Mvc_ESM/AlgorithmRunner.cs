@@ -59,11 +59,15 @@ namespace Mvc_ESM.Static_Helper
 
         public static void SaveOBJ(String Name, Object OBJ)
         {
-            System.IO.File.WriteAllText(
-                RealPath(Name),
-                JsonConvert.SerializeObject(OBJ, Formatting.Indented),
-                Encoding.UTF8
-            );
+            try
+            {
+                System.IO.File.WriteAllText(
+                    RealPath(Name),
+                    JsonConvert.SerializeObject(OBJ, Formatting.Indented),
+                    Encoding.UTF8
+                );
+            }
+            catch (Exception ex) { return; }
         }
 
         public static void DeleteOBJ(String Name)
