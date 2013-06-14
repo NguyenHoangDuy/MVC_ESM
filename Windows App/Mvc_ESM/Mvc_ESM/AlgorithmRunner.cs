@@ -119,7 +119,7 @@ namespace Mvc_ESM.Static_Helper
 
         public void RunCreateAdjacencyMatrix()
         {
-
+            InputHelper.Groups = InputHelper.InitGroups();
             //if (OBJExits("AdjacencyMatrix"))
             //{
             //    //AdjacencyMatrix = ReadOBJ<int[,]>("AdjacencyMatrix");
@@ -161,6 +161,9 @@ namespace Mvc_ESM.Static_Helper
 
         public void RunCalc()
         {
+            InputHelper.IgnoreStudents = InputHelper.InitIgnoreStudents();
+            InputHelper.Shifts = InputHelper.InitShift();
+            InputHelper.Options = InputHelper.InitOptions();
             Thread thread = new Thread(new ThreadStart(RunNext));
             thread.Name = "RunCalc";
             thread.Start();
@@ -242,6 +245,9 @@ namespace Mvc_ESM.Static_Helper
 
         public void RunHandmade()
         {
+            InputHelper.Shifts = InputHelper.InitShift();
+            InputHelper.Rooms = InputHelper.InitRooms();
+            InputHelper.Options = InputHelper.InitOptions();
             HandmadeData = ReadOBJ<Handmade.HandmadeData>("Handmade");
             Thread thread = new Thread(new ThreadStart(Handmade.Run));
             thread.Name = "Handmade";
@@ -250,6 +256,9 @@ namespace Mvc_ESM.Static_Helper
 
         public void RunFixSubject()
         {
+            InputHelper.Shifts = InputHelper.InitShift();
+            InputHelper.Rooms = InputHelper.InitRooms();
+            InputHelper.Options = InputHelper.InitOptions();
             HandmadeData = ReadOBJ<Handmade.HandmadeData>("FixSubject");
             Thread thread = new Thread(new ThreadStart(Handmade.RunFixSubJect));
             thread.Name = "FixSubject";

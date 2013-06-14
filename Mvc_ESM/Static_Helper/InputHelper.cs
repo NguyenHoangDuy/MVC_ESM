@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace Mvc_ESM.Static_Helper
 {
-    
+
     public class InputHelper
     {
         public static DKMHEntities db = new DKMHEntities();
@@ -67,6 +67,19 @@ namespace Mvc_ESM.Static_Helper
             String Path = OutputHelper.RealPath("Rooms");
             if (File.Exists(Path))
             {
+                //List<RoomList> RoomsTemp = JsonConvert.DeserializeObject<List<RoomList>>(File.ReadAllText(Path));
+
+                //var room = (from r in InputHelper.db.This
+                //            select new
+                //            {
+                //                r.MaPhong,
+                //                r.CaThi.GioThi
+                //            }).Distinct();
+
+                //foreach (var r in room)
+                //    RoomsTemp.Find(m => m.Time == r.GioThi).Rooms.RemoveAt(RoomsTemp.Find(m => m.Time == r.GioThi).Rooms.FindIndex(p => p.RoomID == r.MaPhong));
+
+                //return RoomsTemp;
                 return JsonConvert.DeserializeObject<List<RoomList>>(File.ReadAllText(Path));
             }
             else
@@ -112,6 +125,8 @@ namespace Mvc_ESM.Static_Helper
                         aShift.Add(new Shift() { IsBusy = (ShiftTime.DayOfWeek == DayOfWeek.Sunday), Time = ShiftTime });
                     }
                 }
+                InputHelper.Shifts = aShift;
+                OutputHelper.SaveOBJ("Shift", InputHelper.Shifts);
                 return aShift;
             }
         }

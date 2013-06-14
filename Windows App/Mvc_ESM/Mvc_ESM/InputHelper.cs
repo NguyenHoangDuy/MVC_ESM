@@ -28,7 +28,7 @@ namespace Mvc_ESM.Static_Helper
         /// <summary>
         /// Phòng thi
         /// </summary>
-        public static List<RoomList> Rooms = InitRooms();
+        public static List<RoomList> Rooms;// = InitRooms();
 
 
         public static List<Priority> Priorities = InitSubjectPriority();
@@ -67,6 +67,19 @@ namespace Mvc_ESM.Static_Helper
             String Path = AlgorithmRunner.RealPath("Rooms");
             if (File.Exists(Path))
             {
+                //List<RoomList> RoomsTemp = JsonConvert.DeserializeObject<List<RoomList>>(File.ReadAllText(Path));
+
+                //var room = (from r in InputHelper.db.This
+                //            select new
+                //            {
+                //                r.MaPhong,
+                //                r.CaThi.GioThi
+                //            }).Distinct();
+
+                //foreach (var r in room)
+                //    RoomsTemp.Find(m => m.Time == r.GioThi).Rooms.RemoveAt(RoomsTemp.Find(m => m.Time == r.GioThi).Rooms.FindIndex(p => p.RoomID == r.MaPhong));
+
+                //return RoomsTemp;
                 return JsonConvert.DeserializeObject<List<RoomList>>(File.ReadAllText(Path));
             }
             else
@@ -86,6 +99,8 @@ namespace Mvc_ESM.Static_Helper
                         aRoomList.Add(new RoomList() { Rooms = new List<Room>(Rooms), Time = ShiftTime + Options.Times[j].TimeOfDay });
                     }
                 }
+                InputHelper.Rooms = aRoomList;
+                AlgorithmRunner.SaveOBJ("Rooms", InputHelper.Rooms);
                 return aRoomList;
             }
         }

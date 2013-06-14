@@ -95,10 +95,28 @@ namespace Mvc_ESM.Controllers
                 var aThi = InputHelper.db.This.Where(m => m.MaMonHoc.Equals(MSMH)).Where(m => m.Nhom.Equals(MaNhom)).First();
                 string maca = aThi.MaCa.ToString();
 
+                var room = (from r in InputHelper.db.This
+                            where r.MaMonHoc == MSMH && r.Nhom == MaNhom
+                            select new
+                            {
+                                r.MaPhong,
+                                r.CaThi.GioThi
+                            }).Distinct();
+
+
+                foreach (var r in room)
+                {
+                    int index = InputHelper.BusyRooms.Find(m => m.Time == r.GioThi).Rooms.FindIndex(m => m.RoomID == r.MaPhong);
+                    InputHelper.BusyRooms.Find(m => m.Time == r.GioThi).Rooms[index].IsBusy = false;
+                }
+                OutputHelper.SaveOBJ("Rooms", InputHelper.BusyRooms);
+
+
                 InputHelper.db.DelThi(MSMH, MaNhom);
 
                 var Count = InputHelper.db.This.Where(m => m.MaCa.Equals(maca)).Count();
-
+                
+               
                 if (Count == 0)
                 {
                     db.DelCaThi(maca);

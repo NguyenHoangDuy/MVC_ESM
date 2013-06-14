@@ -36,42 +36,31 @@ namespace Mvc_ESM
                         AlgorithmRunner.RunStop();
                         break;
                     case "1":
-                        InputHelper.Groups = InputHelper.InitGroups();
-                       // InputHelper.IgnoreStudents = InputHelper.InitIgnoreStudents();
                         AlgorithmRunner.RunCreateAdjacencyMatrix();
                         txtArgs.Text += DateTime.Now.ToString() + " RunCreateAdjacencyMatrix\r\n";
                         break;
                     case "2":
-                        AlgorithmRunner.RunPriority();
-
-                       // InputHelper.Groups = InputHelper.InitGroups();
-                        InputHelper.IgnoreStudents = InputHelper.InitIgnoreStudents();
-                        InputHelper.Shifts = InputHelper.InitShift();
                         InputHelper.Rooms = InputHelper.InitRooms();
-                        InputHelper.Options = InputHelper.InitOptions();
+                        AlgorithmRunner.RunPriority();
                         AlgorithmRunner.RunCalc();
                         txtArgs.Text += DateTime.Now.ToString() + " RunCalc\r\n";
                         break;
                     case "3":
+                        InputHelper.Rooms = InputHelper.InitRooms();
                         AlgorithmRunner.RunSaveToDatabase();
                         txtArgs.Text += DateTime.Now.ToString() + " RunSaveToDatabase\r\n";
                         break;
                     case "4":
                         //InputHelper.IgnoreStudents = InputHelper.InitIgnoreStudents();
-                        InputHelper.Shifts = InputHelper.InitShift();
-                        InputHelper.Rooms = InputHelper.InitRooms();
-                        InputHelper.Options = InputHelper.InitOptions();
                         AlgorithmRunner.RunHandmade();
                         txtArgs.Text += DateTime.Now.ToString() + " Handmade\r\n";
                         break;
                     case "5":
+                        InputHelper.Rooms = InputHelper.InitRooms();
                         AlgorithmRunner.RunDeleteDatabase(dot.Substring(1, dot.Length - 1));
                         txtArgs.Text += DateTime.Now.ToString() + " DeleteToDatabase\r\n";
                         break;
                     case "6":
-                        InputHelper.Shifts = InputHelper.InitShift();
-                        InputHelper.Rooms = InputHelper.InitRooms();
-                        InputHelper.Options = InputHelper.InitOptions();
                         AlgorithmRunner.RunFixSubject();
                         txtArgs.Text += DateTime.Now.ToString() + " FixSubject\r\n";
                         break;

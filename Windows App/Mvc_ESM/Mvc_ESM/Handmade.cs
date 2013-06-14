@@ -58,17 +58,20 @@ namespace Mvc_ESM.Static_Helper
 
 
             var SubjectID = Data.SubjectID;
+
             DKMHEntities db = new DKMHEntities();
+
+            var MaCaQry = (from thi in InputHelper.db.This
+                           where thi.MaMonHoc == SubjectID && thi.Nhom == ClassList
+                           select new
+                           {
+                               MaCa = thi.MaCa,
+                               MSMH = thi.MaMonHoc,
+                               Nhom = thi.Nhom
+                           }).FirstOrDefault();
             try
             {
-                var MaCaQry = (from thi in InputHelper.db.This
-                               where thi.MaMonHoc == SubjectID && thi.Nhom == ClassList
-                               select new
-                               {
-                                   MaCa = thi.MaCa,
-                                   MSMH = thi.MaMonHoc,
-                                   Nhom = thi.Nhom
-                               }).FirstOrDefault();
+                InitRooms(SubjectID, MaCaQry.MaCa, false);
 
                 db.Database.ExecuteSqlCommand("DELETE FROM Thi WHERE MaCa='" + MaCaQry.MaCa + "' and MaMonHoc='" + MaCaQry.MSMH + "' and Nhom='" + MaCaQry.Nhom + "'");
 
@@ -83,9 +86,28 @@ namespace Mvc_ESM.Static_Helper
             catch
             {
                 AlgorithmRunner.SaveOBJ("Status", "err Lỗi Pri trong khi xoá CSDL, hãy thử chạy lại lần nữa!");
+                InitRooms(SubjectID, MaCaQry.MaCa, true);
                 AlgorithmRunner.IsBusy = false;
                 Thread.CurrentThread.Abort();
             }
+        }
+
+        private static void InitRooms(string SubjectID, string MaCa, bool ok)
+        {
+            var room = (from r in InputHelper.db.This
+                        where r.MaMonHoc == SubjectID && r.MaCa == MaCa
+                        select new
+                        {
+                            r.MaPhong,
+                            r.CaThi.GioThi
+                        }).Distinct();
+
+            foreach (var r in room)
+            {
+                int index = InputHelper.Rooms.Find(m => m.Time == r.GioThi).Rooms.FindIndex(m => m.RoomID == r.MaPhong);
+                InputHelper.Rooms.Find(m => m.Time == r.GioThi).Rooms[index].IsBusy = ok;
+            }
+            AlgorithmRunner.SaveOBJ("Rooms", InputHelper.Rooms);
         }
 
         public static void Save(HandmadeData Data)
@@ -150,8 +172,11 @@ namespace Mvc_ESM.Static_Helper
                                             );
                     StudentIndex++;
                 }
+                int RoomIndex = InputHelper.Rooms.Find(m => m.Time == Data.Date).Rooms.FindIndex(m => m.RoomID == aRecord.MaPhong);
+                InputHelper.Rooms.Find(m => m.Time == Data.Date).Rooms[RoomIndex].IsBusy = true;
             }
             db.Database.ExecuteSqlCommand(SQLQuery);
+            AlgorithmRunner.SaveOBJ("Rooms", InputHelper.Rooms);
         }
     }
 }

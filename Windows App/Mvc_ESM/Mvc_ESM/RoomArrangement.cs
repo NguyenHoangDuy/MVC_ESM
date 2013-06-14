@@ -30,26 +30,12 @@ namespace Mvc_ESM.Static_Helper
             AlgorithmRunner.SaveOBJ("GroupsTime", AlgorithmRunner.GroupsTime);
             AlgorithmRunner.SaveOBJ("GroupsRoom", AlgorithmRunner.GroupsRoom);
             AlgorithmRunner.SaveOBJ("GroupsRoomStudents", AlgorithmRunner.GroupsRoomStudents);
-            UpdateShiftsAndRooms();
+        //    UpdateShiftsAndRooms();
             AlgorithmRunner.SaveOBJ("AppShifts", InputHelper.Shifts);
             AlgorithmRunner.SaveOBJ("AppRooms", InputHelper.Rooms);
         }
 
-        private static void UpdateShiftsAndRooms()
-        {
-            for (int Index = 0; Index < AlgorithmRunner.GroupsTime.Length; Index++)
-            {
-                int ShiftIndex = InputHelper.Shifts.FindIndex(m => m.Time == AlgorithmRunner.GroupsTime[Index]);
-                InputHelper.Shifts[ShiftIndex].IsBusy = true;
-                int RoomListIndex = InputHelper.Rooms.FindIndex(m => m.Time == AlgorithmRunner.GroupsTime[Index]);
-                foreach (Room aRoom in AlgorithmRunner.GroupsRoom[Index])
-                {
-                    int RoomIndex = InputHelper.Rooms[RoomListIndex].Rooms.FindIndex(m => m.RoomID == aRoom.RoomID);
-                    InputHelper.Rooms[RoomListIndex].Rooms[RoomIndex].IsBusy = true;
-                }
-            }
-
-        }
+        
         /// <summary>
         /// tạo danh sách sinh viên cho môn học
         /// </summary>

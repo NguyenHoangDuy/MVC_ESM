@@ -27,6 +27,39 @@ namespace Mvc_ESM.Static_Helper
             //        Thread.CurrentThread.Abort();
         }
 
+        private static void InitRoom(bool ok)
+        {
+            var room = (from r in InputHelper.db.This
+                        select new
+                        {
+                            r.MaPhong,
+                            r.CaThi.GioThi
+                        }).Distinct();
+            foreach (var r in room)
+            {
+                int index = InputHelper.Rooms.Find(m => m.Time == r.GioThi).Rooms.FindIndex(m => m.RoomID == r.MaPhong);
+                InputHelper.Rooms.Find(m => m.Time == r.GioThi).Rooms[index].IsBusy = ok;
+            }
+            AlgorithmRunner.SaveOBJ("Rooms", InputHelper.Rooms);
+        }
+
+        private static void InitRoom(string dot, bool ok)
+        {
+            var room = (from r in InputHelper.db.This
+                        where r.Dot==dot
+                        select new
+                        {
+                            r.MaPhong,
+                            r.CaThi.GioThi
+                        }).Distinct();
+            foreach (var r in room)
+            {
+                int index = InputHelper.Rooms.Find(m => m.Time == r.GioThi).Rooms.FindIndex(m => m.RoomID == r.MaPhong);
+                InputHelper.Rooms.Find(m => m.Time == r.GioThi).Rooms[index].IsBusy = ok;
+            }
+            AlgorithmRunner.SaveOBJ("Rooms", InputHelper.Rooms);
+        }
+
         public static void Delete(object Dot)
         {
             AlgorithmRunner.IsBusy = true;
@@ -44,6 +77,7 @@ namespace Mvc_ESM.Static_Helper
         {
             try
             {
+                InitRoom(false);
                 db.Database.ExecuteSqlCommand("DELETE FROM Thi");
                 db.Database.ExecuteSqlCommand("DELETE FROM CaThi");
                 var DbName = Regex.Match(db.Database.Connection.ConnectionString, "initial\\scatalog=([^;]+)").Groups[1].Value;
@@ -53,6 +87,7 @@ namespace Mvc_ESM.Static_Helper
             catch
             {
                 AlgorithmRunner.SaveOBJ("Status", "err Lỗi trong khi xoá CSDL, hãy thử chạy lại lần nữa!");
+                InitRoom(true);
                 AlgorithmRunner.IsBusy = false;
                 Thread.CurrentThread.Abort();
             }
@@ -62,6 +97,7 @@ namespace Mvc_ESM.Static_Helper
         {
             try
             {
+                InitRoom(dot,false);
                 var MaCaQry = (from ca in InputHelper.db.This
                                where ca.Dot == dot
                                select new { MaCa = ca.MaCa }).Distinct().ToList();
@@ -73,10 +109,12 @@ namespace Mvc_ESM.Static_Helper
                 var DbName = Regex.Match(db.Database.Connection.ConnectionString, "initial\\scatalog=([^;]+)").Groups[1].Value;
                 db.Database.ExecuteSqlCommand("DBCC SHRINKFILE (" + DbName + ", 1) ");
                 db.Database.ExecuteSqlCommand("DBCC SHRINKFILE (" + DbName + "_log, 1) ");
+               
             }
             catch
             {
                 AlgorithmRunner.SaveOBJ("Status", "err Lỗi Pri trong khi xoá CSDL, hãy thử chạy lại lần nữa!");
+                InitRoom(dot, true);
                 AlgorithmRunner.IsBusy = false;
                 Thread.CurrentThread.Abort();
             }
@@ -148,6 +186,7 @@ namespace Mvc_ESM.Static_Helper
                     {
                         AlgorithmRunner.SaveOBJ("Status", "inf Đang Lưu vào cơ sở dữ liệu (" + (GroupIndex + 1) + "/" + GCount + ")");
                         db.Database.ExecuteSqlCommand(SQLQuery);
+                        UpdateShiftsAndRooms(GroupsTime, GroupsRoom);
                         Check(aRecord.MaMonHoc, aRecord.Nhom);
                     }
                     catch
@@ -158,6 +197,22 @@ namespace Mvc_ESM.Static_Helper
                     }
                 }
             }
+        }
+
+        private static void UpdateShiftsAndRooms(DateTime[] GroupsTime, List<Room>[] GroupsRoom)
+        {
+            for (int Index = 0; Index < GroupsTime.Length; Index++)
+            {
+                int ShiftIndex = InputHelper.Shifts.FindIndex(m => m.Time == GroupsTime[Index]);
+                InputHelper.Shifts[ShiftIndex].IsBusy = true;
+                int RoomListIndex = InputHelper.Rooms.FindIndex(m => m.Time == GroupsTime[Index]);
+                foreach (Room aRoom in GroupsRoom[Index])
+                {
+                    int RoomIndex = InputHelper.Rooms[RoomListIndex].Rooms.FindIndex(m => m.RoomID == aRoom.RoomID);
+                    InputHelper.Rooms[RoomListIndex].Rooms[RoomIndex].IsBusy = true;
+                }
+            }
+            AlgorithmRunner.SaveOBJ("Rooms", InputHelper.Rooms);
         }
 
         private static void Check(String MaMH, String Class)

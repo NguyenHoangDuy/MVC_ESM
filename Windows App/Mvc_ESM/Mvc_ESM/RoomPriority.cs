@@ -162,6 +162,7 @@ namespace Mvc_ESM
                     InputHelper.Rooms[RoomListIndex].Rooms[RoomIndex].IsBusy = true;
                 }
             }
+            AlgorithmRunner.SaveOBJ("Rooms", InputHelper.Rooms);
         }
 
     }

@@ -245,16 +245,14 @@
     });
 
     $("#btnRoomCalc").click(function () {
-        var NumStudent = 0;
-      
         var MSMH = $('#SubjectID').val();
         var Class = oTableGroup.$("#ClassCheck:checked").attr("value");
         $.getJSON("/FixSubject/CountStudent", { SubjectID: MSMH, Class: Class },
-            function (Data) {
-                NumStudent = Data.NumberStudent;
-                $("#NumStudent").html('<p id="pNumStudent" value="' + Data.NumberStudent + '">Số lượng sinh viên: ' + Data.NumberStudent + '</p>');
-            });
-        
+               function (Data) {
+                   var NumStudent = Data.NumberStudent;
+                   $("#NumStudent").html('<p id="pNumStudent" value="' + Data.NumberStudent + '">Số lượng sinh viên: ' + Data.NumberStudent + '</p>');
+               });
+
         oTableRoomNum.fnClearTable(true);
         oTableRoom.$("#Room").each(function (index, itemData) {
             if ($(itemData).parent().parent().find("#RoomCheck:checked").length == 1) {
@@ -336,6 +334,7 @@
                     $("#step2err").html("");
                 break;
             case 3:
+
                 if (oTableTime.$("#Time").length == 0) {
                     $("#step3err").html("<p>Chưa lấy danh sách ca thi!</p>");
                     hasError = true;
@@ -349,6 +348,7 @@
                 }
                 break;
             case 4:
+
                 if ($("#NumStudent").html().length == 0) {
                     $("#step4err").html("<p>Cần lập danh sách phòng!</p>");
                     hasError = true;
