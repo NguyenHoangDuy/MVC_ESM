@@ -17,9 +17,9 @@
 
 <div style="text-align: center">
     <p>
-        <button id="RunCreateAdjacencyMatrix">1. Phân tích CSDL</button>
-        <button id="RunCalc">2. Xếp lịch</button>
-        <button id="RunSaveToDatabase">3. Lưu kết quả</button>
+       @* <button id="RunCreateAdjacencyMatrix">1. Phân tích CSDL</button>
+        <button id="RunCalc">2. Xếp lịch</button>*@
+        <button id="RunSaveToDatabase">Xếp lịch</button>
     </p>
     <p id="Info"></p>
     <p>
@@ -29,23 +29,23 @@
 <script>
     var btn0 = $("#RunStop");
     btn0.removeAttr("disabled").removeClass("ui-state-focus");
-    var btn1 = $("#RunCreateAdjacencyMatrix");
-    var btn2 = $("#RunCalc");
+    //var btn1 = $("#RunCreateAdjacencyMatrix");
+    //var btn2 = $("#RunCalc");
     var btn3 = $("#RunSaveToDatabase");
     var btn4 = $("#RunDel");
     var Info = $("#Info");
 
     function DisableAll() {
-        btn1.attr('disabled', 'disabled').removeClass("ui-state-focus");
-        btn2.attr('disabled', 'disabled').removeClass("ui-state-focus");
+       // btn1.attr('disabled', 'disabled').removeClass("ui-state-focus");
+     //   btn2.attr('disabled', 'disabled').removeClass("ui-state-focus");
         btn3.attr('disabled', 'disabled').removeClass("ui-state-focus");
         btn4.attr('disabled', 'disabled').removeClass("ui-state-focus");
         btn0.removeAttr("disabled").removeClass("ui-state-focus");
     }
 
     function EnableAll() {
-        btn1.removeAttr("disabled").removeClass("ui-state-focus");
-        btn2.removeAttr("disabled").removeClass("ui-state-focus");
+      //  btn1.removeAttr("disabled").removeClass("ui-state-focus");
+      //  btn2.removeAttr("disabled").removeClass("ui-state-focus");
         btn3.removeAttr("disabled").removeClass("ui-state-focus");
         btn4.removeAttr("disabled").removeClass("ui-state-focus");
         btn0.attr('disabled', 'disabled').removeClass("ui-state-focus");
@@ -74,12 +74,12 @@
     btn0.button().click(function () {
         $.post("/Progress/Run", "StepNumber=0");
     });
-    btn1.button().click(function () {
-        $.post("/Progress/Run", "StepNumber=1");
-    });
-    btn2.button().click(function () {
-        $.post("/Progress/Run", "StepNumber=2");
-    });
+    //btn1.button().click(function () {
+    //    $.post("/Progress/Run", "StepNumber=1");
+    //});
+    //btn2.button().click(function () {
+    //    $.post("/Progress/Run", "StepNumber=2");
+    //});
     btn3.button().click(function () {
         $.post("/Progress/Run", "StepNumber=3");
     });

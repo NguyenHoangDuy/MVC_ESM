@@ -154,9 +154,10 @@ namespace Mvc_ESM.Static_Helper
             AdjacencyMatrixSize = Groups.Count;
             AdjacencyMatrix = new int[AdjacencyMatrixSize, AdjacencyMatrixSize];
             BeginI = 0;
-            Thread thread = new Thread(new ThreadStart(CreateAdjacencyMatrix.Run));
-            thread.Name = "CreateAdjacencyMatrix";
-            thread.Start();
+            //Thread thread = new Thread(new ThreadStart(CreateAdjacencyMatrix.Run));
+            //thread.Name = "CreateAdjacencyMatrix";
+            //thread.Start();
+            CreateAdjacencyMatrix.Run();
         }
 
         public void RunCalc()
@@ -164,9 +165,10 @@ namespace Mvc_ESM.Static_Helper
             InputHelper.IgnoreStudents = InputHelper.InitIgnoreStudents();
             InputHelper.Shifts = InputHelper.InitShift();
             InputHelper.Options = InputHelper.InitOptions();
-            Thread thread = new Thread(new ThreadStart(RunNext));
-            thread.Name = "RunCalc";
-            thread.Start();
+            RunNext();
+           // Thread thread = new Thread(new ThreadStart(RunNext));
+           // thread.Name = "RunCalc";
+            //thread.Start();
         }
 
         private void RunNext()

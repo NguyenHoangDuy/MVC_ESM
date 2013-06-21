@@ -46,6 +46,16 @@ namespace Mvc_ESM
                         txtArgs.Text += DateTime.Now.ToString() + " RunCalc\r\n";
                         break;
                     case "3":
+                        //Tạo ma trận kề
+                        AlgorithmRunner.RunCreateAdjacencyMatrix();
+                        txtArgs.Text += DateTime.Now.ToString() + " RunCreateAdjacencyMatrix\r\n";
+                        //------------------------
+                        //Xếp giờ, phòng
+                        InputHelper.Rooms = InputHelper.InitRooms();
+                        AlgorithmRunner.RunPriority();
+                        AlgorithmRunner.RunCalc();
+                        txtArgs.Text += DateTime.Now.ToString() + " RunCalc\r\n";
+                        //---------------------------
                         InputHelper.Rooms = InputHelper.InitRooms();
                         AlgorithmRunner.RunSaveToDatabase();
                         txtArgs.Text += DateTime.Now.ToString() + " RunSaveToDatabase\r\n";
