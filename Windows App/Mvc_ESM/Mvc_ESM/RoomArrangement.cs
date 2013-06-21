@@ -115,7 +115,7 @@ namespace Mvc_ESM.Static_Helper
                         AlgorithmRunner.MaxColorTime[ColorNumber] = AlgorithmRunner.GroupsTime[GroupIndex];
                     }
                 }
-                ShiftIndex += InputHelper.Options.DateMin + 1;
+                ShiftIndex += InputHelper.Options.DateMin;
             }
         }
         /// <summary>
