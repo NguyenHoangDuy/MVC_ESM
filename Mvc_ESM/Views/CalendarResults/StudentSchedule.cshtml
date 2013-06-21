@@ -11,7 +11,7 @@
 @using (Html.BeginForm("StudentSchedule", "CalendarResults", FormMethod.Post, new { @id = "FilterForm" }))
 {
     <p>
-        Tên: @Html.TextBox("SearchString", ViewBag.SearchString as string, new { id = "SearchString" })
+        MSSV: @Html.TextBox("SearchString", ViewBag.SearchString as string, new { id = "SearchString" })
         @*<input type="submit" value="Thực hiện" />*@
         <button id="Submit" type="submit">Thực hiện</button>
     </p>

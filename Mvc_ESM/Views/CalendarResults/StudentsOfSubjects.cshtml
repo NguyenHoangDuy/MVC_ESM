@@ -13,7 +13,7 @@
     <p>
         <p>
             @*Html.DropDownList("MonHoc", ViewBag.MonHoc as SelectList, new { id = "SubjectList" })*@
-            Môn học: @Html.TextBox("MonHoc", ViewBag.SearchString as string, new { id = "txtSubjectID" })  
+            Môn thi: @Html.TextBox("MonHoc", ViewBag.SearchString as string, new { id = "txtSubjectID" })  
             Ca:  @Html.DropDownList("Ca", ViewBag.Shifts as SelectList, Mvc_ESM.Settings.Page.Settings.SelectAllString, new { id = "ShiftsList" })
             @*<input type="submit" value="Thực hiện" />*@
             <button id="Submit" type ="submit">Thực hiện</button>
