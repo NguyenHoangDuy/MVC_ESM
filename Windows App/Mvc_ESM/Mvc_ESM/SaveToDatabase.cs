@@ -22,7 +22,7 @@ namespace Mvc_ESM.Static_Helper
             //DeleteOld();
             AlgorithmRunner.SaveOBJ("Status", "inf Đang Lưu vào cơ sở dữ liệu");
             Save();
-            AlgorithmRunner.SaveOBJ("Status", "inf Hoàn tất quá trình lưu!");
+            AlgorithmRunner.SaveOBJ("Status", "inf Hoàn tất quá trình lưu! lúc: " + DateTime.Now);
             AlgorithmRunner.IsBusy = false;
             //        Thread.CurrentThread.Abort();
         }
@@ -46,7 +46,7 @@ namespace Mvc_ESM.Static_Helper
         private static void InitRoom(string dot, bool ok)
         {
             var room = (from r in InputHelper.db.This
-                        where r.Dot==dot
+                        where r.Dot == dot
                         select new
                         {
                             r.MaPhong,
@@ -97,7 +97,7 @@ namespace Mvc_ESM.Static_Helper
         {
             try
             {
-                InitRoom(dot,false);
+                InitRoom(dot, false);
                 var MaCaQry = (from ca in InputHelper.db.This
                                where ca.Dot == dot
                                select new { MaCa = ca.MaCa }).Distinct().ToList();
@@ -109,7 +109,7 @@ namespace Mvc_ESM.Static_Helper
                 var DbName = Regex.Match(db.Database.Connection.ConnectionString, "initial\\scatalog=([^;]+)").Groups[1].Value;
                 db.Database.ExecuteSqlCommand("DBCC SHRINKFILE (" + DbName + ", 1) ");
                 db.Database.ExecuteSqlCommand("DBCC SHRINKFILE (" + DbName + "_log, 1) ");
-               
+
             }
             catch
             {

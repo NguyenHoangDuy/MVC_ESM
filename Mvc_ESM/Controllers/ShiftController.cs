@@ -12,6 +12,7 @@ namespace Mvc_ESM.Controllers
     {
         public ActionResult Index()
         {
+            InputHelper.Shifts = InputHelper.InitShift();
             return View();
         }
 
